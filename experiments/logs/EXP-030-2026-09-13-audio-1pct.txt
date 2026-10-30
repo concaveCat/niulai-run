@@ -1,0 +1,25 @@
+EXP-030 1% embedded MP3 device trial
+Date: 2026-09-13
+Hardware: ESP32-S3 QFN56 rev v0.2; native Windows COM4; USB-Enhanced-SERIAL CH343
+Firmware build: /tmp/niulai-audio-1pct
+Configuration: CONFIG_NIULAI_AUDIO_VOLUME_PERCENT=1
+I2S: BCLK=GPIO9, WS/LRC=GPIO10, DIN=GPIO4; MP3 first frame 44100 Hz stereo
+Command: audio play
+
+Precondition:
+- Bootloader, application, and partition table were flashed with esptool 4.12.0.
+- All three regions reported Hash of data verified; hard reset completed.
+- The first attempt produced no audio command acknowledgement because the normal
+  UART loop exited on an empty non-blocking VFS read. app_main.c was then changed
+  to non-blocking fgetc polling and the image was rebuilt and flashed again.
+
+Filtered native PowerShell serial output after the fixed image:
+AUDIO_PLAY_SENT
+I (2019) audio_player: playback start asset=???????????????.mp3 bytes=106002
+AUDIO_COMMAND accepted=play
+I (6439) audio_player: playback complete frames=169 rate=44100 channels=2
+SERIAL_CLOSED
+
+The Windows console rendered the UTF-8 asset name as question marks. The firmware
+source asset and embedded symbol are 牛来叫妈妈.mp3. No human listening result was
+recorded in this trial.

@@ -1,0 +1,9 @@
+Configuration: CONFIG_SERVO_ZERO_I2C_SPEED_HZ=1000000
+Servo 6 V: disconnected
+
+BOOT TRIAL 1: 0x40 ACK; 0x68 ACK; register write NACK on attempts 1/4, 2/4, 3/4, 4/4; no READY
+BOOT TRIAL 2: 0x40 ACK; 0x68 ACK; register write NACK on attempts 1/4, 2/4, 3/4, 4/4; no READY
+BOOT TRIAL 3: 0x40 ACK; 0x68 ACK; register write NACK on attempts 1/4, 2/4, 3/4, 4/4; no READY
+
+Restored configuration: CONFIG_SERVO_ZERO_I2C_SPEED_HZ=400000
+RESTORE BOOT: 0x40 ACK; 0x68 ACK; CH0-CH7 READY at 50 Hz PWM / 400000 Hz I2C; /OE HIGH

@@ -1,0 +1,46 @@
+# EXP-034 ARD-1 repair candidate flash and boot check
+
+Date: 2026-09-14
+Hardware: ESP32-S3 QFN56 rev v0.2; CH343 native Windows COM4; PCA9685
+0x40. The Operator's previously recorded safety gate covers fixation,
+mechanical limits, 6 V/current boundary, personnel clearance and emergency
+stop. No motion command was authorized or sent in this boot-only check.
+Software: `fw/kw10-perfect-touchdown`, uncommitted repair slice on top of
+baseline `a2ce962`; current candidate uses body-drive 100%, touchdown retention
+25%, and unchanged 400 kHz I2C / four-attempt policy.
+
+Build command:
+
+```text
+ninja -C firmware-esp32/tools/servo-zero-test/build-servo-zero
+```
+
+Build result: pass. Application image size `0xd9ba0`, smallest app partition
+has 15% free. Application SHA-256:
+`83f967b3320399e207b515b2846f7ee4b94923513928571a2f3fb7df8b1e2e5c`.
+
+Flash command, executed by native Windows PowerShell with Python/esptool
+4.12.0 and the paths from the generated `flasher_args.json`:
+
+```text
+python.exe -m esptool --chip esp32s3 --port COM4 --baud 460800 --before default_reset --after hard_reset write_flash --flash_mode dio --flash_size 16MB --flash_freq 80m 0x0 bootloader/bootloader.bin 0x10000 niulai_servo_zero_test.bin 0x8000 partition_table/partition-table.bin
+```
+
+The three files were written to offsets `0x0`, `0x10000` and `0x8000`; each
+reported `Hash of data verified`, followed by `Hard resetting via RTS pin...`.
+
+Boot/communication check: native PowerShell opened `COM4` at 115200 with DTR
+and RTS disabled, read startup output, sent `stop`, then sent `list` and
+`stats`, and sent `stop` again. The board returned the saved upright values
+`1746,1469,1427,1415,1619,1582,1449,1600 us`, reported CH8--CH15
+`FULL_OFF`, and reported:
+
+```text
+I2C stats: logical=13 attempts=13 success=13 nack=0 timeout=0 other=0 retries=0 recovered_after_retry=0 terminal_failures=0
+UART stop -> /OE HIGH
+```
+
+Repeat count: one flash, one boot/stop check, one list/stats check. No
+`demo quad press`, `demo quad release`, `rest`, or other motion command was
+sent after flashing. This verifies image write and safe UART startup only; it
+does not verify gait travel, sole contact, current, temperature, or falling.

@@ -1,0 +1,2259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="E">
+  <design>
+    <source>niulai_carrier_v0.2.kicad_sch</source>
+    <date>generated-by-build</date>
+    <tool>Eeschema 10.0.3</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title>Niulai Modular Carrier v0.2</title>
+        <company>Niulai</company>
+        <rev>Review Candidate 4 - physical module pinout</rev>
+        <date>generated-by-build</date>
+        <source>niulai_carrier_v0.2.kicad_sch</source>
+        <comment number="1" value="Single XT30 input / 10A fuse / ESP32-S3 / PCA9685"/>
+        <comment number="2" value="NOT READY FOR PCB: exact footprints and physical module pinouts pending"/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="C1">
+      <value>1000-2200uF_16V_105C_OPTIONAL</value>
+      <footprint>Capacitor_THT:C_Radial_D12.5mm_H20.0mm_P5.00mm</footprint>
+      <description>C_BULK1</description>
+      <fields>
+        <field name="Footprint">Capacitor_THT:C_Radial_D12.5mm_H20.0mm_P5.00mm</field>
+        <field name="Datasheet"/>
+        <field name="Description">C_BULK1</field>
+      </fields>
+      <libsource lib="Niulai" part="C1_1000-2200uF_16V_105C_OPTIONAL" description="C_BULK1"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <property name="dnp"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>5f5e7bb4-2acc-5ce7-899c-65dbe7c495c6</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C2">
+      <value>1000-2200uF_16V_105C_OPTIONAL</value>
+      <footprint>Capacitor_THT:C_Radial_D12.5mm_H20.0mm_P5.00mm</footprint>
+      <description>C_BULK2</description>
+      <fields>
+        <field name="Footprint">Capacitor_THT:C_Radial_D12.5mm_H20.0mm_P5.00mm</field>
+        <field name="Datasheet"/>
+        <field name="Description">C_BULK2</field>
+      </fields>
+      <libsource lib="Niulai" part="C2_1000-2200uF_16V_105C_OPTIONAL" description="C_BULK2"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <property name="dnp"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>47ec0224-c4f8-52d4-83b9-6d245ee62e11</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C3">
+      <value>10uF_16V_X7R</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <description>Carrier local rail decoupling</description>
+      <fields>
+        <field name="Footprint">Capacitor_SMD:C_1206_3216Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Carrier local rail decoupling</field>
+      </fields>
+      <libsource lib="Niulai" part="C3_10uF_16V_X7R" description="Carrier local rail decoupling"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>085484f1-2de4-583e-9ce7-13848944da51</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C4">
+      <value>100nF_16V_X7R</value>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
+      <description>Carrier local high-frequency decoupling</description>
+      <fields>
+        <field name="Footprint">Capacitor_SMD:C_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Carrier local high-frequency decoupling</field>
+      </fields>
+      <libsource lib="Niulai" part="C4_100nF_16V_X7R" description="Carrier local high-frequency decoupling"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>86b97d32-07ef-5627-a984-822fc9823704</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C5">
+      <value>100nF_FILTER_DNP</value>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
+      <description>Optional hardware debounce</description>
+      <fields>
+        <field name="Footprint">Capacitor_SMD:C_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Optional hardware debounce</field>
+      </fields>
+      <libsource lib="Niulai" part="C5_100nF_FILTER_DNP" description="Optional hardware debounce"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <property name="dnp"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>cfac7015-67c3-5b70-b060-3a91a9cc1b2d</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C6">
+      <value>100nF_FILTER_DNP</value>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
+      <description>Optional hardware debounce</description>
+      <fields>
+        <field name="Footprint">Capacitor_SMD:C_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Optional hardware debounce</field>
+      </fields>
+      <libsource lib="Niulai" part="C6_100nF_FILTER_DNP" description="Optional hardware debounce"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <property name="dnp"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>9c6b20f7-3449-5d7a-9413-f458046053b2</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C7">
+      <value>100nF_FILTER_DNP</value>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
+      <description>Optional hardware debounce</description>
+      <fields>
+        <field name="Footprint">Capacitor_SMD:C_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Optional hardware debounce</field>
+      </fields>
+      <libsource lib="Niulai" part="C7_100nF_FILTER_DNP" description="Optional hardware debounce"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <property name="dnp"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>dc86ab8b-8144-51e7-bc49-babeef6fd391</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C8">
+      <value>100nF_FILTER_DNP</value>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
+      <description>Optional hardware debounce</description>
+      <fields>
+        <field name="Footprint">Capacitor_SMD:C_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Optional hardware debounce</field>
+      </fields>
+      <libsource lib="Niulai" part="C8_100nF_FILTER_DNP" description="Optional hardware debounce"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <property name="dnp"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>5b19cb67-f38d-5c2e-bbd5-833ac91ff70b</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="F1">
+      <value>ATO_ATC_10A_32V_MIN</value>
+      <description>Not a precision current limiter</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Not a precision current limiter</field>
+      </fields>
+      <libsource lib="Niulai" part="F1_ATO_ATC_10A_32V_MIN" description="Not a precision current limiter"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>90a30a67-28b3-56f5-aaf8-4bb094d0816d</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="IN"/>
+            <pin num="OUT"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J1">
+      <value>XT30_MALE_BOARD_INPUT</value>
+      <description>Board side male; energized source cables female</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Board side male; energized source cables female</field>
+      </fields>
+      <libsource lib="Niulai" part="J1_XT30_MALE_BOARD_INPUT" description="Board side male; energized source cables female"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>bafa379d-0cc0-5694-bfe2-931b19f761f0</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="GND"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J3">
+      <value>GPIO_DUPONT_BREAKOUT</value>
+      <description>MPU6500/ST7789 plus all final unused GPIO; exact header form TBD</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">MPU6500/ST7789 plus all final unused GPIO; exact header form TBD</field>
+      </fields>
+      <libsource lib="Niulai" part="J3_GPIO_DUPONT_BREAKOUT" description="MPU6500/ST7789 plus all final unused GPIO; exact header form TBD"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>322c1857-e7c7-5006-b710-10ddb422724c</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="3"/>
+            <pin num="4"/>
+            <pin num="5"/>
+            <pin num="6"/>
+            <pin num="7"/>
+            <pin num="8"/>
+            <pin num="9"/>
+            <pin num="10"/>
+            <pin num="11"/>
+            <pin num="12"/>
+            <pin num="13"/>
+            <pin num="14"/>
+            <pin num="15"/>
+            <pin num="16"/>
+            <pin num="17"/>
+            <pin num="18"/>
+            <pin num="19"/>
+            <pin num="20"/>
+            <pin num="21"/>
+            <pin num="22"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J10">
+      <value>FOOT_FL_REMOTE_SWITCH</value>
+      <description>Remote switch closes signal to GND</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Remote switch closes signal to GND</field>
+      </fields>
+      <libsource lib="Niulai" part="J10_FOOT_FL_REMOTE_SWITCH" description="Remote switch closes signal to GND"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>e03139e8-138e-5244-b5a1-9dda7fdad900</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="SIGNAL"/>
+            <pin num="GND"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J11">
+      <value>FOOT_FR_REMOTE_SWITCH</value>
+      <description>Remote switch closes signal to GND</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Remote switch closes signal to GND</field>
+      </fields>
+      <libsource lib="Niulai" part="J11_FOOT_FR_REMOTE_SWITCH" description="Remote switch closes signal to GND"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>e1ddea62-48ac-532d-8229-d75e98231c95</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="SIGNAL"/>
+            <pin num="GND"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J12">
+      <value>FOOT_RL_REMOTE_SWITCH</value>
+      <description>Remote switch closes signal to GND</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Remote switch closes signal to GND</field>
+      </fields>
+      <libsource lib="Niulai" part="J12_FOOT_RL_REMOTE_SWITCH" description="Remote switch closes signal to GND"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>f7a0412f-fd5e-543d-ad6f-4865282cf3b4</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="SIGNAL"/>
+            <pin num="GND"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J13">
+      <value>FOOT_RR_REMOTE_SWITCH</value>
+      <description>Remote switch closes signal to GND</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Remote switch closes signal to GND</field>
+      </fields>
+      <libsource lib="Niulai" part="J13_FOOT_RR_REMOTE_SWITCH" description="Remote switch closes signal to GND"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>6aacddd5-23e2-5e54-8d96-227649f9b151</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="SIGNAL"/>
+            <pin num="GND"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="JP1">
+      <value>ESP_EXTERNAL_3V3_LINK_REMOVE_FOR_USB_ONLY_TEST</value>
+      <footprint>Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical</footprint>
+      <description>Avoid unreviewed USB/external-rail paralleling</description>
+      <fields>
+        <field name="Footprint">Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical</field>
+        <field name="Datasheet"/>
+        <field name="Description">Avoid unreviewed USB/external-rail paralleling</field>
+      </fields>
+      <libsource lib="Niulai" part="JP1_ESP_EXTERNAL_3V3_LINK_REMOVE_FOR_USB_ONLY_TEST" description="Avoid unreviewed USB/external-rail paralleling"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>f681395a-3a31-58bf-b1a2-82ebed0a129f</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="SYS"/>
+            <pin num="ESP"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="M1">
+      <value>EXTERNAL_SERVO_1</value>
+      <description>Off-board servo plugs into PCA9685 channel header</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Off-board servo plugs into PCA9685 channel header</field>
+      </fields>
+      <libsource lib="Niulai" part="M1_EXTERNAL_SERVO_1" description="Off-board servo plugs into PCA9685 channel header"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>7c03b2cf-7a5a-589d-a38e-1c6ee3923654</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="S"/>
+            <pin num="2"/>
+            <pin num="3"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="M2">
+      <value>EXTERNAL_SERVO_2</value>
+      <description>Off-board servo plugs into PCA9685 channel header</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Off-board servo plugs into PCA9685 channel header</field>
+      </fields>
+      <libsource lib="Niulai" part="M2_EXTERNAL_SERVO_2" description="Off-board servo plugs into PCA9685 channel header"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>1e008056-4e3d-5498-a316-d2cd7afef1a2</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="S"/>
+            <pin num="2"/>
+            <pin num="3"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="M3">
+      <value>EXTERNAL_SERVO_3</value>
+      <description>Off-board servo plugs into PCA9685 channel header</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Off-board servo plugs into PCA9685 channel header</field>
+      </fields>
+      <libsource lib="Niulai" part="M3_EXTERNAL_SERVO_3" description="Off-board servo plugs into PCA9685 channel header"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b15ab9d1-12d8-5ee4-aea4-aca30e2da315</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="S"/>
+            <pin num="2"/>
+            <pin num="3"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="M4">
+      <value>EXTERNAL_SERVO_4</value>
+      <description>Off-board servo plugs into PCA9685 channel header</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Off-board servo plugs into PCA9685 channel header</field>
+      </fields>
+      <libsource lib="Niulai" part="M4_EXTERNAL_SERVO_4" description="Off-board servo plugs into PCA9685 channel header"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>fd52b6e6-add2-503f-a182-9889abb4a5c6</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="S"/>
+            <pin num="2"/>
+            <pin num="3"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="M5">
+      <value>EXTERNAL_SERVO_5</value>
+      <description>Off-board servo plugs into PCA9685 channel header</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Off-board servo plugs into PCA9685 channel header</field>
+      </fields>
+      <libsource lib="Niulai" part="M5_EXTERNAL_SERVO_5" description="Off-board servo plugs into PCA9685 channel header"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>164a49b0-847d-5e74-a452-c88c92aaf512</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="S"/>
+            <pin num="2"/>
+            <pin num="3"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="M6">
+      <value>EXTERNAL_SERVO_6</value>
+      <description>Off-board servo plugs into PCA9685 channel header</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Off-board servo plugs into PCA9685 channel header</field>
+      </fields>
+      <libsource lib="Niulai" part="M6_EXTERNAL_SERVO_6" description="Off-board servo plugs into PCA9685 channel header"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>64c2030e-e1fa-543e-8f33-42484412c7b8</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="S"/>
+            <pin num="2"/>
+            <pin num="3"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="M7">
+      <value>EXTERNAL_SERVO_7</value>
+      <description>Off-board servo plugs into PCA9685 channel header</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Off-board servo plugs into PCA9685 channel header</field>
+      </fields>
+      <libsource lib="Niulai" part="M7_EXTERNAL_SERVO_7" description="Off-board servo plugs into PCA9685 channel header"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>e8671bd3-269b-51af-a259-5b2812b69139</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="S"/>
+            <pin num="2"/>
+            <pin num="3"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="M8">
+      <value>EXTERNAL_SERVO_8</value>
+      <description>Off-board servo plugs into PCA9685 channel header</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Off-board servo plugs into PCA9685 channel header</field>
+      </fields>
+      <libsource lib="Niulai" part="M8_EXTERNAL_SERVO_8" description="Off-board servo plugs into PCA9685 channel header"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>8ac11c8c-7705-591c-a38b-025f4e10a620</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="S"/>
+            <pin num="2"/>
+            <pin num="3"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="NT1">
+      <value>PCB_COPPER_SERVO_BRANCH_10A</value>
+      <description>Logical domain boundary; continuous wide copper</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Logical domain boundary; continuous wide copper</field>
+      </fields>
+      <libsource lib="Niulai" part="NT1_PCB_COPPER_SERVO_BRANCH_10A" description="Logical domain boundary; continuous wide copper"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>223f2266-54b4-502e-8b30-fbcddf9b1368</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="MAIN"/>
+            <pin num="SERVO"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R1">
+      <value>10k_1%_OE_SAFE_DEFAULT</value>
+      <footprint>Resistor_SMD:R_0805_2012Metric</footprint>
+      <description>OE high disables PWM during reset</description>
+      <fields>
+        <field name="Footprint">Resistor_SMD:R_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">OE high disables PWM during reset</field>
+      </fields>
+      <libsource lib="Niulai" part="R1_10k_1%_OE_SAFE_DEFAULT" description="OE high disables PWM during reset"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>e8ecd766-812c-574e-8ccb-7a1125f87bf7</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R2">
+      <value>4.7k_I2C_PULLUP_DNP</value>
+      <footprint>Resistor_SMD:R_0805_2012Metric</footprint>
+      <description>Populate only if module pull-up audit requires</description>
+      <fields>
+        <field name="Footprint">Resistor_SMD:R_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Populate only if module pull-up audit requires</field>
+      </fields>
+      <libsource lib="Niulai" part="R2_4.7k_I2C_PULLUP_DNP" description="Populate only if module pull-up audit requires"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <property name="dnp"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>05567597-57b0-5e95-a34a-6542206b5112</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R3">
+      <value>4.7k_I2C_PULLUP_DNP</value>
+      <footprint>Resistor_SMD:R_0805_2012Metric</footprint>
+      <description>Populate only if module pull-up audit requires</description>
+      <fields>
+        <field name="Footprint">Resistor_SMD:R_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Populate only if module pull-up audit requires</field>
+      </fields>
+      <libsource lib="Niulai" part="R3_4.7k_I2C_PULLUP_DNP" description="Populate only if module pull-up audit requires"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <property name="dnp"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>85ac6f2c-e731-5b0a-93e3-3eaaa19c2b76</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R4">
+      <value>0R_MIC_LEFT_CHANNEL</value>
+      <footprint>Resistor_SMD:R_0805_2012Metric</footprint>
+      <description>Move strap to 3V3 only for right-channel configuration</description>
+      <fields>
+        <field name="Footprint">Resistor_SMD:R_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Move strap to 3V3 only for right-channel configuration</field>
+      </fields>
+      <libsource lib="Niulai" part="R4_0R_MIC_LEFT_CHANNEL" description="Move strap to 3V3 only for right-channel configuration"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>5a71e108-1168-5cab-a4dc-78f7b0b8c50b</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R5">
+      <value>10k_1%</value>
+      <footprint>Resistor_SMD:R_0805_2012Metric</footprint>
+      <description>Active-low pull-up</description>
+      <fields>
+        <field name="Footprint">Resistor_SMD:R_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Active-low pull-up</field>
+      </fields>
+      <libsource lib="Niulai" part="R5_10k_1%" description="Active-low pull-up"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>bc788371-7524-5fb2-9563-aa2b419f8495</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R6">
+      <value>10k_1%</value>
+      <footprint>Resistor_SMD:R_0805_2012Metric</footprint>
+      <description>Active-low pull-up</description>
+      <fields>
+        <field name="Footprint">Resistor_SMD:R_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Active-low pull-up</field>
+      </fields>
+      <libsource lib="Niulai" part="R6_10k_1%" description="Active-low pull-up"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>51949a8f-ffdb-5b6e-be83-9f94a85e432b</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R7">
+      <value>10k_1%</value>
+      <footprint>Resistor_SMD:R_0805_2012Metric</footprint>
+      <description>Active-low pull-up</description>
+      <fields>
+        <field name="Footprint">Resistor_SMD:R_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Active-low pull-up</field>
+      </fields>
+      <libsource lib="Niulai" part="R7_10k_1%" description="Active-low pull-up"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>2ecf5fb2-f0e3-5086-9292-681719081a51</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R8">
+      <value>10k_1%</value>
+      <footprint>Resistor_SMD:R_0805_2012Metric</footprint>
+      <description>Active-low pull-up</description>
+      <fields>
+        <field name="Footprint">Resistor_SMD:R_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Active-low pull-up</field>
+      </fields>
+      <libsource lib="Niulai" part="R8_10k_1%" description="Active-low pull-up"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>7cd4798d-1c7d-52f5-84dc-130bf28023ca</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="SP1">
+      <value>EXTERNAL_SPEAKER_4R_3W</value>
+      <description>Off-board speaker via module PH2.0; neither lead is GND</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Off-board speaker via module PH2.0; neither lead is GND</field>
+      </fields>
+      <libsource lib="Niulai" part="SP1_EXTERNAL_SPEAKER_4R_3W" description="Off-board speaker via module PH2.0; neither lead is GND"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>53dd0284-c0f6-5dfb-bb9a-2e83512f535e</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="SPK+"/>
+            <pin num="SPK-"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP1">
+      <value>TEST_GND</value>
+      <footprint>TestPoint:TestPoint_Plated_Hole_D2.0mm</footprint>
+      <description>Accessible after module installation</description>
+      <fields>
+        <field name="Footprint">TestPoint:TestPoint_Plated_Hole_D2.0mm</field>
+        <field name="Datasheet"/>
+        <field name="Description">Accessible after module installation</field>
+      </fields>
+      <libsource lib="Niulai" part="TP1_TEST_GND" description="Accessible after module installation"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>df4534bc-c32f-5ef2-8b47-33592526d6c5</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP2">
+      <value>TEST_EXT_6V_IN</value>
+      <footprint>TestPoint:TestPoint_Plated_Hole_D2.0mm</footprint>
+      <description>Accessible after module installation</description>
+      <fields>
+        <field name="Footprint">TestPoint:TestPoint_Plated_Hole_D2.0mm</field>
+        <field name="Datasheet"/>
+        <field name="Description">Accessible after module installation</field>
+      </fields>
+      <libsource lib="Niulai" part="TP2_TEST_EXT_6V_IN" description="Accessible after module installation"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>4ddfe59b-4f28-5fee-b391-e41afc2eeaca</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP3">
+      <value>TEST_SERVO_6V</value>
+      <footprint>TestPoint:TestPoint_Plated_Hole_D2.0mm</footprint>
+      <description>Accessible after module installation</description>
+      <fields>
+        <field name="Footprint">TestPoint:TestPoint_Plated_Hole_D2.0mm</field>
+        <field name="Datasheet"/>
+        <field name="Description">Accessible after module installation</field>
+      </fields>
+      <libsource lib="Niulai" part="TP3_TEST_SERVO_6V" description="Accessible after module installation"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>ff21f180-6e6b-52eb-b8eb-fb00ac798508</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP4">
+      <value>TEST_3V3</value>
+      <footprint>TestPoint:TestPoint_Plated_Hole_D2.0mm</footprint>
+      <description>Accessible after module installation</description>
+      <fields>
+        <field name="Footprint">TestPoint:TestPoint_Plated_Hole_D2.0mm</field>
+        <field name="Datasheet"/>
+        <field name="Description">Accessible after module installation</field>
+      </fields>
+      <libsource lib="Niulai" part="TP4_TEST_3V3" description="Accessible after module installation"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b7ac8f0d-2c33-5701-ad53-43902e45a3f7</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP5">
+      <value>TEST_I2C_SDA</value>
+      <footprint>TestPoint:TestPoint_Plated_Hole_D2.0mm</footprint>
+      <description>Accessible after module installation</description>
+      <fields>
+        <field name="Footprint">TestPoint:TestPoint_Plated_Hole_D2.0mm</field>
+        <field name="Datasheet"/>
+        <field name="Description">Accessible after module installation</field>
+      </fields>
+      <libsource lib="Niulai" part="TP5_TEST_I2C_SDA" description="Accessible after module installation"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>57468874-18d4-5bdc-83db-6bc54ae85ab2</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP6">
+      <value>TEST_I2C_SCL</value>
+      <footprint>TestPoint:TestPoint_Plated_Hole_D2.0mm</footprint>
+      <description>Accessible after module installation</description>
+      <fields>
+        <field name="Footprint">TestPoint:TestPoint_Plated_Hole_D2.0mm</field>
+        <field name="Datasheet"/>
+        <field name="Description">Accessible after module installation</field>
+      </fields>
+      <libsource lib="Niulai" part="TP6_TEST_I2C_SCL" description="Accessible after module installation"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a09e026a-d405-5f47-89dd-bbee5c9335c5</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP7">
+      <value>TEST_PCA_OE</value>
+      <footprint>TestPoint:TestPoint_Plated_Hole_D2.0mm</footprint>
+      <description>Accessible after module installation</description>
+      <fields>
+        <field name="Footprint">TestPoint:TestPoint_Plated_Hole_D2.0mm</field>
+        <field name="Datasheet"/>
+        <field name="Description">Accessible after module installation</field>
+      </fields>
+      <libsource lib="Niulai" part="TP7_TEST_PCA_OE" description="Accessible after module installation"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>938c4cc4-3f77-5ded-b954-706959f1ff7d</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="U1">
+      <value>ESP32_S3_N16R8_DEVBOARD_2x22</value>
+      <description>One complete module; L/R numbering follows seller image antenna-to-USB</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">One complete module; L/R numbering follows seller image antenna-to-USB</field>
+      </fields>
+      <libsource lib="Niulai" part="U1_ESP32_S3_N16R8_DEVBOARD_2x22" description="One complete module; L/R numbering follows seller image antenna-to-USB"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>2078f447-b4b4-5472-9b25-670ca47c7808</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="L01"/>
+            <pin num="L02"/>
+            <pin num="L03"/>
+            <pin num="L04"/>
+            <pin num="L05"/>
+            <pin num="L06"/>
+            <pin num="L07"/>
+            <pin num="L08"/>
+            <pin num="L09"/>
+            <pin num="L10"/>
+            <pin num="L11"/>
+            <pin num="L12"/>
+            <pin num="L13"/>
+            <pin num="L14"/>
+            <pin num="L15"/>
+            <pin num="L16"/>
+            <pin num="L17"/>
+            <pin num="L18"/>
+            <pin num="L19"/>
+            <pin num="L20"/>
+            <pin num="L21"/>
+            <pin num="L22"/>
+            <pin num="R01"/>
+            <pin num="R02"/>
+            <pin num="R03"/>
+            <pin num="R04"/>
+            <pin num="R05"/>
+            <pin num="R06"/>
+            <pin num="R07"/>
+            <pin num="R08"/>
+            <pin num="R09"/>
+            <pin num="R10"/>
+            <pin num="R11"/>
+            <pin num="R12"/>
+            <pin num="R13"/>
+            <pin num="R14"/>
+            <pin num="R15"/>
+            <pin num="R16"/>
+            <pin num="R17"/>
+            <pin num="R18"/>
+            <pin num="R19"/>
+            <pin num="R20"/>
+            <pin num="R21"/>
+            <pin num="R22"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="U2">
+      <value>PCA9685_16CH_MODULE_OPTION_A</value>
+      <description>Green terminal: outputs down/terminal up =&gt; left V+, right GND</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Green terminal: outputs down/terminal up =&gt; left V+, right GND</field>
+      </fields>
+      <libsource lib="Niulai" part="U2_PCA9685_16CH_MODULE_OPTION_A" description="Green terminal: outputs down/terminal up =&gt; left V+, right GND"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>46be5748-994f-5da9-a8da-d6ce0a165b3a</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="H01"/>
+            <pin num="H02"/>
+            <pin num="H03"/>
+            <pin num="H04"/>
+            <pin num="H05"/>
+            <pin num="H06"/>
+            <pin num="PWR+"/>
+            <pin num="PWR-"/>
+            <pin num="CH0-S"/>
+            <pin num="CH0-+"/>
+            <pin num="CH0--"/>
+            <pin num="CH1-S"/>
+            <pin num="CH1-+"/>
+            <pin num="CH1--"/>
+            <pin num="CH2-S"/>
+            <pin num="CH2-+"/>
+            <pin num="CH2--"/>
+            <pin num="CH3-S"/>
+            <pin num="CH3-+"/>
+            <pin num="CH3--"/>
+            <pin num="CH4-S"/>
+            <pin num="CH4-+"/>
+            <pin num="CH4--"/>
+            <pin num="CH5-S"/>
+            <pin num="CH5-+"/>
+            <pin num="CH5--"/>
+            <pin num="CH6-S"/>
+            <pin num="CH6-+"/>
+            <pin num="CH6--"/>
+            <pin num="CH7-S"/>
+            <pin num="CH7-+"/>
+            <pin num="CH7--"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="U3">
+      <value>MAX98357A_PURPLE_MODULE</value>
+      <description>Complete 7-pin plus PH2.0 speaker module</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Complete 7-pin plus PH2.0 speaker module</field>
+      </fields>
+      <libsource lib="Niulai" part="U3_MAX98357A_PURPLE_MODULE" description="Complete 7-pin plus PH2.0 speaker module"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>e0781364-b15f-55d3-8c30-26a82c873d5f</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="3"/>
+            <pin num="4"/>
+            <pin num="5"/>
+            <pin num="6"/>
+            <pin num="7"/>
+            <pin num="SPK+"/>
+            <pin num="SPK-"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="U4">
+      <value>MS4030_I2S_MIC_MODULE</value>
+      <description>Photo pad order top SD/VDD/GND; bottom L-R/WS/SCK</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Photo pad order top SD/VDD/GND; bottom L-R/WS/SCK</field>
+      </fields>
+      <libsource lib="Niulai" part="U4_MS4030_I2S_MIC_MODULE" description="Photo pad order top SD/VDD/GND; bottom L-R/WS/SCK"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>344cc4cb-08c6-593b-890e-36415f25e537</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="T1"/>
+            <pin num="T2"/>
+            <pin num="T3"/>
+            <pin num="B1"/>
+            <pin num="B2"/>
+            <pin num="B3"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="U5">
+      <value>LM2596S_MODULE_V151</value>
+      <description>Photo-visible order; VIN 3.2-40V and VIN &gt;= VOUT+1.5V</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Photo-visible order; VIN 3.2-40V and VIN &gt;= VOUT+1.5V</field>
+      </fields>
+      <libsource lib="Niulai" part="U5_LM2596S_MODULE_V151" description="Photo-visible order; VIN 3.2-40V and VIN &gt;= VOUT+1.5V"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="niulai_carrier_v0.2.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>34df0e3f-960f-5051-9f21-da8d5e4804d5</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="IN+"/>
+            <pin num="IN-"/>
+            <pin num="OUT+"/>
+            <pin num="OUT-"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="Niulai" part="C1_1000-2200uF_16V_105C_OPTIONAL">
+      <description>C_BULK1</description>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">1000-2200uF_16V_105C_OPTIONAL</field>
+        <field name="Footprint">Capacitor_THT:C_Radial_D12.5mm_H20.0mm_P5.00mm</field>
+        <field name="Datasheet"/>
+        <field name="Description">C_BULK1</field>
+      </fields>
+      <pins>
+        <pin num="1" name="+" type="passive"/>
+        <pin num="2" name="-" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="C2_1000-2200uF_16V_105C_OPTIONAL">
+      <description>C_BULK2</description>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">1000-2200uF_16V_105C_OPTIONAL</field>
+        <field name="Footprint">Capacitor_THT:C_Radial_D12.5mm_H20.0mm_P5.00mm</field>
+        <field name="Datasheet"/>
+        <field name="Description">C_BULK2</field>
+      </fields>
+      <pins>
+        <pin num="1" name="+" type="passive"/>
+        <pin num="2" name="-" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="C3_10uF_16V_X7R">
+      <description>Carrier local rail decoupling</description>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">10uF_16V_X7R</field>
+        <field name="Footprint">Capacitor_SMD:C_1206_3216Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Carrier local rail decoupling</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="C4_100nF_16V_X7R">
+      <description>Carrier local high-frequency decoupling</description>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">100nF_16V_X7R</field>
+        <field name="Footprint">Capacitor_SMD:C_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Carrier local high-frequency decoupling</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="C5_100nF_FILTER_DNP">
+      <description>Optional hardware debounce</description>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">100nF_FILTER_DNP</field>
+        <field name="Footprint">Capacitor_SMD:C_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Optional hardware debounce</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="C6_100nF_FILTER_DNP">
+      <description>Optional hardware debounce</description>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">100nF_FILTER_DNP</field>
+        <field name="Footprint">Capacitor_SMD:C_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Optional hardware debounce</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="C7_100nF_FILTER_DNP">
+      <description>Optional hardware debounce</description>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">100nF_FILTER_DNP</field>
+        <field name="Footprint">Capacitor_SMD:C_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Optional hardware debounce</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="C8_100nF_FILTER_DNP">
+      <description>Optional hardware debounce</description>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">100nF_FILTER_DNP</field>
+        <field name="Footprint">Capacitor_SMD:C_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Optional hardware debounce</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="F1_ATO_ATC_10A_32V_MIN">
+      <description>Not a precision current limiter</description>
+      <fields>
+        <field name="Reference">F</field>
+        <field name="Value">ATO_ATC_10A_32V_MIN</field>
+        <field name="Footprint">FOOTPRINT_TBD_ATO_ATC_HOLDER_15A</field>
+        <field name="Datasheet"/>
+        <field name="Description">Not a precision current limiter</field>
+      </fields>
+      <pins>
+        <pin num="IN" name="IN" type="passive"/>
+        <pin num="OUT" name="OUT" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="J10_FOOT_FL_REMOTE_SWITCH">
+      <description>Remote switch closes signal to GND</description>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">FOOT_FL_REMOTE_SWITCH</field>
+        <field name="Footprint">FOOTPRINT_TBD_2PIN</field>
+        <field name="Datasheet"/>
+        <field name="Description">Remote switch closes signal to GND</field>
+      </fields>
+      <pins>
+        <pin num="GND" name="GND" type="passive"/>
+        <pin num="SIGNAL" name="SIGNAL" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="J11_FOOT_FR_REMOTE_SWITCH">
+      <description>Remote switch closes signal to GND</description>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">FOOT_FR_REMOTE_SWITCH</field>
+        <field name="Footprint">FOOTPRINT_TBD_2PIN</field>
+        <field name="Datasheet"/>
+        <field name="Description">Remote switch closes signal to GND</field>
+      </fields>
+      <pins>
+        <pin num="GND" name="GND" type="passive"/>
+        <pin num="SIGNAL" name="SIGNAL" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="J12_FOOT_RL_REMOTE_SWITCH">
+      <description>Remote switch closes signal to GND</description>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">FOOT_RL_REMOTE_SWITCH</field>
+        <field name="Footprint">FOOTPRINT_TBD_2PIN</field>
+        <field name="Datasheet"/>
+        <field name="Description">Remote switch closes signal to GND</field>
+      </fields>
+      <pins>
+        <pin num="GND" name="GND" type="passive"/>
+        <pin num="SIGNAL" name="SIGNAL" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="J13_FOOT_RR_REMOTE_SWITCH">
+      <description>Remote switch closes signal to GND</description>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">FOOT_RR_REMOTE_SWITCH</field>
+        <field name="Footprint">FOOTPRINT_TBD_2PIN</field>
+        <field name="Datasheet"/>
+        <field name="Description">Remote switch closes signal to GND</field>
+      </fields>
+      <pins>
+        <pin num="GND" name="GND" type="passive"/>
+        <pin num="SIGNAL" name="SIGNAL" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="J1_XT30_MALE_BOARD_INPUT">
+      <description>Board side male; energized source cables female</description>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">XT30_MALE_BOARD_INPUT</field>
+        <field name="Footprint">FOOTPRINT_TBD_XT30_MALE</field>
+        <field name="Datasheet"/>
+        <field name="Description">Board side male; energized source cables female</field>
+      </fields>
+      <pins>
+        <pin num="1" name="+6V" type="passive"/>
+        <pin num="GND" name="GND" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="J3_GPIO_DUPONT_BREAKOUT">
+      <description>MPU6500/ST7789 plus all final unused GPIO; exact header form TBD</description>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">GPIO_DUPONT_BREAKOUT</field>
+        <field name="Footprint">FOOTPRINT_TBD_GPIO_HEADER</field>
+        <field name="Datasheet"/>
+        <field name="Description">MPU6500/ST7789 plus all final unused GPIO; exact header form TBD</field>
+      </fields>
+      <pins>
+        <pin num="1" name="01_3V3" type="passive"/>
+        <pin num="2" name="02_GND" type="passive"/>
+        <pin num="3" name="03_GPIO16_DISPLAY_RESET" type="passive"/>
+        <pin num="4" name="04_GPIO17_DISPLAY_BL" type="passive"/>
+        <pin num="5" name="05_GPIO18_IMU_CS" type="passive"/>
+        <pin num="6" name="06_GPIO10_DISPLAY_CS" type="passive"/>
+        <pin num="7" name="07_GPIO11_SPI_MOSI" type="passive"/>
+        <pin num="8" name="08_GPIO12_SPI_SCLK" type="passive"/>
+        <pin num="9" name="09_GPIO13_SPI_MISO" type="passive"/>
+        <pin num="10" name="10_GPIO14_DISPLAY_DC" type="passive"/>
+        <pin num="11" name="11_GPIO21_IMU_INT" type="passive"/>
+        <pin num="12" name="12_GPIO1_AUX" type="passive"/>
+        <pin num="13" name="13_GPIO2_AUX" type="passive"/>
+        <pin num="14" name="14_GPIO42_AUX" type="passive"/>
+        <pin num="15" name="15_GPIO43_UART_TX" type="passive"/>
+        <pin num="16" name="16_GPIO44_UART_RX" type="passive"/>
+        <pin num="17" name="17_GPIO38_BOARD_AUX" type="passive"/>
+        <pin num="18" name="18_GPIO48_BOARD_AUX" type="passive"/>
+        <pin num="19" name="19_GPIO0_BOOT_STRAP" type="passive"/>
+        <pin num="20" name="20_GPIO3_STRAP" type="passive"/>
+        <pin num="21" name="21_GPIO45_STRAP" type="passive"/>
+        <pin num="22" name="22_GPIO46_STRAP" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="JP1_ESP_EXTERNAL_3V3_LINK_REMOVE_FOR_USB_ONLY_TEST">
+      <description>Avoid unreviewed USB/external-rail paralleling</description>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">ESP_EXTERNAL_3V3_LINK_REMOVE_FOR_USB_ONLY_TEST</field>
+        <field name="Footprint">Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical</field>
+        <field name="Datasheet"/>
+        <field name="Description">Avoid unreviewed USB/external-rail paralleling</field>
+      </fields>
+      <pins>
+        <pin num="ESP" name="ESP" type="passive"/>
+        <pin num="SYS" name="SYS" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="M1_EXTERNAL_SERVO_1">
+      <description>Off-board servo plugs into PCA9685 channel header</description>
+      <fields>
+        <field name="Reference">M</field>
+        <field name="Value">EXTERNAL_SERVO_1</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Off-board servo plugs into PCA9685 channel header</field>
+      </fields>
+      <pins>
+        <pin num="2" name="+_6V" type="passive"/>
+        <pin num="3" name="-_GND" type="passive"/>
+        <pin num="S" name="S_PWM" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="M2_EXTERNAL_SERVO_2">
+      <description>Off-board servo plugs into PCA9685 channel header</description>
+      <fields>
+        <field name="Reference">M</field>
+        <field name="Value">EXTERNAL_SERVO_2</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Off-board servo plugs into PCA9685 channel header</field>
+      </fields>
+      <pins>
+        <pin num="2" name="+_6V" type="passive"/>
+        <pin num="3" name="-_GND" type="passive"/>
+        <pin num="S" name="S_PWM" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="M3_EXTERNAL_SERVO_3">
+      <description>Off-board servo plugs into PCA9685 channel header</description>
+      <fields>
+        <field name="Reference">M</field>
+        <field name="Value">EXTERNAL_SERVO_3</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Off-board servo plugs into PCA9685 channel header</field>
+      </fields>
+      <pins>
+        <pin num="2" name="+_6V" type="passive"/>
+        <pin num="3" name="-_GND" type="passive"/>
+        <pin num="S" name="S_PWM" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="M4_EXTERNAL_SERVO_4">
+      <description>Off-board servo plugs into PCA9685 channel header</description>
+      <fields>
+        <field name="Reference">M</field>
+        <field name="Value">EXTERNAL_SERVO_4</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Off-board servo plugs into PCA9685 channel header</field>
+      </fields>
+      <pins>
+        <pin num="2" name="+_6V" type="passive"/>
+        <pin num="3" name="-_GND" type="passive"/>
+        <pin num="S" name="S_PWM" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="M5_EXTERNAL_SERVO_5">
+      <description>Off-board servo plugs into PCA9685 channel header</description>
+      <fields>
+        <field name="Reference">M</field>
+        <field name="Value">EXTERNAL_SERVO_5</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Off-board servo plugs into PCA9685 channel header</field>
+      </fields>
+      <pins>
+        <pin num="2" name="+_6V" type="passive"/>
+        <pin num="3" name="-_GND" type="passive"/>
+        <pin num="S" name="S_PWM" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="M6_EXTERNAL_SERVO_6">
+      <description>Off-board servo plugs into PCA9685 channel header</description>
+      <fields>
+        <field name="Reference">M</field>
+        <field name="Value">EXTERNAL_SERVO_6</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Off-board servo plugs into PCA9685 channel header</field>
+      </fields>
+      <pins>
+        <pin num="2" name="+_6V" type="passive"/>
+        <pin num="3" name="-_GND" type="passive"/>
+        <pin num="S" name="S_PWM" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="M7_EXTERNAL_SERVO_7">
+      <description>Off-board servo plugs into PCA9685 channel header</description>
+      <fields>
+        <field name="Reference">M</field>
+        <field name="Value">EXTERNAL_SERVO_7</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Off-board servo plugs into PCA9685 channel header</field>
+      </fields>
+      <pins>
+        <pin num="2" name="+_6V" type="passive"/>
+        <pin num="3" name="-_GND" type="passive"/>
+        <pin num="S" name="S_PWM" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="M8_EXTERNAL_SERVO_8">
+      <description>Off-board servo plugs into PCA9685 channel header</description>
+      <fields>
+        <field name="Reference">M</field>
+        <field name="Value">EXTERNAL_SERVO_8</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Off-board servo plugs into PCA9685 channel header</field>
+      </fields>
+      <pins>
+        <pin num="2" name="+_6V" type="passive"/>
+        <pin num="3" name="-_GND" type="passive"/>
+        <pin num="S" name="S_PWM" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="NT1_PCB_COPPER_SERVO_BRANCH_10A">
+      <description>Logical domain boundary; continuous wide copper</description>
+      <fields>
+        <field name="Reference">N</field>
+        <field name="Value">PCB_COPPER_SERVO_BRANCH_10A</field>
+        <field name="Footprint">FOOTPRINT_TBD_10A_NET_TIE</field>
+        <field name="Datasheet"/>
+        <field name="Description">Logical domain boundary; continuous wide copper</field>
+      </fields>
+      <pins>
+        <pin num="MAIN" name="MAIN" type="passive"/>
+        <pin num="SERVO" name="SERVO" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="R1_10k_1%_OE_SAFE_DEFAULT">
+      <description>OE high disables PWM during reset</description>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">10k_1%_OE_SAFE_DEFAULT</field>
+        <field name="Footprint">Resistor_SMD:R_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">OE high disables PWM during reset</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="R2_4.7k_I2C_PULLUP_DNP">
+      <description>Populate only if module pull-up audit requires</description>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">4.7k_I2C_PULLUP_DNP</field>
+        <field name="Footprint">Resistor_SMD:R_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Populate only if module pull-up audit requires</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="R3_4.7k_I2C_PULLUP_DNP">
+      <description>Populate only if module pull-up audit requires</description>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">4.7k_I2C_PULLUP_DNP</field>
+        <field name="Footprint">Resistor_SMD:R_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Populate only if module pull-up audit requires</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="R4_0R_MIC_LEFT_CHANNEL">
+      <description>Move strap to 3V3 only for right-channel configuration</description>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">0R_MIC_LEFT_CHANNEL</field>
+        <field name="Footprint">Resistor_SMD:R_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Move strap to 3V3 only for right-channel configuration</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="R5_10k_1%">
+      <description>Active-low pull-up</description>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">10k_1%</field>
+        <field name="Footprint">Resistor_SMD:R_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Active-low pull-up</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="R6_10k_1%">
+      <description>Active-low pull-up</description>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">10k_1%</field>
+        <field name="Footprint">Resistor_SMD:R_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Active-low pull-up</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="R7_10k_1%">
+      <description>Active-low pull-up</description>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">10k_1%</field>
+        <field name="Footprint">Resistor_SMD:R_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Active-low pull-up</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="R8_10k_1%">
+      <description>Active-low pull-up</description>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">10k_1%</field>
+        <field name="Footprint">Resistor_SMD:R_0805_2012Metric</field>
+        <field name="Datasheet"/>
+        <field name="Description">Active-low pull-up</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="SP1_EXTERNAL_SPEAKER_4R_3W">
+      <description>Off-board speaker via module PH2.0; neither lead is GND</description>
+      <fields>
+        <field name="Reference">S</field>
+        <field name="Value">EXTERNAL_SPEAKER_4R_3W</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Off-board speaker via module PH2.0; neither lead is GND</field>
+      </fields>
+      <pins>
+        <pin num="SPK+" name="SPK+" type="passive"/>
+        <pin num="SPK-" name="SPK-" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="TP1_TEST_GND">
+      <description>Accessible after module installation</description>
+      <fields>
+        <field name="Reference">TP</field>
+        <field name="Value">TEST_GND</field>
+        <field name="Footprint">TestPoint:TestPoint_Plated_Hole_D2.0mm</field>
+        <field name="Datasheet"/>
+        <field name="Description">Accessible after module installation</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="TP2_TEST_EXT_6V_IN">
+      <description>Accessible after module installation</description>
+      <fields>
+        <field name="Reference">TP</field>
+        <field name="Value">TEST_EXT_6V_IN</field>
+        <field name="Footprint">TestPoint:TestPoint_Plated_Hole_D2.0mm</field>
+        <field name="Datasheet"/>
+        <field name="Description">Accessible after module installation</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="TP3_TEST_SERVO_6V">
+      <description>Accessible after module installation</description>
+      <fields>
+        <field name="Reference">TP</field>
+        <field name="Value">TEST_SERVO_6V</field>
+        <field name="Footprint">TestPoint:TestPoint_Plated_Hole_D2.0mm</field>
+        <field name="Datasheet"/>
+        <field name="Description">Accessible after module installation</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="TP4_TEST_3V3">
+      <description>Accessible after module installation</description>
+      <fields>
+        <field name="Reference">TP</field>
+        <field name="Value">TEST_3V3</field>
+        <field name="Footprint">TestPoint:TestPoint_Plated_Hole_D2.0mm</field>
+        <field name="Datasheet"/>
+        <field name="Description">Accessible after module installation</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="TP5_TEST_I2C_SDA">
+      <description>Accessible after module installation</description>
+      <fields>
+        <field name="Reference">TP</field>
+        <field name="Value">TEST_I2C_SDA</field>
+        <field name="Footprint">TestPoint:TestPoint_Plated_Hole_D2.0mm</field>
+        <field name="Datasheet"/>
+        <field name="Description">Accessible after module installation</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="TP6_TEST_I2C_SCL">
+      <description>Accessible after module installation</description>
+      <fields>
+        <field name="Reference">TP</field>
+        <field name="Value">TEST_I2C_SCL</field>
+        <field name="Footprint">TestPoint:TestPoint_Plated_Hole_D2.0mm</field>
+        <field name="Datasheet"/>
+        <field name="Description">Accessible after module installation</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="TP7_TEST_PCA_OE">
+      <description>Accessible after module installation</description>
+      <fields>
+        <field name="Reference">TP</field>
+        <field name="Value">TEST_PCA_OE</field>
+        <field name="Footprint">TestPoint:TestPoint_Plated_Hole_D2.0mm</field>
+        <field name="Datasheet"/>
+        <field name="Description">Accessible after module installation</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="U1_ESP32_S3_N16R8_DEVBOARD_2x22">
+      <description>One complete module; L/R numbering follows seller image antenna-to-USB</description>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">ESP32_S3_N16R8_DEVBOARD_2x22</field>
+        <field name="Footprint">FOOTPRINT_TBD_ESP32_S3_2x22_SOCKET</field>
+        <field name="Datasheet"/>
+        <field name="Description">One complete module; L/R numbering follows seller image antenna-to-USB</field>
+      </fields>
+      <pins>
+        <pin num="L01" name="L01_3V3_A" type="passive"/>
+        <pin num="L02" name="L02_3V3_B" type="passive"/>
+        <pin num="L03" name="L03_RST_NC" type="passive"/>
+        <pin num="L04" name="L04_GPIO4" type="passive"/>
+        <pin num="L05" name="L05_GPIO5" type="passive"/>
+        <pin num="L06" name="L06_GPIO6" type="passive"/>
+        <pin num="L07" name="L07_GPIO7" type="passive"/>
+        <pin num="L08" name="L08_GPIO15" type="passive"/>
+        <pin num="L09" name="L09_GPIO16" type="passive"/>
+        <pin num="L10" name="L10_GPIO17" type="passive"/>
+        <pin num="L11" name="L11_GPIO18" type="passive"/>
+        <pin num="L12" name="L12_GPIO8" type="passive"/>
+        <pin num="L13" name="L13_GPIO3_STRAP" type="passive"/>
+        <pin num="L14" name="L14_GPIO46_STRAP" type="passive"/>
+        <pin num="L15" name="L15_GPIO9" type="passive"/>
+        <pin num="L16" name="L16_GPIO10" type="passive"/>
+        <pin num="L17" name="L17_GPIO11" type="passive"/>
+        <pin num="L18" name="L18_GPIO12" type="passive"/>
+        <pin num="L19" name="L19_GPIO13" type="passive"/>
+        <pin num="L20" name="L20_GPIO14" type="passive"/>
+        <pin num="L21" name="L21_5V_USB_ONLY_NC" type="passive"/>
+        <pin num="L22" name="L22_GND" type="passive"/>
+        <pin num="R01" name="R01_GND_A" type="passive"/>
+        <pin num="R02" name="R02_GPIO43_TX" type="passive"/>
+        <pin num="R03" name="R03_GPIO44_RX" type="passive"/>
+        <pin num="R04" name="R04_GPIO1" type="passive"/>
+        <pin num="R05" name="R05_GPIO2" type="passive"/>
+        <pin num="R06" name="R06_GPIO42" type="passive"/>
+        <pin num="R07" name="R07_GPIO41" type="passive"/>
+        <pin num="R08" name="R08_GPIO40" type="passive"/>
+        <pin num="R09" name="R09_GPIO39" type="passive"/>
+        <pin num="R10" name="R10_GPIO38" type="passive"/>
+        <pin num="R11" name="R11_GPIO37_PSRAM_RESERVED_NC" type="passive"/>
+        <pin num="R12" name="R12_GPIO36_PSRAM_RESERVED_NC" type="passive"/>
+        <pin num="R13" name="R13_GPIO35_PSRAM_RESERVED_NC" type="passive"/>
+        <pin num="R14" name="R14_GPIO0_BOOT" type="passive"/>
+        <pin num="R15" name="R15_GPIO45_STRAP" type="passive"/>
+        <pin num="R16" name="R16_GPIO48" type="passive"/>
+        <pin num="R17" name="R17_GPIO47" type="passive"/>
+        <pin num="R18" name="R18_GPIO21" type="passive"/>
+        <pin num="R19" name="R19_GPIO20_USB_D+_RESERVED_NC" type="passive"/>
+        <pin num="R20" name="R20_GPIO19_USB_D-_RESERVED_NC" type="passive"/>
+        <pin num="R21" name="R21_GND_B" type="passive"/>
+        <pin num="R22" name="R22_GND_C" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="U2_PCA9685_16CH_MODULE_OPTION_A">
+      <description>Green terminal: outputs down/terminal up =&gt; left V+, right GND</description>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">PCA9685_16CH_MODULE_OPTION_A</field>
+        <field name="Footprint">FOOTPRINT_TBD_PCA9685_MODULE</field>
+        <field name="Datasheet"/>
+        <field name="Description">Green terminal: outputs down/terminal up =&gt; left V+, right GND</field>
+      </fields>
+      <pins>
+        <pin num="CH0-+" name="CH0-+_V+" type="passive"/>
+        <pin num="CH0--" name="CH0--_GND" type="passive"/>
+        <pin num="CH0-S" name="CH0-S_PWM" type="passive"/>
+        <pin num="CH1-+" name="CH1-+_V+" type="passive"/>
+        <pin num="CH1--" name="CH1--_GND" type="passive"/>
+        <pin num="CH1-S" name="CH1-S_PWM" type="passive"/>
+        <pin num="CH2-+" name="CH2-+_V+" type="passive"/>
+        <pin num="CH2--" name="CH2--_GND" type="passive"/>
+        <pin num="CH2-S" name="CH2-S_PWM" type="passive"/>
+        <pin num="CH3-+" name="CH3-+_V+" type="passive"/>
+        <pin num="CH3--" name="CH3--_GND" type="passive"/>
+        <pin num="CH3-S" name="CH3-S_PWM" type="passive"/>
+        <pin num="CH4-+" name="CH4-+_V+" type="passive"/>
+        <pin num="CH4--" name="CH4--_GND" type="passive"/>
+        <pin num="CH4-S" name="CH4-S_PWM" type="passive"/>
+        <pin num="CH5-+" name="CH5-+_V+" type="passive"/>
+        <pin num="CH5--" name="CH5--_GND" type="passive"/>
+        <pin num="CH5-S" name="CH5-S_PWM" type="passive"/>
+        <pin num="CH6-+" name="CH6-+_V+" type="passive"/>
+        <pin num="CH6--" name="CH6--_GND" type="passive"/>
+        <pin num="CH6-S" name="CH6-S_PWM" type="passive"/>
+        <pin num="CH7-+" name="CH7-+_V+" type="passive"/>
+        <pin num="CH7--" name="CH7--_GND" type="passive"/>
+        <pin num="CH7-S" name="CH7-S_PWM" type="passive"/>
+        <pin num="H01" name="H01_GND" type="passive"/>
+        <pin num="H02" name="H02_OE" type="passive"/>
+        <pin num="H03" name="H03_SCL" type="passive"/>
+        <pin num="H04" name="H04_SDA" type="passive"/>
+        <pin num="H05" name="H05_VCC" type="passive"/>
+        <pin num="H06" name="H06_V+" type="passive"/>
+        <pin num="PWR+" name="PWR+_V+_VERIFY" type="passive"/>
+        <pin num="PWR-" name="PWR-_GND_VERIFY" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="U3_MAX98357A_PURPLE_MODULE">
+      <description>Complete 7-pin plus PH2.0 speaker module</description>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">MAX98357A_PURPLE_MODULE</field>
+        <field name="Footprint">FOOTPRINT_TBD_MAX98357A_MODULE</field>
+        <field name="Datasheet"/>
+        <field name="Description">Complete 7-pin plus PH2.0 speaker module</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1_VCC" type="passive"/>
+        <pin num="2" name="2_GND" type="passive"/>
+        <pin num="3" name="3_NC" type="passive"/>
+        <pin num="4" name="4_NC" type="passive"/>
+        <pin num="5" name="5_DIN" type="passive"/>
+        <pin num="6" name="6_BCLK" type="passive"/>
+        <pin num="7" name="7_LRC" type="passive"/>
+        <pin num="SPK+" name="SPK+" type="passive"/>
+        <pin num="SPK-" name="SPK-" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="U4_MS4030_I2S_MIC_MODULE">
+      <description>Photo pad order top SD/VDD/GND; bottom L-R/WS/SCK</description>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">MS4030_I2S_MIC_MODULE</field>
+        <field name="Footprint">FOOTPRINT_TBD_MS4030_FLYWIRE</field>
+        <field name="Datasheet"/>
+        <field name="Description">Photo pad order top SD/VDD/GND; bottom L-R/WS/SCK</field>
+      </fields>
+      <pins>
+        <pin num="B1" name="B1_L/R" type="passive"/>
+        <pin num="B2" name="B2_WS" type="passive"/>
+        <pin num="B3" name="B3_SCK" type="passive"/>
+        <pin num="T1" name="T1_SD" type="passive"/>
+        <pin num="T2" name="T2_VDD" type="passive"/>
+        <pin num="T3" name="T3_GND" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Niulai" part="U5_LM2596S_MODULE_V151">
+      <description>Photo-visible order; VIN 3.2-40V and VIN &gt;= VOUT+1.5V</description>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">LM2596S_MODULE_V151</field>
+        <field name="Footprint">FOOTPRINT_TBD_LM2596S_43x21</field>
+        <field name="Datasheet"/>
+        <field name="Description">Photo-visible order; VIN 3.2-40V and VIN &gt;= VOUT+1.5V</field>
+      </fields>
+      <pins>
+        <pin num="IN+" name="IN+" type="passive"/>
+        <pin num="IN-" name="IN-" type="passive"/>
+        <pin num="OUT+" name="OUT+" type="passive"/>
+        <pin num="OUT-" name="OUT-" type="passive"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="Niulai">
+      <uri>${KIPRJMOD}/niulai_carrier_v0.2.kicad_sym</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="/3V3" class="Default">
+      <node ref="C3" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="C4" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="J3" pin="1" pinfunction="01_3V3_1" pintype="passive"/>
+      <node ref="JP1" pin="SYS" pinfunction="SYS_SYS" pintype="passive"/>
+      <node ref="R1" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="R2" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="R3" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="R5" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="R6" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="R7" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="R8" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="TP4" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U2" pin="H05" pinfunction="H05_VCC_H05" pintype="passive"/>
+      <node ref="U3" pin="1" pinfunction="1_VCC_1" pintype="passive"/>
+      <node ref="U4" pin="T2" pinfunction="T2_VDD_T2" pintype="passive"/>
+      <node ref="U5" pin="OUT+" pinfunction="OUT+_OUT+" pintype="passive"/>
+    </net>
+    <net code="2" name="/DISPLAY_BL" class="Default">
+      <node ref="J3" pin="4" pinfunction="04_GPIO17_DISPLAY_BL_4" pintype="passive"/>
+      <node ref="U1" pin="L10" pinfunction="L10_GPIO17_L10" pintype="passive"/>
+    </net>
+    <net code="3" name="/DISPLAY_CS" class="Default">
+      <node ref="J3" pin="6" pinfunction="06_GPIO10_DISPLAY_CS_6" pintype="passive"/>
+      <node ref="U1" pin="L16" pinfunction="L16_GPIO10_L16" pintype="passive"/>
+    </net>
+    <net code="4" name="/DISPLAY_DC" class="Default">
+      <node ref="J3" pin="10" pinfunction="10_GPIO14_DISPLAY_DC_10" pintype="passive"/>
+      <node ref="U1" pin="L20" pinfunction="L20_GPIO14_L20" pintype="passive"/>
+    </net>
+    <net code="5" name="/DISPLAY_RESET" class="Default">
+      <node ref="J3" pin="3" pinfunction="03_GPIO16_DISPLAY_RESET_3" pintype="passive"/>
+      <node ref="U1" pin="L09" pinfunction="L09_GPIO16_L09" pintype="passive"/>
+    </net>
+    <net code="6" name="/ESP_3V3" class="Default">
+      <node ref="JP1" pin="ESP" pinfunction="ESP_ESP" pintype="passive"/>
+      <node ref="U1" pin="L01" pinfunction="L01_3V3_A_L01" pintype="passive"/>
+      <node ref="U1" pin="L02" pinfunction="L02_3V3_B_L02" pintype="passive"/>
+    </net>
+    <net code="7" name="/EXT_6V_IN" class="Default">
+      <node ref="F1" pin="OUT" pinfunction="OUT_OUT" pintype="passive"/>
+      <node ref="NT1" pin="MAIN" pinfunction="MAIN_MAIN" pintype="passive"/>
+      <node ref="TP2" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U5" pin="IN+" pinfunction="IN+_IN+" pintype="passive"/>
+    </net>
+    <net code="8" name="/FOOT_FL" class="Default">
+      <node ref="C5" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="J10" pin="SIGNAL" pinfunction="SIGNAL_SIGNAL" pintype="passive"/>
+      <node ref="R5" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="U1" pin="L05" pinfunction="L05_GPIO5_L05" pintype="passive"/>
+    </net>
+    <net code="9" name="/FOOT_FR" class="Default">
+      <node ref="C6" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="J11" pin="SIGNAL" pinfunction="SIGNAL_SIGNAL" pintype="passive"/>
+      <node ref="R6" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="U1" pin="L06" pinfunction="L06_GPIO6_L06" pintype="passive"/>
+    </net>
+    <net code="10" name="/FOOT_RL" class="Default">
+      <node ref="C7" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="J12" pin="SIGNAL" pinfunction="SIGNAL_SIGNAL" pintype="passive"/>
+      <node ref="R7" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="U1" pin="L07" pinfunction="L07_GPIO7_L07" pintype="passive"/>
+    </net>
+    <net code="11" name="/FOOT_RR" class="Default">
+      <node ref="C8" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="J13" pin="SIGNAL" pinfunction="SIGNAL_SIGNAL" pintype="passive"/>
+      <node ref="R8" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="U1" pin="L08" pinfunction="L08_GPIO15_L08" pintype="passive"/>
+    </net>
+    <net code="12" name="/GND" class="Default">
+      <node ref="C1" pin="2" pinfunction="-_2" pintype="passive"/>
+      <node ref="C2" pin="2" pinfunction="-_2" pintype="passive"/>
+      <node ref="C3" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="C4" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="C5" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="C6" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="C7" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="C8" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="J1" pin="GND" pinfunction="GND_GND" pintype="passive"/>
+      <node ref="J10" pin="GND" pinfunction="GND_GND" pintype="passive"/>
+      <node ref="J11" pin="GND" pinfunction="GND_GND" pintype="passive"/>
+      <node ref="J12" pin="GND" pinfunction="GND_GND" pintype="passive"/>
+      <node ref="J13" pin="GND" pinfunction="GND_GND" pintype="passive"/>
+      <node ref="J3" pin="2" pinfunction="02_GND_2" pintype="passive"/>
+      <node ref="M1" pin="3" pinfunction="-_GND_3" pintype="passive"/>
+      <node ref="M2" pin="3" pinfunction="-_GND_3" pintype="passive"/>
+      <node ref="M3" pin="3" pinfunction="-_GND_3" pintype="passive"/>
+      <node ref="M4" pin="3" pinfunction="-_GND_3" pintype="passive"/>
+      <node ref="M5" pin="3" pinfunction="-_GND_3" pintype="passive"/>
+      <node ref="M6" pin="3" pinfunction="-_GND_3" pintype="passive"/>
+      <node ref="M7" pin="3" pinfunction="-_GND_3" pintype="passive"/>
+      <node ref="M8" pin="3" pinfunction="-_GND_3" pintype="passive"/>
+      <node ref="R4" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="TP1" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U1" pin="L22" pinfunction="L22_GND_L22" pintype="passive"/>
+      <node ref="U1" pin="R01" pinfunction="R01_GND_A_R01" pintype="passive"/>
+      <node ref="U1" pin="R21" pinfunction="R21_GND_B_R21" pintype="passive"/>
+      <node ref="U1" pin="R22" pinfunction="R22_GND_C_R22" pintype="passive"/>
+      <node ref="U2" pin="CH0--" pinfunction="CH0--_GND_CH0--" pintype="passive"/>
+      <node ref="U2" pin="CH1--" pinfunction="CH1--_GND_CH1--" pintype="passive"/>
+      <node ref="U2" pin="CH2--" pinfunction="CH2--_GND_CH2--" pintype="passive"/>
+      <node ref="U2" pin="CH3--" pinfunction="CH3--_GND_CH3--" pintype="passive"/>
+      <node ref="U2" pin="CH4--" pinfunction="CH4--_GND_CH4--" pintype="passive"/>
+      <node ref="U2" pin="CH5--" pinfunction="CH5--_GND_CH5--" pintype="passive"/>
+      <node ref="U2" pin="CH6--" pinfunction="CH6--_GND_CH6--" pintype="passive"/>
+      <node ref="U2" pin="CH7--" pinfunction="CH7--_GND_CH7--" pintype="passive"/>
+      <node ref="U2" pin="H01" pinfunction="H01_GND_H01" pintype="passive"/>
+      <node ref="U2" pin="PWR-" pinfunction="PWR-_GND_VERIFY_PWR-" pintype="passive"/>
+      <node ref="U3" pin="2" pinfunction="2_GND_2" pintype="passive"/>
+      <node ref="U4" pin="T3" pinfunction="T3_GND_T3" pintype="passive"/>
+      <node ref="U5" pin="IN-" pinfunction="IN-_IN-" pintype="passive"/>
+      <node ref="U5" pin="OUT-" pinfunction="OUT-_OUT-" pintype="passive"/>
+    </net>
+    <net code="13" name="/GPIO0_BOOT_AUX" class="Default">
+      <node ref="J3" pin="19" pinfunction="19_GPIO0_BOOT_STRAP_19" pintype="passive"/>
+      <node ref="U1" pin="R14" pinfunction="R14_GPIO0_BOOT_R14" pintype="passive"/>
+    </net>
+    <net code="14" name="/GPIO1_AUX" class="Default">
+      <node ref="J3" pin="12" pinfunction="12_GPIO1_AUX_12" pintype="passive"/>
+      <node ref="U1" pin="R04" pinfunction="R04_GPIO1_R04" pintype="passive"/>
+    </net>
+    <net code="15" name="/GPIO2_AUX" class="Default">
+      <node ref="J3" pin="13" pinfunction="13_GPIO2_AUX_13" pintype="passive"/>
+      <node ref="U1" pin="R05" pinfunction="R05_GPIO2_R05" pintype="passive"/>
+    </net>
+    <net code="16" name="/GPIO3_STRAP_AUX" class="Default">
+      <node ref="J3" pin="20" pinfunction="20_GPIO3_STRAP_20" pintype="passive"/>
+      <node ref="U1" pin="L13" pinfunction="L13_GPIO3_STRAP_L13" pintype="passive"/>
+    </net>
+    <net code="17" name="/GPIO38_BOARD_AUX" class="Default">
+      <node ref="J3" pin="17" pinfunction="17_GPIO38_BOARD_AUX_17" pintype="passive"/>
+      <node ref="U1" pin="R10" pinfunction="R10_GPIO38_R10" pintype="passive"/>
+    </net>
+    <net code="18" name="/GPIO42_AUX" class="Default">
+      <node ref="J3" pin="14" pinfunction="14_GPIO42_AUX_14" pintype="passive"/>
+      <node ref="U1" pin="R06" pinfunction="R06_GPIO42_R06" pintype="passive"/>
+    </net>
+    <net code="19" name="/GPIO43_UART_TX_AUX" class="Default">
+      <node ref="J3" pin="15" pinfunction="15_GPIO43_UART_TX_15" pintype="passive"/>
+      <node ref="U1" pin="R02" pinfunction="R02_GPIO43_TX_R02" pintype="passive"/>
+    </net>
+    <net code="20" name="/GPIO44_UART_RX_AUX" class="Default">
+      <node ref="J3" pin="16" pinfunction="16_GPIO44_UART_RX_16" pintype="passive"/>
+      <node ref="U1" pin="R03" pinfunction="R03_GPIO44_RX_R03" pintype="passive"/>
+    </net>
+    <net code="21" name="/GPIO45_STRAP_AUX" class="Default">
+      <node ref="J3" pin="21" pinfunction="21_GPIO45_STRAP_21" pintype="passive"/>
+      <node ref="U1" pin="R15" pinfunction="R15_GPIO45_STRAP_R15" pintype="passive"/>
+    </net>
+    <net code="22" name="/GPIO46_STRAP_AUX" class="Default">
+      <node ref="J3" pin="22" pinfunction="22_GPIO46_STRAP_22" pintype="passive"/>
+      <node ref="U1" pin="L14" pinfunction="L14_GPIO46_STRAP_L14" pintype="passive"/>
+    </net>
+    <net code="23" name="/GPIO48_BOARD_AUX" class="Default">
+      <node ref="J3" pin="18" pinfunction="18_GPIO48_BOARD_AUX_18" pintype="passive"/>
+      <node ref="U1" pin="R16" pinfunction="R16_GPIO48_R16" pintype="passive"/>
+    </net>
+    <net code="24" name="/I2C_SCL" class="Default">
+      <node ref="R3" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="TP6" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U1" pin="L15" pinfunction="L15_GPIO9_L15" pintype="passive"/>
+      <node ref="U2" pin="H03" pinfunction="H03_SCL_H03" pintype="passive"/>
+    </net>
+    <net code="25" name="/I2C_SDA" class="Default">
+      <node ref="R2" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="TP5" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U1" pin="L12" pinfunction="L12_GPIO8_L12" pintype="passive"/>
+      <node ref="U2" pin="H04" pinfunction="H04_SDA_H04" pintype="passive"/>
+    </net>
+    <net code="26" name="/I2S_AMP_DOUT" class="Default">
+      <node ref="U1" pin="R07" pinfunction="R07_GPIO41_R07" pintype="passive"/>
+      <node ref="U3" pin="5" pinfunction="5_DIN_5" pintype="passive"/>
+    </net>
+    <net code="27" name="/I2S_BCLK" class="Default">
+      <node ref="U1" pin="R09" pinfunction="R09_GPIO39_R09" pintype="passive"/>
+      <node ref="U3" pin="6" pinfunction="6_BCLK_6" pintype="passive"/>
+      <node ref="U4" pin="B3" pinfunction="B3_SCK_B3" pintype="passive"/>
+    </net>
+    <net code="28" name="/I2S_MIC_DIN" class="Default">
+      <node ref="U1" pin="R17" pinfunction="R17_GPIO47_R17" pintype="passive"/>
+      <node ref="U4" pin="T1" pinfunction="T1_SD_T1" pintype="passive"/>
+    </net>
+    <net code="29" name="/I2S_WS" class="Default">
+      <node ref="U1" pin="R08" pinfunction="R08_GPIO40_R08" pintype="passive"/>
+      <node ref="U3" pin="7" pinfunction="7_LRC_7" pintype="passive"/>
+      <node ref="U4" pin="B2" pinfunction="B2_WS_B2" pintype="passive"/>
+    </net>
+    <net code="30" name="/IMU_CS" class="Default">
+      <node ref="J3" pin="5" pinfunction="05_GPIO18_IMU_CS_5" pintype="passive"/>
+      <node ref="U1" pin="L11" pinfunction="L11_GPIO18_L11" pintype="passive"/>
+    </net>
+    <net code="31" name="/IMU_INT" class="Default">
+      <node ref="J3" pin="11" pinfunction="11_GPIO21_IMU_INT_11" pintype="passive"/>
+      <node ref="U1" pin="R18" pinfunction="R18_GPIO21_R18" pintype="passive"/>
+    </net>
+    <net code="32" name="/INPUT_6V_UNFUSED" class="Default">
+      <node ref="F1" pin="IN" pinfunction="IN_IN" pintype="passive"/>
+      <node ref="J1" pin="1" pinfunction="+6V_1" pintype="passive"/>
+    </net>
+    <net code="33" name="/MIC_LR" class="Default">
+      <node ref="R4" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U4" pin="B1" pinfunction="B1_L/R_B1" pintype="passive"/>
+    </net>
+    <net code="34" name="/PCA_OE" class="Default">
+      <node ref="R1" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="TP7" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U1" pin="L04" pinfunction="L04_GPIO4_L04" pintype="passive"/>
+      <node ref="U2" pin="H02" pinfunction="H02_OE_H02" pintype="passive"/>
+    </net>
+    <net code="35" name="/SERVO_6V" class="Default">
+      <node ref="C1" pin="1" pinfunction="+_1" pintype="passive"/>
+      <node ref="C2" pin="1" pinfunction="+_1" pintype="passive"/>
+      <node ref="M1" pin="2" pinfunction="+_6V_2" pintype="passive"/>
+      <node ref="M2" pin="2" pinfunction="+_6V_2" pintype="passive"/>
+      <node ref="M3" pin="2" pinfunction="+_6V_2" pintype="passive"/>
+      <node ref="M4" pin="2" pinfunction="+_6V_2" pintype="passive"/>
+      <node ref="M5" pin="2" pinfunction="+_6V_2" pintype="passive"/>
+      <node ref="M6" pin="2" pinfunction="+_6V_2" pintype="passive"/>
+      <node ref="M7" pin="2" pinfunction="+_6V_2" pintype="passive"/>
+      <node ref="M8" pin="2" pinfunction="+_6V_2" pintype="passive"/>
+      <node ref="NT1" pin="SERVO" pinfunction="SERVO_SERVO" pintype="passive"/>
+      <node ref="TP3" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U2" pin="CH0-+" pinfunction="CH0-+_V+_CH0-+" pintype="passive"/>
+      <node ref="U2" pin="CH1-+" pinfunction="CH1-+_V+_CH1-+" pintype="passive"/>
+      <node ref="U2" pin="CH2-+" pinfunction="CH2-+_V+_CH2-+" pintype="passive"/>
+      <node ref="U2" pin="CH3-+" pinfunction="CH3-+_V+_CH3-+" pintype="passive"/>
+      <node ref="U2" pin="CH4-+" pinfunction="CH4-+_V+_CH4-+" pintype="passive"/>
+      <node ref="U2" pin="CH5-+" pinfunction="CH5-+_V+_CH5-+" pintype="passive"/>
+      <node ref="U2" pin="CH6-+" pinfunction="CH6-+_V+_CH6-+" pintype="passive"/>
+      <node ref="U2" pin="CH7-+" pinfunction="CH7-+_V+_CH7-+" pintype="passive"/>
+      <node ref="U2" pin="H06" pinfunction="H06_V+_H06" pintype="passive"/>
+      <node ref="U2" pin="PWR+" pinfunction="PWR+_V+_VERIFY_PWR+" pintype="passive"/>
+    </net>
+    <net code="36" name="/SERVO_PWM1" class="Default">
+      <node ref="M1" pin="S" pinfunction="S_PWM_S" pintype="passive"/>
+      <node ref="U2" pin="CH0-S" pinfunction="CH0-S_PWM_CH0-S" pintype="passive"/>
+    </net>
+    <net code="37" name="/SERVO_PWM2" class="Default">
+      <node ref="M2" pin="S" pinfunction="S_PWM_S" pintype="passive"/>
+      <node ref="U2" pin="CH1-S" pinfunction="CH1-S_PWM_CH1-S" pintype="passive"/>
+    </net>
+    <net code="38" name="/SERVO_PWM3" class="Default">
+      <node ref="M3" pin="S" pinfunction="S_PWM_S" pintype="passive"/>
+      <node ref="U2" pin="CH2-S" pinfunction="CH2-S_PWM_CH2-S" pintype="passive"/>
+    </net>
+    <net code="39" name="/SERVO_PWM4" class="Default">
+      <node ref="M4" pin="S" pinfunction="S_PWM_S" pintype="passive"/>
+      <node ref="U2" pin="CH3-S" pinfunction="CH3-S_PWM_CH3-S" pintype="passive"/>
+    </net>
+    <net code="40" name="/SERVO_PWM5" class="Default">
+      <node ref="M5" pin="S" pinfunction="S_PWM_S" pintype="passive"/>
+      <node ref="U2" pin="CH4-S" pinfunction="CH4-S_PWM_CH4-S" pintype="passive"/>
+    </net>
+    <net code="41" name="/SERVO_PWM6" class="Default">
+      <node ref="M6" pin="S" pinfunction="S_PWM_S" pintype="passive"/>
+      <node ref="U2" pin="CH5-S" pinfunction="CH5-S_PWM_CH5-S" pintype="passive"/>
+    </net>
+    <net code="42" name="/SERVO_PWM7" class="Default">
+      <node ref="M7" pin="S" pinfunction="S_PWM_S" pintype="passive"/>
+      <node ref="U2" pin="CH6-S" pinfunction="CH6-S_PWM_CH6-S" pintype="passive"/>
+    </net>
+    <net code="43" name="/SERVO_PWM8" class="Default">
+      <node ref="M8" pin="S" pinfunction="S_PWM_S" pintype="passive"/>
+      <node ref="U2" pin="CH7-S" pinfunction="CH7-S_PWM_CH7-S" pintype="passive"/>
+    </net>
+    <net code="44" name="/SPI_MISO" class="Default">
+      <node ref="J3" pin="9" pinfunction="09_GPIO13_SPI_MISO_9" pintype="passive"/>
+      <node ref="U1" pin="L19" pinfunction="L19_GPIO13_L19" pintype="passive"/>
+    </net>
+    <net code="45" name="/SPI_MOSI" class="Default">
+      <node ref="J3" pin="7" pinfunction="07_GPIO11_SPI_MOSI_7" pintype="passive"/>
+      <node ref="U1" pin="L17" pinfunction="L17_GPIO11_L17" pintype="passive"/>
+    </net>
+    <net code="46" name="/SPI_SCLK" class="Default">
+      <node ref="J3" pin="8" pinfunction="08_GPIO12_SPI_SCLK_8" pintype="passive"/>
+      <node ref="U1" pin="L18" pinfunction="L18_GPIO12_L18" pintype="passive"/>
+    </net>
+    <net code="47" name="/SPK_MINUS" class="Default">
+      <node ref="SP1" pin="SPK-" pinfunction="SPK-_SPK-" pintype="passive"/>
+      <node ref="U3" pin="SPK-" pinfunction="SPK-_SPK-" pintype="passive"/>
+    </net>
+    <net code="48" name="/SPK_PLUS" class="Default">
+      <node ref="SP1" pin="SPK+" pinfunction="SPK+_SPK+" pintype="passive"/>
+      <node ref="U3" pin="SPK+" pinfunction="SPK+_SPK+" pintype="passive"/>
+    </net>
+    <net code="49" name="unconnected-(U1-L03_RST_NC-PadL03)" class="Default">
+      <node ref="U1" pin="L03" pinfunction="L03_RST_NC_L03" pintype="passive+no_connect"/>
+    </net>
+    <net code="50" name="unconnected-(U1-L21_5V_USB_ONLY_NC-PadL21)" class="Default">
+      <node ref="U1" pin="L21" pinfunction="L21_5V_USB_ONLY_NC_L21" pintype="passive+no_connect"/>
+    </net>
+    <net code="51" name="unconnected-(U1-R11_GPIO37_PSRAM_RESERVED_NC-PadR11)" class="Default">
+      <node ref="U1" pin="R11" pinfunction="R11_GPIO37_PSRAM_RESERVED_NC_R11" pintype="passive+no_connect"/>
+    </net>
+    <net code="52" name="unconnected-(U1-R12_GPIO36_PSRAM_RESERVED_NC-PadR12)" class="Default">
+      <node ref="U1" pin="R12" pinfunction="R12_GPIO36_PSRAM_RESERVED_NC_R12" pintype="passive+no_connect"/>
+    </net>
+    <net code="53" name="unconnected-(U1-R13_GPIO35_PSRAM_RESERVED_NC-PadR13)" class="Default">
+      <node ref="U1" pin="R13" pinfunction="R13_GPIO35_PSRAM_RESERVED_NC_R13" pintype="passive+no_connect"/>
+    </net>
+    <net code="54" name="unconnected-(U1-R19_GPIO20_USB_D+_RESERVED_NC-PadR19)" class="Default">
+      <node ref="U1" pin="R19" pinfunction="R19_GPIO20_USB_D+_RESERVED_NC_R19" pintype="passive+no_connect"/>
+    </net>
+    <net code="55" name="unconnected-(U1-R20_GPIO19_USB_D-_RESERVED_NC-PadR20)" class="Default">
+      <node ref="U1" pin="R20" pinfunction="R20_GPIO19_USB_D-_RESERVED_NC_R20" pintype="passive+no_connect"/>
+    </net>
+    <net code="56" name="unconnected-(U3-3_NC-Pad3)" class="Default">
+      <node ref="U3" pin="3" pinfunction="3_NC_3" pintype="passive+no_connect"/>
+    </net>
+    <net code="57" name="unconnected-(U3-4_NC-Pad4)" class="Default">
+      <node ref="U3" pin="4" pinfunction="4_NC_4" pintype="passive+no_connect"/>
+    </net>
+  </nets>
+</export>

@@ -1,0 +1,50 @@
+name: Bug report
+description: 报告一个可复现的问题
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈。请先确认这不是安全问题：涉及电源、舵机、急停或人身安全的问题，请直接联系维护者，不要公开利用细节。
+  - type: textarea
+    id: summary
+    attributes:
+      label: 问题描述
+      description: 发生了什么？预期是什么？
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤
+      description: 尽量给出命令、版本、接线和最小复现。
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: 版本 / commit
+      placeholder: "例如 main @ abc1234"
+  - type: dropdown
+    id: area
+    attributes:
+      label: 影响范围
+      options:
+        - ESP32 固件
+        - Android App
+        - 硬件 / 电源
+        - 工具 / 文档
+        - 不确定
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志 / 截图
+      description: 请删除 API Key、个人路径和其他敏感信息。
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: 安全确认
+      options:
+        - label: 我确认这不是公开的安全漏洞；如果是，我会私下联系维护者。
+          required: true

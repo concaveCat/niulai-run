@@ -1,0 +1,37 @@
+EXP-039 selected terminal log excerpt
+Date: 2026-09-16
+Board: ESP32-S3 rev v0.2, Windows native COM4, BLE AA:BB:CC:DD:EE:FF
+Firmware: ESP-IDF v5.5.5, build-ard1-fixed-current
+
+-- stale bond diagnosis --
+BLE security conn=1 encrypted_bonded=0
+GAP disconnect conn=1 reason=531
+Windows host result: Unreachable on first control write
+
+-- bond repair --
+UNPAIR_STATUS=0
+GAP connect status=0 conn=1
+BLE security conn=1 encrypted_bonded=1
+BLE_CONNECTED=True
+BLE_NOTIFICATIONS=subscribed
+
+-- completed action coverage --
+CYCLE_BEGIN=1 ... CYCLE_END=1
+CYCLE_BEGIN=2 ... CYCLE_END=2
+CYCLE_BEGIN=3 ... CYCLE_END=3
+SINGLE masks: 0x01, 0x02, 0x04, 0x08; 3 rounds completed
+DUAL masks:   0x09, 0x06, 0x03, 0x0C; 3 rounds completed
+control_diag: minimum free stack=3996 B
+UART action path: after_actuator_applied
+
+-- safe end --
+WATCHDOG failsafe=1 mask=0 timeout_ms=500
+SAFETY_GATE blocked reason=failsafe
+FSM_RESET state=SUPPORT
+No stack overflow, reboot, GAP disconnect, or Unreachable was observed in the
+successful notification-enabled run. MPU6500 telemetry also reported separate
+write_read len=15 ESP_ERR_TIMEOUT entries; no PCA9685 initialization exception
+was observed.
+
+This is a selected excerpt, not a byte-for-byte dump of the complete terminal
+session. No video or electrical current/temperature measurement was captured.

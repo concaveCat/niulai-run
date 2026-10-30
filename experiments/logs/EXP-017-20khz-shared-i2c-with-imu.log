@@ -1,0 +1,41 @@
+Configuration: CONFIG_SERVO_ZERO_I2C_SPEED_HZ=20000; PWM=50 Hz; max 4 attempts; retry delay=1 ms
+Hardware: ESP32-S3 rev 0.2 / host-native COM4; operator-confirmed SDA=GPIO11, SCL=GPIO12, OE=GPIO1
+Servo 6 V: connected during motion trials
+
+BOOT 20 kHz: 0x40 ACK; 0x68 ACK; I2C scan found 2 device(s); CH0-CH7 READY at 50 Hz PWM / 20000 Hz I2C; /OE HIGH
+
+POSE 35 trial 1: started; one active-frame hardware NACK at first attempt; retry continued; rest pose reached; stop -> /OE HIGH
+POSE 35 trial 2: started; no NACK observed; rest pose reached; stop -> /OE HIGH
+POSE 35 trial 3: started; one active-frame hardware NACK at first attempt; retry continued; rest pose reached; stop -> /OE HIGH
+POSE 35 trial 4: started; one active-frame hardware NACK at first attempt; retry continued; rest pose reached; stop -> /OE HIGH
+
+POSE 100 trial 1: started; at least 8 active-frame hardware NACKs at first attempt; bounded retries continued; rest pose reached; stop -> /OE HIGH
+
+MPU6050 disconnected; servo power remained connected
+BOOT 20 kHz without MPU6050: 0x40 ACK; no 0x68 ACK; I2C scan found 1 device(s); CH0-CH7 READY at 50 Hz PWM / 20000 Hz I2C; /OE HIGH
+POSE 35 no-MPU trial 1: no NACK observed; rest pose reached; stop -> /OE HIGH
+POSE 35 no-MPU trial 2: no NACK observed; rest pose reached; stop -> /OE HIGH
+POSE 35 no-MPU trial 3: no NACK observed; rest pose reached; stop -> /OE HIGH
+POSE 35 no-MPU trial 4: three active-frame hardware NACKs at first attempt; bounded retries continued; rest pose reached; stop -> /OE HIGH
+
+Configuration restored: CONFIG_SERVO_ZERO_I2C_SPEED_HZ=400000
+RESTORE BOOT: 0x40 ACK; no 0x68 ACK; CH0-CH7 READY at 50 Hz PWM / 400000 Hz I2C; /OE HIGH
+
+FOLLOW-UP: high-current servo power wires spatially separated from the Dupont harness; MPU6050 disconnected; servo 6 V connected
+Configuration: CONFIG_SERVO_ZERO_I2C_SPEED_HZ=400000; PWM=50 Hz; max 4 attempts; retry delay=1 ms
+Method: `pose pseudo 35` repeated 20 times through host-native PowerShell COM4; each trial waited for the bounded pose, sent `stop`, then waited before the next trial
+POSE 35 separated trial 1-5: no NACK observed; all reached rest pose; stop -> /OE HIGH
+POSE 35 separated trial 6: one active-frame hardware NACK on first attempt; retry continued; rest pose reached; stop -> /OE HIGH
+POSE 35 separated trial 7-8: no NACK observed; all reached rest pose; stop -> /OE HIGH
+POSE 35 separated trial 9: one active-frame hardware NACK on first attempt; retry continued; rest pose reached; stop -> /OE HIGH
+POSE 35 separated trial 10-20: no NACK observed; all reached rest pose; stop -> /OE HIGH
+Separated-wire result: 18/20 trials without observed NACK; 2/20 trials with a first-attempt NACK; all retries recovered and all trials ended safely
+
+FOLLOW-UP: high-current servo power wires bundled with the Dupont harness; MPU6050 remained disconnected; servo 6 V connected
+Configuration: CONFIG_SERVO_ZERO_I2C_SPEED_HZ=400000; PWM=50 Hz; max 4 attempts; retry delay=1 ms
+Method: same `pose pseudo 35` sequence repeated 20 times through host-native PowerShell COM4; each trial sent `stop` after the bounded pose
+POSE 35 bundled trial 1-2: no I2C error observed; rest pose reached; stop -> /OE HIGH
+POSE 35 bundled trial 3: one I2C software timeout on the active frame; retry continued; rest pose reached; stop -> /OE HIGH
+POSE 35 bundled trial 4: hardware NACK on attempts 1 and 2; later retry recovered; rest pose reached; stop -> /OE HIGH
+POSE 35 bundled trial 5-20: no I2C error observed; all reached rest pose; stop -> /OE HIGH
+Bundled-wire result: 18/20 trials without observed I2C error; 2/20 affected trials; one software timeout and one trial with two consecutive NACK attempts; all trials ended safely

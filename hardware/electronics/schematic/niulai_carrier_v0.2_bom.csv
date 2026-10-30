@@ -1,0 +1,37 @@
+Reference,Value,Footprint,DNP,Description
+J1,XT30_MALE_BOARD_INPUT,FOOTPRINT_TBD_XT30_MALE,NO,Board side male; energized source cables female
+F1,ATO_ATC_10A_32V_MIN,FOOTPRINT_TBD_ATO_ATC_HOLDER_15A,NO,Not a precision current limiter
+U5,LM2596S_MODULE_V151,FOOTPRINT_TBD_LM2596S_43x21,NO,Photo-visible order; VIN 3.2-40V and VIN >= VOUT+1.5V
+C1,1000-2200uF_16V_105C_OPTIONAL,Capacitor_THT:C_Radial_D12.5mm_H20.0mm_P5.00mm,YES,C_BULK1
+C2,1000-2200uF_16V_105C_OPTIONAL,Capacitor_THT:C_Radial_D12.5mm_H20.0mm_P5.00mm,YES,C_BULK2
+C3,10uF_16V_X7R,Capacitor_SMD:C_1206_3216Metric,NO,Carrier local rail decoupling
+C4,100nF_16V_X7R,Capacitor_SMD:C_0805_2012Metric,NO,Carrier local high-frequency decoupling
+JP1,ESP_EXTERNAL_3V3_LINK_REMOVE_FOR_USB_ONLY_TEST,Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical,NO,Avoid unreviewed USB/external-rail paralleling
+U1,ESP32_S3_N16R8_DEVBOARD_2x22,FOOTPRINT_TBD_ESP32_S3_2x22_SOCKET,NO,One complete module; L/R numbering follows seller image antenna-to-USB
+J3,GPIO_DUPONT_BREAKOUT,FOOTPRINT_TBD_GPIO_HEADER,NO,MPU6500/ST7789 plus all final unused GPIO; exact header form TBD
+U2,PCA9685_16CH_MODULE_OPTION_A,FOOTPRINT_TBD_PCA9685_MODULE,NO,"Green terminal: outputs down/terminal up => left V+, right GND"
+R1,10k_1%_OE_SAFE_DEFAULT,Resistor_SMD:R_0805_2012Metric,NO,OE high disables PWM during reset
+R2,4.7k_I2C_PULLUP_DNP,Resistor_SMD:R_0805_2012Metric,YES,Populate only if module pull-up audit requires
+R3,4.7k_I2C_PULLUP_DNP,Resistor_SMD:R_0805_2012Metric,YES,Populate only if module pull-up audit requires
+U3,MAX98357A_PURPLE_MODULE,FOOTPRINT_TBD_MAX98357A_MODULE,NO,Complete 7-pin plus PH2.0 speaker module
+U4,MS4030_I2S_MIC_MODULE,FOOTPRINT_TBD_MS4030_FLYWIRE,NO,Photo pad order top SD/VDD/GND; bottom L-R/WS/SCK
+R4,0R_MIC_LEFT_CHANNEL,Resistor_SMD:R_0805_2012Metric,NO,Move strap to 3V3 only for right-channel configuration
+J10,FOOT_FL_REMOTE_SWITCH,FOOTPRINT_TBD_2PIN,NO,Remote switch closes signal to GND
+R5,10k_1%,Resistor_SMD:R_0805_2012Metric,NO,Active-low pull-up
+C5,100nF_FILTER_DNP,Capacitor_SMD:C_0805_2012Metric,YES,Optional hardware debounce
+J11,FOOT_FR_REMOTE_SWITCH,FOOTPRINT_TBD_2PIN,NO,Remote switch closes signal to GND
+R6,10k_1%,Resistor_SMD:R_0805_2012Metric,NO,Active-low pull-up
+C6,100nF_FILTER_DNP,Capacitor_SMD:C_0805_2012Metric,YES,Optional hardware debounce
+J12,FOOT_RL_REMOTE_SWITCH,FOOTPRINT_TBD_2PIN,NO,Remote switch closes signal to GND
+R7,10k_1%,Resistor_SMD:R_0805_2012Metric,NO,Active-low pull-up
+C7,100nF_FILTER_DNP,Capacitor_SMD:C_0805_2012Metric,YES,Optional hardware debounce
+J13,FOOT_RR_REMOTE_SWITCH,FOOTPRINT_TBD_2PIN,NO,Remote switch closes signal to GND
+R8,10k_1%,Resistor_SMD:R_0805_2012Metric,NO,Active-low pull-up
+C8,100nF_FILTER_DNP,Capacitor_SMD:C_0805_2012Metric,YES,Optional hardware debounce
+TP1,TEST_GND,TestPoint:TestPoint_Plated_Hole_D2.0mm,NO,Accessible after module installation
+TP2,TEST_EXT_6V_IN,TestPoint:TestPoint_Plated_Hole_D2.0mm,NO,Accessible after module installation
+TP3,TEST_SERVO_6V,TestPoint:TestPoint_Plated_Hole_D2.0mm,NO,Accessible after module installation
+TP4,TEST_3V3,TestPoint:TestPoint_Plated_Hole_D2.0mm,NO,Accessible after module installation
+TP5,TEST_I2C_SDA,TestPoint:TestPoint_Plated_Hole_D2.0mm,NO,Accessible after module installation
+TP6,TEST_I2C_SCL,TestPoint:TestPoint_Plated_Hole_D2.0mm,NO,Accessible after module installation
+TP7,TEST_PCA_OE,TestPoint:TestPoint_Plated_Hole_D2.0mm,NO,Accessible after module installation

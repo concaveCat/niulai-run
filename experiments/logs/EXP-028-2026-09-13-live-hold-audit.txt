@@ -1,0 +1,416 @@
+EXP-028 software audit log — 2026-09-13
+
+Scope
+-----
+Audit of the knee-dominant live-hold four-leg keyboard path after the
+confirmed rest snapshot was restored. No ESP32 flash, UART movement command,
+or physical actuator test was performed in this audit.
+
+Working tree / parameters
+-------------------------
+- Repository: repo root
+- Branch: fw/kw10-perfect-touchdown
+- Working tree: pre-existing unrelated dirty changes were preserved.
+- Confirmed rest pulse snapshot (CH0..CH7):
+  1494,1165,1672,1748,1368,1279,1764,1934 us
+- Live default profile: 30,9,40,360,360,120,25
+- Live order: knee lift first, continuous hip swing while held, hip freeze on
+  release, fixed knee-only SEARCH landing.
+- Live update period: 20 ms; atomic CH0..CH7 frame.
+- Maximum simultaneous moving legs: 2.
+
+Audit changes
+-------------
+- Removed the live host/firmware hold-duration cap; swing_ms is only a speed
+  calibration interval.
+- Kept the 40 mm lift under the 50 mm configured lift envelope and reduced
+  default active hip excursion to 25 percent.
+- Added preflight of the live initial and knee-only lift snapshots.
+- Added first-unsafe-boundary saturation for live hip pulse limits, without an
+  arbitrary gameplay-distance cap.
+- Made the final soft-limit log persistent across update ticks.
+- Added tests for all four operator hip-limit directions and the 250 us atomic
+  frame-step guard.
+
+Commands and results
+--------------------
+1. Focused quad demo test:
+   cc -std=c11 -Wall -Wextra -Werror -pedantic \
+     -Ifirmware-esp32/tools/servo-zero-test/main \
+     firmware-esp32/tools/servo-zero-test/main/servo_zero_leg_math.c \
+     firmware-esp32/tools/servo-zero-test/main/servo_zero_quad_demo.c \
+     firmware-esp32/tools/servo-zero-test/tests/test_servo_zero_quad_demo.c \
+     -lm -o /tmp/niulai-servo-zero-quad-demo-test && \
+     /tmp/niulai-servo-zero-quad-demo-test
+   Result: PASS — servo_zero_quad_demo tests passed.
+
+2. AddressSanitizer/UndefinedBehaviorSanitizer focused test:
+   cc -std=c11 -Wall -Wextra -Werror -pedantic \
+     -fsanitize=address,undefined -fno-omit-frame-pointer \
+     -Ifirmware-esp32/tools/servo-zero-test/main \
+     firmware-esp32/tools/servo-zero-test/main/servo_zero_leg_math.c \
+     firmware-esp32/tools/servo-zero-test/main/servo_zero_quad_demo.c \
+     firmware-esp32/tools/servo-zero-test/tests/test_servo_zero_quad_demo.c \
+     -lm -o /tmp/niulai-servo-zero-quad-demo-sanitize && \
+     ASAN_OPTIONS=detect_leaks=1 \
+     /tmp/niulai-servo-zero-quad-demo-sanitize
+   Result: PASS — servo_zero_quad_demo tests passed.
+
+3. Full offline checks:
+   sh tools/run_offline_checks.sh
+   Result: PASS — firmware Python 14 tests, tool 35 tests, feedback proxy 4
+   tests, all pure-C host tests, isolated quad demo test, documentation/link
+   audits, and whitespace check passed. Android tests were skipped because
+   NIULAI_RUN_ANDROID=1 was not set.
+
+4. ESP-IDF build (build only; no flash target invoked):
+   ninja -C firmware-esp32/tools/servo-zero-test/build-servo-zero
+   Result: PASS — niulai_servo_zero_test.bin 0xd8a10 bytes; smallest app
+   partition 0x100000; 0x275f0 bytes (15%) free. Existing warning retained:
+   “ninja: corrupt build log: missing field”.
+
+Remaining unverified risks
+--------------------------
+- The four non-RF q->us slopes remain replaceable candidates, not a final
+  mechanical calibration.
+- Knee mechanical stops are not yet confirmed; generic 300..3000 transport
+  bounds are used for knees.
+- No new physical evidence exists for NACK rate, floor clearance, slip, or
+  falls with the 40 mm / 25 percent live profile.
+- A terminal I2C failure still fails safe by driving /OE HIGH; only transient
+  failures recovered by the existing retry loop are ignored by the host as
+  command failures.
+
+Deep root-cause review and additional corrections
+--------------------------------------------------
+The Operator's added test hint was incorporated as three offline scenarios:
+one leg held forward, two legs held forward, and rapid repeated forward moves
+through all four legs. The implementation review identified these software
+causes behind the reported symptoms:
+
+- support retreat previously consumed nominal keyboard distance even when the
+  active hip was scaled to 25 percent or saturated at a leg-specific pulse
+  limit;
+- each support leg was independently clamped, so asymmetric limits could make
+  only one or two support feet continue moving;
+- live press preflight reused the fixed-duration diagnostic path, allowing a
+  failure in a different path to reject a valid live action;
+- fixed-hip knee solving checked an endpoint but did not enforce a continuous
+  knee branch and monotonic forward foot path;
+- press/release inspected shared masks before taking the same mutex used by the
+  motion task, so rapid UART key events could observe a stale state.
+
+Corrections made in the working tree:
+
+- support allocation now uses actual FK forward displacement to produce one
+  nominal retreat request, then independently caps each support leg by its
+  own workspace/pulse capacity; a saturated support leg is held alone while
+  the other supports continue;
+- live-plan construction is separate from fixed diagnostic-path preflight;
+- live swing uses a 32-sample branch/forward-continuity check and first unsafe
+  boundary saturation;
+- press/release state inspection and mutation are mutex-protected.
+
+Additional focused C coverage includes:
+
+- monotonic offset=0..160 mm live holds for RF/LF/RR/LR;
+- simultaneous LF+RR active legs and equal retreat of both supports;
+- asymmetric support-limit capacity where only the constrained support bit is
+  reported and at least one unconstrained support continues to the nominal
+  retreat request;
+- 16 rapid RF/LF/RR/LR lift/swing/search cycles using the prior successful
+  pose as the next start state;
+- live-plan construction without fixed diagnostic-path preflight.
+
+This remains software-only evidence. No flash, UART movement command, or
+physical actuator test was performed for this correction pass. The board, if
+connected, still contains the previously flashed image, not this working-tree
+revision.
+
+Final post-review verification
+------------------------------
+- Focused strict C quad test: PASS — servo_zero_quad_demo tests passed.
+- Focused ASan/UBSan C test: PASS — servo_zero_quad_demo tests passed; no
+  sanitizer report.
+- `sh tools/run_offline_checks.sh`: PASS — firmware Python 14 tests, tool 35
+  tests, feedback proxy 4 tests, all pure-C host tests, documentation/link
+  audits, and whitespace check passed. Android tests were skipped because
+  `NIULAI_RUN_ANDROID=1` was not set.
+- `ninja -C firmware-esp32/tools/servo-zero-test/build-servo-zero`: PASS —
+  ESP-IDF v5.5.5, image `0xd9170` bytes, smallest app partition `0x100000`,
+  `0x26e90` bytes (15%) free. The existing
+  `ninja: corrupt build log: missing field` warning remains.
+- `git diff --check`: PASS.
+
+The build generated a new local image only. No esptool flash, serial
+movement command, monitor session, or physical actuator test was run.
+
+Independent support-limit retraction follow-up
+-----------------------------------------------
+The previously proposed allocator rule “take the minimum capacity across all
+support legs and stop all supports there” was withdrawn. The live allocator
+now computes one nominal per-support request from actual FK travel, then
+applies `min(nominal_request, this_support_capacity)` independently for each
+support leg. A constrained support remains at its own last safe position and
+sets only its own soft-limit bit; unconstrained supports continue moving.
+
+Verification after this correction:
+
+- Focused strict C test: PASS — `servo_zero_quad_demo tests passed`.
+- Focused ASan/UBSan test: PASS — `servo_zero_quad_demo tests passed`, with no
+  sanitizer report.
+- `python3 -m unittest tools.tests.test_quad_ascii_walk -v`: PASS — 12 tests.
+- `python3 -m py_compile tools/quad_ascii_walk.py tools/tests/test_quad_ascii_walk.py`:
+  PASS.
+- `sh tools/run_offline_checks.sh`: PASS — firmware Python 14 tests, tool 35
+  tests, feedback proxy 4 tests, pure-C host tests, documentation/link audits
+  and whitespace checks. Android tests were skipped because
+  `NIULAI_RUN_ANDROID=1` was not set.
+- `ninja -C firmware-esp32/tools/servo-zero-test/build-servo-zero`: PASS —
+  ESP-IDF v5.5.5; image `0xd91b0` bytes; smallest app partition
+  `0x100000`; `0x26e50` bytes (15%) free. The existing
+  `ninja: corrupt build log: missing field` warning remains.
+- `git diff --check`: PASS.
+
+This follow-up remains software-only. No flash, UART movement command,
+monitor session, or physical actuator test was run; the previously flashed
+board does not contain this working-tree correction.
+
+Post-flash mechanical observation and semantic regression review
+----------------------------------------------------------------
+After the later authorized flash and PowerShell sequence tests recorded in
+`experiments/logs/EXP-028-2026-09-13-knee-dominant-live-hold-flash.txt`, the
+Operator reported that the larger-amplitude walk still retracts the support
+legs too little and can leave all four legs leaning forward. The UART
+sequence completion and zero/recoverable NACK observations are transport
+evidence only; they do not contradict this mechanical observation.
+
+The prior foot-space implementation in this file's `HEAD` version used
+explicit X/Z targets followed by full IK:
+
+- support legs used `start_x - stance_step_length_mm * progress`;
+- lift used `start_x - lift_back_mm * progress` and rising Z;
+- swing used an explicit X path from the lift-back point to the step target;
+- SEARCH held the commanded touchdown X while lowering Z.
+
+The current live implementation no longer has those semantics:
+
+- `stance_step_length_mm` is still parsed and logged, but live support
+  allocation derives the nominal request from active-leg FK travel and then
+  divides by support count;
+- the 40 mm/50% software model (45 mm thigh, 70 mm shank, start `(0,-100)`)
+  predicts a fixed-hip lift foot X of about `38.13 mm` at Z `-60 mm`, already
+  beyond the `+35 mm` actual-foot workspace bound;
+- for the same model, the nominal `(30,-60)` endpoint changes hip by about
+  `-10.16 deg`, while the local probe selects the opposite positive direction;
+  the current `fabs()` therefore discards the required sign;
+- at a 500 ms hold in the 30,9,40,360,360,120 profile, the 25% hip-scale
+  model produces only about `0.26 mm` support retreat per support (`0.68 mm`
+  at the full 30 mm request), versus the configured 9 mm stance stroke;
+  at 50% scale the corresponding values are about `0.53 mm` and `1.36 mm`;
+- SEARCH freezes the release hip and changes only knee, so a model release
+  near `(42.20,-60)` returns near `(8.11,-100)` rather than preserving the
+  release X.
+
+These are offline model calculations, not claims of measured link geometry.
+They are sufficient to explain the reported forward-lean accumulation:
+hidden X drift during lift/search is admitted into `s_quad_demo_foot`, while
+support compensation is based only on the much smaller post-lift FK residual.
+
+Test-gap correction
+-------------------
+The current tests pass because they assert the regressed semantics directly:
+`test_live_single_leg_uses_actual_drive_for_all_supports` requires support
+retreat to be actual FK travel divided by three, and
+`test_live_release_freezes_hip_and_lowers_knee` requires fixed-hip SEARCH
+without checking touchdown X. These assertions must be replaced when the
+repair is implemented with foot-space invariants: explicit lift/swing/search
+X continuity, live use of the configured stance stroke, simultaneous-leg
+scaling, and independent per-support capacity clipping.
+
+No source code was changed, no new UART movement command was sent, and no
+flash was performed during this review. The next implementation must retain
+the independent support-limit behavior and only restore the earlier
+foot-space trajectory/support-distance semantics.
+
+Night software/math repair after servo power-off
+------------------------------------------------
+Scope: offline source, host tests, documentation and ESP-IDF build only. No
+serial probe, flash, UART command, reset or actuator operation was performed.
+
+Deep causes corrected:
+
+- A fixed hip near a vertical shank has two same-sign knee roots for one
+  elevated Z. Nearest-root selection could decrease the knee from a retreated
+  start and later jump to the other root, producing the observed apparent
+  backward fold and intermittent invalid frames. Live LIFT now selects the
+  root that moves in the configured knee direction; short releases retrace
+  that exact arc.
+- Live SWING is now an explicit horizontal foot-space segment at fixed Z and
+  full IK. Post-swing SEARCH preserves release X and lowers Z with full IK.
+- Total support demand is `sum(moving foot x - its takeoff x) / support_count`,
+  including LIFT, SWING and SEARCH. This gives `/3` for one moving leg and the
+  sum `/2` for a diagonal pair. Each support still clamps independently.
+- Support capacity previously tested a distant endpoint and binary-searched
+  under a false monotonic-safety assumption. It now scans outward from zero
+  and stops at the first unsafe prefix, so a later safe island cannot hide an
+  intermediate pulse-limit violation.
+- The live horizontal candidate envelope is now `-50..+50 mm`: a 40 mm
+  knee-first lift from `(0,-100)` reaches approximately `(38.13,-60)`, which
+  cannot be represented by the former `+35 mm` bound. This remains a HIGH
+  RISK software envelope, not a measured mechanical limit.
+
+Verification:
+
+- strict servo-zero leg math C test: PASS, including the ambiguous-knee-root
+  regression from `(-34,-100)` to Z `-60` over 32 samples;
+- strict quad C test: PASS, including one leg, diagonal pair, long hold,
+  independent support saturation, explicit LIFT/SWING/SEARCH properties and
+  64 rapid RF/LF/RR/LR steps;
+- quad test under ASan+UBSan: PASS;
+- `sh firmware-esp32/tests/host/run_host_tests.sh`: PASS;
+- `sh tools/run_offline_checks.sh`: PASS (Android skipped by the script unless
+  `NIULAI_RUN_ANDROID=1` is set);
+- focused optimized quad binary repeated 20/20 complete runs: PASS; the first
+  attempted 100-run shell exceeded its 30-second observation window and was
+  explicitly stopped, so it is not counted as a completed result;
+- support prefix scanning is bounded by the current frame's requested retreat
+  rather than scanning the entire workspace every 20 ms;
+- `ninja -C firmware-esp32/tools/servo-zero-test/build-servo-zero`: PASS,
+  image `0xd93d0`, app free `0x26c30` (15%); existing corrupt-build-log warning
+  remains;
+- `git diff --check`: PASS.
+
+Residual physical uncertainty: all four legs still use the virtual
+`(0,-100)` model origin and candidate affine q-to-us slopes; there is no
+encoder feedback. The offline proof establishes internal geometry,
+continuity, configured pulse checks and conservation, but cannot prove actual
+clearance, direction, no-slip propulsion, current, stall margin or fall risk.
+
+Recoverable-NACK SEARCH/touchdown follow-up (2026-09-14)
+-------------------------------------------------------
+The reported transaction did not exhaust four I2C attempts. Its retry path
+recovered, but SEARCH progress was derived from wall-clock `quad_elapsed_ms`.
+Retry/task delay therefore allowed the next generated frame to catch up to
+the 120 ms endpoint, independently tripping the frame-step guard at
+`CH1 769->1165 us`. SEARCH now advances by one logical 20 ms interval per
+successful control iteration, so a recoverable bus delay cannot skip pose
+samples.
+
+The 120 ms touchdown duration is unchanged. Post-swing touchdown X is now
+`takeoff_x + accepted_swing_offset`, not release X: temporary forward X from
+the knee-lift arc is retracted while deliberate horizontal swing is retained.
+The host regression confirms the final knee is more bent than the former
+keep-release-X endpoint by more than 0.1 rad and every 20 ms pulse delta is at
+most 125 us. A pre-swing short release still retraces the lift arc.
+
+Host input handling now consumes asynchronous terminal faults before sending
+a press/release and tells the Operator to press S again instead of silently
+discarding the fault and retaining stale readiness.
+
+Verification: strict leg-math and quad C PASS; quad ASan/UBSan PASS; Python
+tool tests 14 PASS; `sh tools/run_offline_checks.sh` PASS; ESP-IDF build PASS,
+image 0xd9490 with 0x26b70 (15%) app partition free; `git diff --check` PASS.
+No flash, serial access, reset or actuator command was performed for this
+follow-up.
+
+Authorized flash and blocked low-amplitude trial
+------------------------------------------------
+The stale COM4 owner was the previous quad_ascii_walk.py process (PID 30540),
+which was stopped before flashing. Native Windows PowerShell and esptool
+4.12.0 wrote bootloader, application and partition table to COM4; all three
+reported `Hash of data verified`. Application SHA-256:
+8f9bd6d9330da5d6ec2b4dc230dac9c3f89ea466c51549cd7a1dac56135c180b.
+
+Boot held `/OE HIGH`, but the I2C scan found no ACK. Four PCA9685 MODE1 write
+attempts returned ESP_ERR_INVALID_STATE/NACK and initialization ended with
+`/OE remains HIGH forever`. Consequently the planned RF profile
+8,4,30,360,360,120,25 never entered rest and no actuator motion occurred.
+This is a pre-motion PCA9685 connectivity/power blocker, not a result of the
+new 120 ms touchdown path.
+
+Recovered-bus RF smoke test (2026-09-14)
+-----------------------------------------
+After the operator restored the bus, Windows PnP reported
+`USB-Enhanced-SERIAL CH343 (COM4)` status OK. The same flashed image and
+profile `8,4,30,360,360,120,25` were run with
+`quad_ascii_walk.py --port COM4 --sequence 1`. Boot scan confirmed ACK at
+PCA9685 `0x40`, MPU addresses `0x68` and `0x70`; initialization completed and
+the direct rest pose became ready.
+
+RF then completed `press accepted`, `release accepted`, and `quad demo
+complete` with the fixed 120 ms landing path. No NACK, timeout, invalid pose,
+or terminal rejection appeared in this run. The script sent `stop` and the
+board ended with `/OE HIGH`. This is a UART/bus/state-flow smoke result; no
+claim is made yet about measured bent-knee touchdown posture, clearance,
+slip, body translation, stall current, temperature, or fall resistance.
+
+LF zero-swing offline repair (2026-09-14)
+------------------------------------------
+No COM4 access, reset, flash, UART command, or actuator operation occurred.
+The operator-reported keyboard-2 symptom was reproduced with the configured
+LF mirror map and CH2 1750 us directional limit: a 2 mm nominal active swing
+was clipped to approximately 0.0001 mm. The former straight-line bent-knee
+touchdown preflight crossed LF's reverse hip limit between two otherwise safe
+endpoints. LF support retreat uses a different horizontal path, explaining
+why it still moved while other legs were active.
+
+SEARCH now descends along the reverse knee-first lift arc while retaining the
+already-earned horizontal swing offset over the whole curve. The first SEARCH
+sample is exactly the release pose and the endpoint remains
+takeoff_x+deliberate_swing. A new regression requires LF active X to increase
+strictly for 2..40 mm requests, CH2 pulse to decrease in the active-forward
+direction, and support mask to remain 0x0d. Default swing_ms changed 360->300
+ms for 20% faster horizontal swing; lift remains 360 ms and SEARCH 120 ms.
+
+Strict quad C PASS; ASan/UBSan PASS; Python quad tool tests 14 PASS; complete
+offline checks PASS; ESP-IDF v5.5.5 build PASS; git diff --check PASS. Image
+size 0xd9530, app free 0x26ad0 (15%), SHA-256
+8a07c132c9aa740c3991f50194b26b00cd02bc574ff0eb2c69c6fee3cbba7c5b.
+
+ARD-1 first offline engineering slice (2026-09-14)
+----------------------------------------------------
+The current KFC-1 conservation allocator was separated at its core: live
+`body_drive_mm` now counts only accepted horizontal swing of held legs. Lift
+and SEARCH do not create body drive. A diagonal pair uses the leading swing's
+single D value, and each support receives the same `-D` request before its own
+independent capacity clipping; support count is no longer used to divide D.
+
+The LF-specific regression remains green, and an eight-step rapid RF/LF/RR/LR
+offline rotation remains reachable. The longer historical 64-step fixture was
+intentionally shortened while explicit reserve sizing is still pending; no
+long-run continuity or physical walking claim is made yet. The next slice is
+per-leg safe-span/reserve sizing and bounded Hold target mapping.
+
+ARD-1 second offline engineering slice (2026-09-14)
+-----------------------------------------------------
+The first-slice release discontinuity was fixed by adding a latched
+`body_drive_floor_mm` to the live state. When a held leg enters SEARCH, the
+already achieved body drive remains active, so support feet hold their last
+commanded x instead of returning to their support origin. A rebase is performed
+only after the landing pose has been written; when no moving legs remain, the
+drive reference and latch are cleared.
+
+The live target is now bounded at `plan.step_length_mm`. Body drive is separate
+from visible swing and is currently `35%` of the largest accepted horizontal
+swing among held legs. Each support gets the same nominal `-D` request, then
+uses an independently cached prefix-safe retreat reserve with an `85%` margin;
+one support reaching its reserve does not stop the others. The previous
+KFC-1/global-conservation semantics are not used by this ARD-1 path.
+
+Offline validation:
+
+* strict C quad host compile/test: PASS (`servo_zero_quad_demo tests passed`);
+* ASan/UBSan quad host compile/test: PASS;
+* rapid RF/LF/RR/LR rotation: 64 steps, PASS;
+* release-continuity and bounded-hold assertions: PASS;
+* full `sh tools/run_offline_checks.sh`: PASS (firmware Python 14, tool 37,
+  feedback proxy 4, ESP32 host suite, documentation/index audits and diff
+  check);
+* ESP-IDF v5.5.5 `ninja -C firmware-esp32/tools/servo-zero-test/build-servo-zero`:
+  PASS, image `0xd9770`, app free `0x26890` (15%).
+
+No firmware flash, UART command or actuator movement was performed for this
+slice. The 85% reserve margin is a software hypothesis; physical q→us,
+mechanical limits, clearance, slip, current, NACK behavior and falling remain
+unvalidated.

@@ -1,0 +1,25 @@
+EXP-036 2026-09-14 reflash boot check
+
+Action: native Windows PowerShell / esptool 4.12.0 reflash of the existing
+servo-zero-test build on COM4. No motion command was sent after reset.
+
+Flash configuration: esp32s3, 460800 baud, dio, 16MB, 80m;
+0x0 bootloader/bootloader.bin;
+0x8000 partition_table/partition-table.bin;
+0x10000 niulai_servo_zero_test.bin.
+
+Flash result: all three regions reported "Hash of data verified";
+hard reset completed.
+
+Boot result:
+I (295) app_init: App version: a2ce962-dirty
+W (401) servo_zero: /OE HIGH: outputs disabled during initialization
+E (441) servo_zero: I2C scan found no ACK; check pull-ups, 3.3V, GND, SDA=11, SCL=12
+E (501) servo_zero: MODE1 SLEEP write failed: ESP_ERR_INVALID_STATE (0x103), SDA=11 SCL=12 addr=0x40
+E (511) servo_zero: initialization failed; /OE remains HIGH forever
+PROBE_ACK=NONE
+
+Follow-up: after Operator confirmed the wiring/power conditions, esptool
+chip_id was run with hard_reset and the boot probe was repeated without any
+motion command. The second boot again reported no ACK at 0x40, four failed
+initialization attempts, and `/OE remains HIGH forever`.

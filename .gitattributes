@@ -1,0 +1,14 @@
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ttf binary
+*.mp3 binary
+*.zip binary
+*.pdf binary
+*.rgb565 binary
+*.jar binary
+*.kicad_sch text
+*.kicad_sym text
+*.kicad_pro text

@@ -1,0 +1,25 @@
+menu "牛来快跑 Foot Contact"
+
+    # Operator mapping: GPIO39=FR, GPIO40=FL, GPIO41=RR, GPIO42=RL.
+
+    config NIULAI_CONTACT_PIN_FL
+        int "FL foot contact GPIO"
+        range -1 48
+        default 40
+
+    config NIULAI_CONTACT_PIN_FR
+        int "FR foot contact GPIO"
+        range -1 48
+        default 39
+
+    config NIULAI_CONTACT_PIN_RL
+        int "RL foot contact GPIO"
+        range -1 48
+        default 42
+
+    config NIULAI_CONTACT_PIN_RR
+        int "RR foot contact GPIO"
+        range -1 48
+        default 41
+
+endmenu

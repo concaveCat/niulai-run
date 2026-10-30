@@ -1,0 +1,11 @@
+ESP-IDF v5.5.5 isolated servo-zero build: PASS
+Python protocol tests: 4/4 PASS
+Flash: bootloader/app/partition-table Hash of data verified
+
+Diagnostic startup:
+E (324) servo_zero: I2C scan found no ACK; check pull-ups, 3.3V, GND, SDA=11, SCL=12
+W (324) servo_zero: register write I2C failed: ESP_ERR_INVALID_STATE (0x103); no retry/reset attempted
+E (334) servo_zero: MODE1 SLEEP write failed: ESP_ERR_INVALID_STATE (0x103), SDA=11 SCL=12 addr=0x40
+E (344) servo_zero: initialization failed; /OE remains HIGH forever
+
+No run command was sent after this failure.

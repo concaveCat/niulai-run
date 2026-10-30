@@ -1,0 +1,48 @@
+# EXP-027 RF vertical-shank hardware trial
+
+Date: 2026-09-13
+Hardware: ESP32-S3 QFN56 rev v0.2; isolated `niulai_servo_zero_test`; native Windows `COM4`; PCA9685 `0x40`; 50 Hz PWM; 400 kHz I2C.
+Safety: Operator confirmed the mechanical fixture, `1600 -> 1400 us` first-round endpoints, 6 V supply/current boundary, personnel clearance, and emergency stop.
+
+## Command
+
+```text
+python tools/servo_zero_rf_hip_vertical_trial.py 1600 1400 --port COM4 --observe-seconds 5.5
+```
+
+The runner sent `stop`, `list`, `stats reset`, the demo command, then `stop` and `stats`. It does not send any other motion command.
+
+## Captured UART action excerpt
+
+```text
+W (397) servo_zero: /OE HIGH: outputs disabled during initialization
+W (427) servo_zero: I2C device ACK at 0x40 (configured PCA9685)
+W (447) servo_zero: CH0-CH7 READY at 50 Hz PWM / 400000 Hz I2C; /OE HIGH; type run to enable; CH8-CH15 FULL_OFF
+W (1067) servo_zero: UART stop -> /OE HIGH
+W (1947) servo_zero: CH0 rf_hip  = 1746 us  <selected>
+W (1947) servo_zero: CH1 rf_knee = 1469 us
+W (2757) servo_zero: I2C stats reset
+W (3207) servo_zero: HIGH RISK RF vertical-shank sweep started: CH0 1600->1400 us backward, CH1 1496->1347 us compensation, shank=-90.0 deg, 4000 ms; send stop
+D (3487) i2c.master: I2C transaction unexpected nack detected
+W (3487) servo_zero: vertical sweep pair frame I2C failed on attempt 1/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+D (3487) i2c.master: I2C transaction unexpected nack detected
+W (3487) servo_zero: vertical sweep pair frame I2C failed on attempt 2/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+D (3547) i2c.master: I2C transaction unexpected nack detected
+W (3547) servo_zero: vertical sweep pair frame I2C failed on attempt 1/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+D (3547) i2c.master: I2C transaction unexpected nack detected
+W (3557) servo_zero: vertical sweep pair frame I2C failed on attempt 2/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+D (3567) i2c.master: I2C transaction unexpected nack detected
+W (3567) servo_zero: vertical sweep pair frame I2C failed on attempt 3/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+D (3587) i2c.master: vertical sweep pair frame I2C failed after 4 attempts: ESP_ERR_INVALID_STATE (0x103)
+E (3597) servo_zero: vertical sweep stopped: ESP_ERR_INVALID_STATE (0x103); /OE HIGH and start pulse retained
+W (8757) servo_zero: UART stop -> /OE HIGH
+W (9977) servo_zero: I2C stats: logical=3 attempts=8 success=2 nack=6 timeout=0 other=0 retries=5 recovered_after_retry=1 terminal_failures=1
+```
+
+Runner result: `TRIAL_START=PASS`, `TRIAL_COMPLETE=FAIL`, `TRIAL_STOP=PASS`, `TRIAL_STATS=PASS`.
+The trajectory did not complete. No current, voltage, temperature, video, or measured physical
+shank-angle data were captured by this agent. After the run the Operator reported that all four
+legs were moving; a subsequent COM4 reset/startup left `/OE HIGH`, and a post-boot `stop` returned
+`UART stop -> /OE HIGH`.
+
+Repeat count: 1 attempted run; 0 completed runs.

@@ -1,0 +1,3 @@
+# Host-side development dependencies.
+# Firmware/Android builds do not use this file.
+pyserial>=3.5,<4

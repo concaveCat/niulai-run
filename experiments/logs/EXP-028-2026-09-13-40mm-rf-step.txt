@@ -1,0 +1,35 @@
+EXP-028 40 mm high-clearance RF single-step trial
+Date: 2026-09-13
+Hardware: ESP32-S3 QFN56 rev v0.2, CH343 native Windows COM4, PCA9685
+  0x40; Operator confirmed mechanical fixation/limits/current/clearance/estop
+  conditions before the trial.
+Software: shared dirty worktree on fw/kw10-perfect-touchdown; servo-zero-test
+  image niulai_servo_zero_test.bin, size 0xd7270 (881264 bytes), built with
+  ESP-IDF v5.5.5; SHA-256:
+  61ff21d09563cab8d4d4157e9350070bf94a4d57d0d13044e02d3c435c209ccb. The image was flashed at 0x0/0x10000/0x8000 using the
+  recorded flasher_args.json settings, 460800 baud, then hard-reset.
+
+Host command (PowerShell, native Python):
+  python.exe quad_ascii_walk.py --port COM4 --baud 115200 --boot-wait 0.2 \
+    --profile 30,9,40,120,360,120 --sequence 1
+
+Startup gate:
+  I2C device ACK at 0x40 (configured PCA9685)
+  CH0-CH7 READY at 50 Hz PWM / 400000 Hz I2C; /OE HIGH
+
+Motion UART evidence:
+  direct rest hold reached; skipped upright transition; /OE LOW; demo quad is ready
+  HIGH RISK quad demo started: mask=0x01 first_leg=RF; active_step=30.0 mm \
+    stance_step=9.0 mm lift_back=6.0 mm lift=40.0 mm; \
+    settle/lift/swing/search=180/120/360/120 ms
+  quad press mask=0x01 accepted
+  quad demo complete; soft_limit_legs=0x00; final four-leg target held; /OE LOW
+  quad release mask=0x01 accepted
+  UART stop -> /OE HIGH
+
+Observed UART stream contained no I2C NACK, timeout, terminal rejection, or
+software fall signal. A later stats read opened the serial port in a way that
+reset the board, so its post-reset startup count (13/13, nack=0) is not used as
+the motion transaction count. No video or independent physical observation of
+body translation, foot slip, stall current, or falling was captured by the
+agent; those remain Operator observations.

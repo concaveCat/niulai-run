@@ -1,0 +1,70 @@
+# EXP-025 physical UART trial — 2026-09-13
+
+## Scope
+
+One authorized HIGH RISK trial of the isolated right-front CH0/CH1
+lift/cosine-swing/cutoff/drop demo. No BLE, FSM, or formal actuator path was
+used.
+
+## Preconditions and image
+
+- Operator had confirmed mechanical fixture, motion limits, 6 V current
+  limiting, personnel clearance, and an immediately available emergency stop.
+- Native Windows serial port: `COM4`, 115200 baud.
+- Firmware: `niulai_servo_zero_test`, ESP-IDF v5.5.5, ESP32-S3 QFN56 rev v0.2.
+- Isolated image built from the working tree; application image size
+  `0xd2230`; bootloader, partition table, and application all reported
+  `Hash of data verified` during the flash.
+- Boot log: PCA9685 `0x40` ACK, 50 Hz PWM / 400 kHz I²C, `/OE HIGH`.
+
+## Starting targets
+
+The startup `list` command reported:
+
+```text
+CH0 rf_hip  = 1746 us
+CH1 rf_knee = 1469 us
+CH2 lf_hip  = 1427 us
+CH3 lf_knee = 1415 us
+CH4 rr_hip  = 1619 us
+CH5 rr_knee = 1582 us
+CH6 lr_hip  = 1449 us
+CH7 lr_knee = 1600 us
+```
+
+These were the persisted startup targets. The trial did not automatically
+preload the separately recorded four-leg support frame, so this run is a
+control-path demonstration rather than a standard-support mechanical
+acceptance.
+
+## Exact host command
+
+```text
+python tools/servo_zero_rf_lift_cosine_drop_trial.py --port COM4 --cutoff-after-start-ms 700 --drop-observe-seconds 0.8
+```
+
+The helper sent `list`, `stats reset`, `demo rf-lift-cosine-drop`, waited for
+the requested cutoff, sent `release`, observed the drop, sent `stop`, and
+queried `stats` in the same serial session.
+
+## UART result
+
+```text
+HIGH RISK RF lift/cosine/drop started: CH1 fast lift=45.0 deg (-491 us) in 100 ms, hold=120 ms; CH0 cosine swing=45.0 deg over 1800 ms; send release to cut and drop knee
+motionleg release at 779 ms: hip frozen at swing=45.0 deg; accumulated knee recovery active
+motionleg touchdown complete; hip held; /OE LOW; use stop
+UART stop -> /OE HIGH
+I2C stats: logical=47 attempts=47 success=47 nack=0 timeout=0 other=0 retries=0 recovered_after_retry=0 terminal_failures=0
+```
+
+No reset, terminal I²C failure, retry, or parser failure occurred in this
+trial. The timestamps show the release-to-complete log interval was about
+`130 ms`, consistent with a 120 ms touchdown plus the 20 ms task cadence.
+
+## Observation boundary
+
+No video, current probe, voltage-drop measurement, temperature measurement, or
+independent mechanical observation was captured by the agent. The UART result
+proves the planned control sequence and safe output shutdown only; the
+Operator must record actual clearance, direction, contact point, limit margin,
+impact/noise, current, and temperature before treating the motion as accepted.

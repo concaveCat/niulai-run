@@ -1,0 +1,74 @@
+EXP-028 half-hip four-leg integration trial
+Date: 2026-09-13 (Asia/Shanghai)
+Operator: Project maintainer
+
+Hardware
+--------
+- ESP32-S3 QFN56 rev v0.2, native Windows COM4, CH343
+- PCA9685 at 0x40; 50 Hz PWM; 400 kHz I2C
+- Quad demo channel order: RF CH0/1, LF CH2/3, RR CH4/5, LR CH6/7
+- Final state after every trial: UART stop -> /OE HIGH
+
+Software and image
+------------------
+- ESP-IDF v5.5.5; workspace branch fw/kw10-perfect-touchdown
+- Working tree was uncommitted; source revision reported by firmware: 674d9a5-dirty
+- Build command: ninja -C firmware-esp32/tools/servo-zero-test/build-servo-zero
+- Image: firmware-esp32/tools/servo-zero-test/build-servo-zero/niulai_servo_zero_test.bin
+- Image size: 883456 bytes (0xd7b00)
+- Image SHA-256: 81204dbf21d2157e9bf92b1f9803fd640aaa31b1d3b7e700403cf1ca7d7d1b67
+- Flash command used native Windows Python/esptool 4.12.0, COM4, offsets and
+  flash settings taken from build-servo-zero/flasher_args.json; bootloader,
+  application and partition table each reported Hash of data verified.
+- UART profile: 30,9,40,120,360,120,50
+  (step 30 mm, support 9 mm, lift 40 mm, hip scale 50 percent)
+
+Trial A: keyboard sequence 1 -> 2 -> 3 -> 4
+---------------------------------------------
+- Host command: quad_ascii_walk.py --port COM4 --profile
+  30,9,40,120,360,120,50 --sequence 1234
+- Startup: direct rest hold reached; direct rest ready; /OE LOW
+- RF mask 0x01: accepted; complete; lift=40.0 mm; hip_scale=50%;
+  soft_limit_legs=0x00
+- LF mask 0x02: accepted; complete; lift=40.0 mm; hip_scale=50%;
+  soft_limit_legs=0x00
+- RR mask 0x04: accepted; complete; lift=40.0 mm; hip_scale=50%;
+  soft_limit_legs=0x00
+- LR mask 0x08: accepted; complete; lift=40.0 mm; hip_scale=50%;
+  soft_limit_legs=0x00
+- The first RF accepted response arrived after the host's first 120 ms
+  window; the repaired host retried once. The duplicate press was idempotent
+  and did not cancel the trajectory.
+- No-reset post-run stats: logical=198 attempts=198 success=198 nack=0
+  timeout=0 other=0 retries=0 recovered_after_retry=0 terminal_failures=0
+- Final: UART stop -> /OE HIGH
+- UART proves the four logical trajectories and communication path completed;
+  it does not prove body translation, foot slip, mechanical clearance, current,
+  temperature or absence of a physical fall. No video/visual observation was
+  captured in this log.
+
+Trial B: diagonal pair sequence 0x06 -> 0x09
+---------------------------------------------
+- Host sent, after direct rest: demo quad press 6 PROFILE, release 6, then
+  demo quad press 9 PROFILE, release 9, and stop.
+- mask 0x06 = LF+RR started and was accepted with hip_scale=50%.
+- At about 270 ms, the active atomic frame encountered repeated PCA9685
+  hardware NACK. Four retry attempts were exhausted and the firmware stopped
+  the quad demo and raised /OE HIGH.
+- Stats after the aborted pair: logical=44 attempts=48 success=43 nack=5
+  timeout=0 other=0 retries=4 recovered_after_retry=1 terminal_failures=1
+- mask 0x09 was rejected because the failed first pair cleared rest-ready
+  state; it is not a result for the RF+LR pair.
+- Final: UART stop -> /OE HIGH
+- No UART fall signal exists in this isolated demo. The terminal NACK is a
+  communication/power or load-boundary observation, not evidence that a
+  mechanical fall occurred. Do not repeat this two-leg high-load trial until
+  the PCA9685/servo supply, common ground and mechanical load are checked.
+
+Conclusion
+----------
+The half-hip profile is integrated into the four-leg path and passes the
+single-leg-at-a-time total-assembly UART sequence. It does not yet pass the
+two-diagonal-leg high-load experiment because of one terminal NACK sequence;
+the gait is therefore still an experimental candidate, not accepted hardware
+walking behavior.

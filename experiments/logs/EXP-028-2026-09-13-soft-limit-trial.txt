@@ -1,0 +1,1547 @@
+EXP-028 soft-limit hardware regression — 2026-09-13
+
+Image: servo-zero-test soft-limit revision, built with ESP-IDF v5.5.5.
+Hardware: ESP32-S3 QFN56 rev v0.2, CH343 COM4, PCA9685 at 0x40.
+Command: host PowerShell Python runner servo_zero_quad_trial.py --port COM4 --cycles 3 --timeout 7
+
+Preflight:
+- Three flasher_args.json images were written to COM4; all reported Hash of data verified.
+- Boot probe confirmed niulai_servo_zero_test, PCA9685 0x40 ACK, 50 Hz / 400000 Hz I2C,
+  CH0-CH7 READY, CH8-CH15 FULL_OFF, and /OE HIGH.
+- Runner sent rest and received rest pose reached; holding target; /OE LOW.
+
+Observed sequence:
+- key 1 / RF: accepted, complete.
+- key 2 / LF: accepted, complete; one I2C NACK recovered by the bounded retry.
+- key 3 / RR: accepted, complete.
+- key 4 / LR: accepted, complete.
+- key 1 / RF: accepted, then four consecutive I2C NACKs at about 805 ms; firmware stopped
+  the demo and raised /OE HIGH. Runner sent stop and exited non-zero.
+
+Conclusion:
+- The prior cumulative IK/preflight lockout did not recur through four complete steps; the
+  software foot workspace limit kept the commanded path bounded.
+- The 12-step run was not completed because of a terminal PCA9685 I2C failure, not because of
+  the foot-space preflight. No further motion was sent after the failure.
+- After this run the Operator reported that CH0/CH1 exceeded the intended hardware boundary.
+  This run used the earlier soft-limit image, whose quad q->us guard was still the generic
+  `500..2500 us` range; it did not contain the independent directional hip-stop table.
+- The board was stopped with `UART stop -> /OE HIGH`. The independent per-channel table and
+  runtime gate were added afterward and have only been verified by host/build tests so far.
+- Physical direction, actual step/lift, support-leg behavior, current/voltage, noise, and
+  temperature were not instrumented by this run and require Operator observation.
+
+Independent-limit revision deployment (2026-09-13, authorized):
+- Host preflight found COM4 available; no serial/esptool process held the port.
+- Used build-generated flasher_args.json offsets `0x0`, `0x10000`, and `0x8000`; bootloader,
+  app (`0xd5610`), and partition table all passed read-back `digest matched` verification.
+- Reset/boot probe returned `niulai_servo_zero_test`, PCA9685 `0x40 ACK`, `50 Hz / 400000 Hz I2C`,
+  CH0-CH7 READY, CH8-CH15 FULL_OFF, and `/OE HIGH` after `stop`.
+- Sent `rest`; received `rest pose reached; holding target; /OE LOW`.
+- No digit/demo command has been sent to this revision. It is currently holding rest for Operator
+  trial; any abnormal movement requires immediate `stop` and 6 V disconnect.
+
+Latest soft-saturation revision deployment and loaded retry (2026-09-13):
+- Source default: active step request 40 mm, active foot workspace clamp +35 mm, stance retreat
+  8 mm, lift 4 mm; a per-leg independent hip-pulse limit is a saturating foot-x boundary, not a
+  whole-demo stop condition.
+- ESP-IDF build passed; image `niulai_servo_zero_test.bin` size `0xd5930`.
+- Bootloader/app/partition table were written to COM4 using generated offsets `0x0`, `0x10000`,
+  `0x8000`; flash read-back reported `digest matched` for all three.
+- Unloaded cycle 1→2→3→4: 4/4 accepted and complete; unloaded 3-cycle run: 12/12 accepted and
+  complete; no demo rejection, runtime stop, NACK, timeout, or terminal failure. RF completion
+  reported `soft_limit_legs=0x01`, confirming a saturated active foot target without STOP.
+- Loaded cycle after the Operator changed to a higher-current supply: key 1/RF complete with
+  `soft_limit_legs=0x01`; key 2/LF completed; key 3/RR failed at about 1433 ms after repeated
+  PCA9685 hardware NACK retries and raised `/OE HIGH`; key 4 was not sent after the safe abort.
+  This failure was I²C under load, not a software-limit action. A subsequent boot probe confirmed
+  PCA9685 `0x40 ACK` and `/OE HIGH`; no further motion was sent.
+
+Latest high-clearance lift image and unloaded verification (2026-09-13):
+- Default profile: active step request 40 mm, foot clamp +35 mm, lift-back 6 mm, lift 15 mm,
+  stance retreat 8 mm. The firmware start log confirmed `lift_back=6.0 mm lift=15.0 mm` for keys
+  1 through 4.
+- The image `0xd59a0` was flashed and all three images passed read-back `digest matched`.
+- One unloaded 1→2→3→4 cycle completed 4/4. RF reported `soft_limit_legs=0x01`; no demo rejection
+  or runtime stop occurred. Rest preamble had two recoverable I²C errors; final stats were
+  `logical=607 attempts=609 success=607 nack=2 timeout=0 other=0 retries=2 recovered_after_retry=2 terminal_failures=0`.
+- The runner sent `stop` after completion and the board ended at `/OE HIGH`. This confirms the
+  software trajectory and serial execution, not actual physical clearance or direction.
+
+Rest-task stack hardening and corrected load classification (2026-09-13):
+- A prior loaded run hit a `rest_pose` task stack overflow after a transient I2C error. The task
+  stack was increased from 3072 to 4096 bytes; focused tests, full offline checks, and the ESP-IDF
+  build passed. Image `0xd59a0` was flashed to COM4 and all three image regions returned
+  `digest matched` on read-back.
+- The earlier two 15 mm 4/4 cycles were post-fix unloaded and loaded baselines. The later two 20 mm
+  cycles previously described as unloaded were in fact loaded: both reached key 3/RR and then
+  stopped safely after repeated PCA9685 I2C failures (`/OE HIGH`), with no reboot or stack overflow.
+- Corrected no-load verification with the 20 mm profile completed keys 1 through 4. Final stats:
+  `logical=615 attempts=615 success=615 nack=0 timeout=0 other=0 retries=0 recovered_after_retry=0 terminal_failures=0`.
+  The runner sent `stop` and confirmed `/OE HIGH`; key 1 reported `soft_limit_legs=0x01`, keys 2--4
+  reported `0x00`. This is software/serial evidence only, not a mechanical clearance or load-safety result.
+
+Fast direct-target profile candidates (2026-09-13):
+- The first candidate used stance retreat 20 mm and lift/forward/search `20/240/20 ms` after a 180 ms
+  settle, with the pulse-jump guard restored to 250 us. It completed unloaded `1→2→3→4`, but had
+  7 recoverable I2C NACKs (`logical=261 attempts=268 success=261 terminal_failures=0`), so it is not
+  yet a reliability sweet spot.
+- The next candidate uses stance retreat 20 mm and lift/forward/search `80/180/80 ms`, still with
+  250 us pulse-jump protection and the 8192-byte main-task stack. Host preflight passed and image
+  `0xd59a0` was flashed with all three regions verified. Physical testing was not run in this record
+  because the repeat requires explicit safety approval after the preceding NACKs; the board remains
+  in `/OE HIGH` after flashing.
+
+Fast direct-target first physical trial (2026-09-13):
+- The fast image `0xd5990` was flashed to COM4; bootloader, app, and partition table all verified with
+  `digest matched`.
+- In the unloaded `1→2→3→4` trial, key 1 was accepted, then the first active-hold frame produced
+  two recoverable PCA9685 NACKs. During key 2's retry path, the ESP32 reported `***ERROR*** A stack
+  overflow in task main has been detected` and rebooted. The runner timed out waiting for key 2 and
+  sent `stop`; the board ended `/OE HIGH`. Key 2 onward did not complete.
+- This is a failed fast-profile safety/robustness trial, not evidence that the no-load hypothesis or
+  the fall/NACK causal explanation is correct. The main-task stack is being increased to 8192 bytes
+  before any repeat.
+
+Fast direct-target retry after main-task stack fix (2026-09-13):
+- Rebuilt with `CONFIG_ESP_MAIN_TASK_STACK_SIZE=8192`, producing image `0xd59a0`; the image was
+  flashed to COM4 and the three regions returned `digest matched`.
+- The unloaded trial accepted key 1, with one I2C software timeout, then accepted key 2. Key 2
+  encountered repeated software-timeout/hardware-NACK failures and the firmware stopped at `251 ms`
+  with `/OE HIGH`; no stack overflow occurred in this retry. Keys 3 and 4 were not sent.
+- Fast direct-target motion therefore remains failed even without load. The result points to an
+  unresolved I2C/transport or electrical transient under the larger command jump; it does not prove
+  that falling caused the earlier NACKs.
+
+Fast sweet-spot search, 80/180/80 ms candidate (2026-09-13):
+- Host preflight passed, image `0xd59a0` was flashed and verified, and the main-task stack remained
+  8192 bytes.
+- The unloaded trial accepted key 1 but encountered repeated I2C software-timeout/hardware-NACK
+  failures during the first motion and stopped safely at `508 ms` with `/OE HIGH`; no reboot or
+  stack overflow occurred, and keys 2--4 were not sent.
+- Among tested candidates, `100/240/100 ms` is currently the fastest profile completing all four
+  keys, but its 7 recoverable NACKs mean that no reliable sweet spot has yet been established.
+
+UART-parameter sweet-spot candidate, 20,120,300,120 (2026-09-13):
+- The generic firmware accepted runtime profile syntax `demo quad N 20,120,300,120`; no reflashing
+  was needed for this parameter change.
+- Unloaded `1→2→3→4` completed 4/4. Final stats were
+  `logical=282 attempts=282 success=282 nack=0 timeout=0 other=0 retries=0 recovered_after_retry=0 terminal_failures=0`.
+  The runner sent `stop` and confirmed `/OE HIGH`.
+- This is the current sweet-spot candidate: substantially faster than the former slow profile while
+  avoiding the failures seen at 20 ms and 80/180/80 ms. It is not yet a loaded or long-duration proof.
+
+Repeated UART sweet-spot verification (2026-09-13):
+- The same runtime profile `20,120,300,120` was run for 3 consecutive cycles (12 steps) without
+  reflashing. All 12 keys were accepted and completed; final stats were
+  `logical=613 attempts=617 success=613 nack=4 timeout=0 other=0 retries=4 recovered_after_retry=4 terminal_failures=0`.
+- No reboot, stack overflow, or terminal motion stop occurred. The four NACKs were recoverable,
+  so this is a strong unloaded candidate but not a zero-error or loaded acceptance.
+- The source-default sweet-spot image was then flashed once; all three regions reported `Hash of data
+  verified`, and the board was left in its boot-safe `/OE HIGH` state.
+
+Loaded sweet-spot trial (2026-09-13):
+- Using the default `20 mm / 120 / 300 / 120 ms` profile under load, keys 1 and 2 completed. RR/key 3
+  had recoverable timeout/NACK events; LR/key 4 then exhausted retries and the firmware stopped at
+  `423 ms` with `/OE HIGH`.
+- No reset or stack overflow occurred. The loaded sweet spot therefore failed the four-leg acceptance;
+  the unloaded 12-step result cannot be used as a load-safety guarantee.
+[QUAD_TRIAL] USB serial connection ready
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x8 (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2820,len:0x14f0
+load:0x403c8700,len:0xd24
+load:0x403cb700,len:0x2eec
+entry 0x403c8924
+I (24) boot: ESP-IDF v5.5.5 2nd stage bootloader
+I (25) boot: compile time Sep 13 2026 13:15:34
+I (25) boot: Multicore bootloader
+I (25) boot: chip revision: v0.2
+I (28) boot: efuse block revision: v1.4
+I (31) boot.esp32s3: Boot SPI Speed : 80MHz
+I (35) boot.esp32s3: SPI Mode       : DIO
+I (39) boot.esp32s3: SPI Flash Size : 16MB
+I (43) boot: Enabling RNG early entropy source...
+I (47) boot: Partition Table:
+I (50) boot: ## Label            Usage          Type ST Offset   Length
+I (56) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (63) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (69) boot:  2 factory          factory app      00 00 00010000 00100000
+I (76) boot: End of partition table
+I (79) esp_image: segment 0: paddr=00010020 vaddr=3c0a0020 size=237d4h (145364) map
+I (113) esp_image: segment 1: paddr=000337fc vaddr=3fc9ac00 size=04e8ch ( 20108) load
+I (118) esp_image: segment 2: paddr=00038690 vaddr=40374000 size=07988h ( 31112) load
+I (125) esp_image: segment 3: paddr=00040020 vaddr=42000020 size=96970h (616816) map
+I (238) esp_image: segment 4: paddr=000d6998 vaddr=4037b988 size=0f238h ( 62008) load
+I (252) esp_image: segment 5: paddr=000e5bd8 vaddr=50000000 size=00020h (    32) load
+I (261) boot: Loaded app from partition at offset 0x10000
+I (262) boot: Disabling RNG early entropy source...
+I (272) cpu_start: Multicore app
+I (281) cpu_start: GPIO 44 and 43 are used as console UART I/O pins
+I (281) cpu_start: Pro cpu start user code
+I (282) cpu_start: cpu freq: 160000000 Hz
+I (283) app_init: Application information:
+I (287) app_init: Project name:     niulai_servo_zero_test
+I (292) app_init: App version:      8898101-dirty
+I (297) app_init: Compile time:     Sep 13 2026 13:15:37
+I (302) app_init: ELF file SHA256:  bb80a77a9...
+I (306) app_init: ESP-IDF:          v5.5.5
+I (310) efuse_init: Min chip rev:     v0.0
+I (314) efuse_init: Max chip rev:     v0.99
+I (318) efuse_init: Chip rev:         v0.2
+I (322) heap_init: Initializing. RAM available for dynamic allocation:
+I (328) heap_init: At 3FCC7B18 len 00021BF8 (134 KiB): RAM
+I (333) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM
+I (338) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM
+I (343) heap_init: At 600FE000 len 00001FE8 (7 KiB): RTCRAM
+I (350) spi_flash: detected chip: boya
+I (352) spi_flash: flash io: dio
+I (355) sleep_gpio: Configure to isolate all GPIO pins in sleep state
+I (361) sleep_gpio: Enable automatic switching of GPIO sleep configuration
+I (368) main_task: Started on CPU0
+I (398) main_task: Calling app_main()
+W (398) servo_zero: /OE HIGH: outputs disabled during initialization
+D (418) i2c.common: new bus(0) at 0x3fcea658
+D (418) i2c.common: bus clock source frequency: 40000000hz
+W (428) servo_zero: I2C device ACK at 0x40 (configured PCA9685)
+W (438) servo_zero: I2C scan found 1 device(s)
+W (448) servo_zero: CH0-CH7 READY at 50 Hz PWM / 400000 Hz I2C; /OE HIGH; type run to enable; CH8-CH15 FULL_OFF
+I (448) pp: pp rom version: e7ae62f
+I (448) net80211: net80211 rom version: e7ae62f
+I (458) wifi:wifi driver task: 3fcdb93c, prio:23, stack:6656, core=0
+I (468) wifi:wifi firmware version: b9f67df
+I (468) wifi:wifi certification version: v7.0
+I (468) wifi:config NVS flash: enabled
+I (468) wifi:config nano formatting: disabled
+I (468) wifi:Init data frame dynamic rx buffer num: 32
+I (478) wifi:Init static rx mgmt buffer num: 5
+I (478) wifi:Init management short buffer num: 32
+I (488) wifi:Init dynamic tx buffer num: 32
+I (488) wifi:Init static tx FG buffer num: 2
+I (488) wifi:Init static rx buffer size: 1600
+I (498) wifi:Init static rx buffer num: 10
+I (498) wifi:Init dynamic rx buffer num: 32
+I (508) wifi_init: rx ba win: 6
+I (508) wifi_init: accept mbox: 6
+I (508) wifi_init: tcpip mbox: 32
+I (518) wifi_init: udp mbox: 6
+I (518) wifi_init: tcp mbox: 6
+I (518) wifi_init: tcp tx win: 5760
+I (518) wifi_init: tcp rx win: 5760
+I (528) wifi_init: tcp mss: 1440
+I (528) wifi_init: WiFi IRAM OP enabled
+I (528) wifi_init: WiFi RX IRAM OP enabled
+I (538) phy_init: phy_version 712,87e8c20e,Apr 13 2026,18:51:10
+I (578) wifi:mode : softAP (AA:BB:CC:DD:EE:FF)
+I (588) wifi:Total power save buffer number: 16
+I (588) wifi:Init max length of beacon: 752/752
+I (588) wifi:Init max length of beacon: 752/752
+I (588) esp_netif_lwip: DHCP server started on interface WIFI_AP_DEF with IP: 192.168.4.1
+W (588) tcp_diag: TCP_DIAG_AP SSID=牛来快跑-DIAG IP=192.168.4.1 PORT=3333
+W (598) tcp_diag: TCP_DIAG_LISTEN port=3333
+W (608) servo_zero: ASCII calibration ready; type help
+W (2028) servo_zero: UART stop -> /OE HIGH
+W (2128) servo_zero: all-leg rest mode started; wait for rest pose reached before pressing 1..4
+W (4548) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+
+[QUAD_TRIAL] step 1/4: key=1
+W (4698) servo_zero: HIGH RISK quad demo started: key=1 leg=RF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH0/1 candidate q->us; send stop
+W (4708) servo_zero: quad demo key=1 accepted: active=RF; other legs use independent stance targets and one atomic CH0-CH7 frame
+E (5688) i2c.master: I2C software timeout
+W (5688) servo_zero: active hold atomic frame I2C failed on attempt 1/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+W (5988) servo_zero: quad demo complete; soft_limit_legs=0x03; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 2/4: key=2
+W (6128) servo_zero: HIGH RISK quad demo started: key=2 leg=LF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH2/3 candidate q->us; send stop
+W (6138) servo_zero: quad demo key=2 accepted: active=LF; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (7428) servo_zero: quad demo complete; soft_limit_legs=0x00; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 3/4: key=3
+W (7468) servo_zero: HIGH RISK quad demo started: key=3 leg=RR; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH4/5 candidate q->us; send stop
+W (7478) servo_zero: quad demo key=3 accepted: active=RR; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (8768) servo_zero: quad demo complete; soft_limit_legs=0x08; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 4/4: key=4
+W (8808) servo_zero: HIGH RISK quad demo started: key=4 leg=LR; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH6/7 candidate q->us; send stop
+W (8818) servo_zero: quad demo key=4 accepted: active=LR; other legs use independent stance targets and one atomic CH0-CH7 frame
+E (9868) i2c.master: I2C software timeout
+W (9868) servo_zero: active hold atomic frame I2C failed on attempt 1/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+W (10108) servo_zero: quad demo complete; soft_limit_legs=0x00; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+W (10138) servo_zero: UART stop -> /OE HIGH
+W (10148) servo_zero: I2C stats: logical=398 attempts=400 success=398 nack=2 timeout=0 other=0 retries=2 recovered_after_retry=2 terminal_failures=0
+
+[QUAD_TRIAL] completed
+[QUAD_TRIAL] USB serial connection ready
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x9 (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2820,len:0x14f0
+load:0x403c8700,len:0xd24
+load:0x403cb700,len:0x2eec
+entry 0x403c8924
+I (24) boot: ESP-IDF v5.5.5 2nd stage bootloader
+I (25) boot: compile time Sep 13 2026 13:15:34
+I (25) boot: Multicore bootloader
+I (25) boot: chip revision: v0.2
+I (28) boot: efuse block revision: v1.4
+I (31) boot.esp32s3: Boot SPI Speed : 80MHz
+I (35) boot.esp32s3: SPI Mode       : DIO
+I (39) boot.esp32s3: SPI Flash Size : 16MB
+I (43) boot: Enabling RNG early entropy source...
+I (47) boot: Partition Table:
+I (50) boot: ## Label            Usage          Type ST Offset   Length
+I (56) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (63) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (69) boot:  2 factory          factory app      00 00 00010000 00100000
+I (76) boot: End of partition table
+I (79) esp_image: segment 0: paddr=00010020 vaddr=3c0a0020 size=237d4h (145364) map
+I (113) esp_image: segment 1: paddr=000337fc vaddr=3fc9ac00 size=04e8ch ( 20108) load
+I (118) esp_image: segment 2: paddr=00038690 vaddr=40374000 size=07988h ( 31112) load
+I (125) esp_image: segment 3: paddr=00040020 vaddr=42000020 size=96970h (616816) map
+I (238) esp_image: segment 4: paddr=000d6998 vaddr=4037b988 size=0f238h ( 62008) load
+I (252) esp_image: segment 5: paddr=000e5bd8 vaddr=50000000 size=00020h (    32) load
+I (261) boot: Loaded app from partition at offset 0x10000
+I (262) boot: Disabling RNG early entropy source...
+I (272) cpu_start: Multicore app
+I (281) cpu_start: GPIO 44 and 43 are used as console UART I/O pins
+I (281) cpu_start: Pro cpu start user code
+I (282) cpu_start: cpu freq: 160000000 Hz
+I (283) app_init: Application information:
+I (287) app_init: Project name:     niulai_servo_zero_test
+I (292) app_init: App version:      8898101-dirty
+I (297) app_init: Compile time:     Sep 13 2026 13:15:37
+I (302) app_init: ELF file SHA256:  bb80a77a9...
+I (306) app_init: ESP-IDF:          v5.5.5
+I (310) efuse_init: Min chip rev:     v0.0
+I (314) efuse_init: Max chip rev:     v0.99
+I (318) efuse_init: Chip rev:         v0.2
+I (322) heap_init: Initializing. RAM available for dynamic allocation:
+I (328) heap_init: At 3FCC7B18 len 00021BF8 (134 KiB): RAM
+I (333) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM
+I (338) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM
+I (343) heap_init: At 600FE000 len 00001FE8 (7 KiB): RTCRAM
+I (350) spi_flash: detected chip: boya
+I (352) spi_flash: flash io: dio
+I (355) sleep_gpio: Configure to isolate all GPIO pins in sleep state
+I (361) sleep_gpio: Enable automatic switching of GPIO sleep configuration
+I (368) main_task: Started on CPU0
+I (398) main_task: Calling app_main()
+W (398) servo_zero: /OE HIGH: outputs disabled during initialization
+D (418) i2c.common: new bus(0) at 0x3fcea658
+D (418) i2c.common: bus clock source frequency: 40000000hz
+W (428) servo_zero: I2C device ACK at 0x40 (configured PCA9685)
+W (438) servo_zero: I2C scan found 1 device(s)
+W (448) servo_zero: CH0-CH7 READY at 50 Hz PWM / 400000 Hz I2C; /OE HIGH; type run to enable; CH8-CH15 FULL_OFF
+I (448) pp: pp rom version: e7ae62f
+I (448) net80211: net80211 rom version: e7ae62f
+I (458) wifi:wifi driver task: 3fcdb93c, prio:23, stack:6656, core=0
+I (468) wifi:wifi firmware version: b9f67df
+I (468) wifi:wifi certification version: v7.0
+I (468) wifi:config NVS flash: enabled
+I (468) wifi:config nano formatting: disabled
+I (468) wifi:Init data frame dynamic rx buffer num: 32
+I (478) wifi:Init static rx mgmt buffer num: 5
+I (478) wifi:Init management short buffer num: 32
+I (488) wifi:Init dynamic tx buffer num: 32
+I (488) wifi:Init static tx FG buffer num: 2
+I (488) wifi:Init static rx buffer size: 1600
+I (498) wifi:Init static rx buffer num: 10
+I (498) wifi:Init dynamic rx buffer num: 32
+I (508) wifi_init: rx ba win: 6
+I (508) wifi_init: accept mbox: 6
+I (508) wifi_init: tcpip mbox: 32
+I (518) wifi_init: udp mbox: 6
+I (518) wifi_init: tcp mbox: 6
+I (518) wifi_init: tcp tx win: 5760
+I (518) wifi_init: tcp rx win: 5760
+I (528) wifi_init: tcp mss: 1440
+I (528) wifi_init: WiFi IRAM OP enabled
+I (528) wifi_init: WiFi RX IRAM OP enabled
+I (538) phy_init: phy_version 712,87e8c20e,Apr 13 2026,18:51:10
+I (578) wifi:mode : softAP (AA:BB:CC:DD:EE:FF)
+I (578) wifi:Total power save buffer number: 16
+I (578) wifi:Init max length of beacon: 752/752
+I (588) wifi:Init max length of beacon: 752/752
+I (588) esp_netif_lwip: DHCP server started on interface WIFI_AP_DEF with IP: 192.168.4.1
+W (588) tcp_diag: TCP_DIAG_AP SSID=牛来快跑-DIAG IP=192.168.4.1 PORT=3333
+W (598) tcp_diag: TCP_DIAG_LISTEN port=3333
+W (608) servo_zero: ASCII calibration ready; type help
+W (2008) servo_zero: UART stop -> /OE HIGH
+W (2108) servo_zero: all-leg rest mode started; wait for rest pose reached before pressing 1..4
+W (4528) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+
+[QUAD_TRIAL] step 1/12: key=1
+W (4678) servo_zero: HIGH RISK quad demo started: key=1 leg=RF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH0/1 candidate q->us; send stop
+W (4688) servo_zero: quad demo key=1 accepted: active=RF; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (5968) servo_zero: quad demo complete; soft_limit_legs=0x03; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 2/12: key=2
+W (6108) servo_zero: HIGH RISK quad demo started: key=2 leg=LF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH2/3 candidate q->us; send stop
+W (6118) servo_zero: quad demo key=2 accepted: active=LF; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (7408) servo_zero: quad demo complete; soft_limit_legs=0x00; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 3/12: key=3
+W (7448) servo_zero: HIGH RISK quad demo started: key=3 leg=RR; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH4/5 candidate q->us; send stop
+W (7458) servo_zero: quad demo key=3 accepted: active=RR; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (8748) servo_zero: quad demo complete; soft_limit_legs=0x08; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 4/12: key=4
+W (8788) servo_zero: HIGH RISK quad demo started: key=4 leg=LR; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH6/7 candidate q->us; send stop
+W (8798) servo_zero: quad demo key=4 accepted: active=LR; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (10088) servo_zero: quad demo complete; soft_limit_legs=0x00; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 5/12: key=1
+W (10288) servo_zero: HIGH RISK quad demo started: key=1 leg=RF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH0/1 candidate q->us; send stop
+W (10298) servo_zero: quad demo key=1 accepted: active=RF; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (11598) servo_zero: quad demo complete; soft_limit_legs=0x02; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 6/12: key=2
+W (11738) servo_zero: HIGH RISK quad demo started: key=2 leg=LF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH2/3 candidate q->us; send stop
+W (11748) servo_zero: quad demo key=2 accepted: active=LF; other legs use independent stance targets and one atomic CH0-CH7 frame
+D (12608) i2c.master: I2C hardware NACK detected
+D (12608) i2c.master: I2C transaction unexpected nack detected
+W (12608) servo_zero: active hold atomic frame I2C failed on attempt 1/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+W (13028) servo_zero: quad demo complete; soft_limit_legs=0x00; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 7/12: key=3
+W (13068) servo_zero: HIGH RISK quad demo started: key=3 leg=RR; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH4/5 candidate q->us; send stop
+W (13078) servo_zero: quad demo key=3 accepted: active=RR; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (14368) servo_zero: quad demo complete; soft_limit_legs=0x08; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 8/12: key=4
+W (14448) servo_zero: HIGH RISK quad demo started: key=4 leg=LR; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH6/7 candidate q->us; send stop
+W (14458) servo_zero: quad demo key=4 accepted: active=LR; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (15758) servo_zero: quad demo complete; soft_limit_legs=0x01; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 9/12: key=1
+W (15968) servo_zero: HIGH RISK quad demo started: key=1 leg=RF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH0/1 candidate q->us; send stop
+W (15978) servo_zero: quad demo key=1 accepted: active=RF; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (17278) servo_zero: quad demo complete; soft_limit_legs=0x02; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 10/12: key=2
+W (17418) servo_zero: HIGH RISK quad demo started: key=2 leg=LF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH2/3 candidate q->us; send stop
+W (17428) servo_zero: quad demo key=2 accepted: active=LF; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (18708) servo_zero: quad demo complete; soft_limit_legs=0x04; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 11/12: key=3
+W (18748) servo_zero: HIGH RISK quad demo started: key=3 leg=RR; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH4/5 candidate q->us; send stop
+W (18758) servo_zero: quad demo key=3 accepted: active=RR; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (20048) servo_zero: quad demo complete; soft_limit_legs=0x08; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 12/12: key=4
+W (20158) servo_zero: HIGH RISK quad demo started: key=4 leg=LR; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH6/7 candidate q->us; send stop
+W (20168) servo_zero: quad demo key=4 accepted: active=LR; other legs use independent stance targets and one atomic CH0-CH7 frame
+E (21048) i2c.master: I2C software timeout
+W (21048) servo_zero: active hold atomic frame I2C failed on attempt 1/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+W (21458) servo_zero: quad demo complete; soft_limit_legs=0x01; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+W (21478) servo_zero: UART stop -> /OE HIGH
+W (21488) servo_zero: I2C stats: logical=962 attempts=964 success=962 nack=2 timeout=0 other=0 retries=2 recovered_after_retry=2 terminal_failures=0
+
+[QUAD_TRIAL] completed
+[QUAD_TRIAL] USB serial connection ready
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x9 (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2820,len:0x14f0
+load:0x403c8700,len:0xd24
+load:0x403cb700,len:0x2eec
+entry 0x403c8924
+I (24) boot: ESP-IDF v5.5.5 2nd stage bootloader
+I (25) boot: compile time Sep 13 2026 13:15:34
+I (25) boot: Multicore bootloader
+I (25) boot: chip revision: v0.2
+I (28) boot: efuse block revision: v1.4
+I (31) boot.esp32s3: Boot SPI Speed : 80MHz
+I (35) boot.esp32s3: SPI Mode       : DIO
+I (39) boot.esp32s3: SPI Flash Size : 16MB
+I (43) boot: Enabling RNG early entropy source...
+I (47) boot: Partition Table:
+I (50) boot: ## Label            Usage          Type ST Offset   Length
+I (56) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (63) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (69) boot:  2 factory          factory app      00 00 00010000 00100000
+I (76) boot: End of partition table
+I (79) esp_image: segment 0: paddr=00010020 vaddr=3c0a0020 size=237d4h (145364) map
+I (113) esp_image: segment 1: paddr=000337fc vaddr=3fc9ac00 size=04e8ch ( 20108) load
+I (118) esp_image: segment 2: paddr=00038690 vaddr=40374000 size=07988h ( 31112) load
+I (125) esp_image: segment 3: paddr=00040020 vaddr=42000020 size=96970h (616816) map
+I (238) esp_image: segment 4: paddr=000d6998 vaddr=4037b988 size=0f238h ( 62008) load
+I (252) esp_image: segment 5: paddr=000e5bd8 vaddr=50000000 size=00020h (    32) load
+I (261) boot: Loaded app from partition at offset 0x10000
+I (262) boot: Disabling RNG early entropy source...
+I (272) cpu_start: Multicore app
+I (281) cpu_start: GPIO 44 and 43 are used as console UART I/O pins
+I (281) cpu_start: Pro cpu start user code
+I (282) cpu_start: cpu freq: 160000000 Hz
+I (283) app_init: Application information:
+I (287) app_init: Project name:     niulai_servo_zero_test
+I (292) app_init: App version:      8898101-dirty
+I (297) app_init: Compile time:     Sep 13 2026 13:15:37
+I (302) app_init: ELF file SHA256:  bb80a77a9...
+I (306) app_init: ESP-IDF:          v5.5.5
+I (310) efuse_init: Min chip rev:     v0.0
+I (314) efuse_init: Max chip rev:     v0.99
+I (318) efuse_init: Chip rev:         v0.2
+I (322) heap_init: Initializing. RAM available for dynamic allocation:
+I (328) heap_init: At 3FCC7B18 len 00021BF8 (134 KiB): RAM
+I (333) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM
+I (338) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM
+I (343) heap_init: At 600FE000 len 00001FE8 (7 KiB): RTCRAM
+I (350) spi_flash: detected chip: boya
+I (352) spi_flash: flash io: dio
+I (355) sleep_gpio: Configure to isolate all GPIO pins in sleep state
+I (361) sleep_gpio: Enable automatic switching of GPIO sleep configuration
+I (368) main_task: Started on CPU0
+I (398) main_task: Calling app_main()
+W (398) servo_zero: /OE HIGH: outputs disabled during initialization
+D (418) i2c.common: new bus(0) at 0x3fcea658
+D (418) i2c.common: bus clock source frequency: 40000000hz
+W (428) servo_zero: I2C device ACK at 0x40 (configured PCA9685)
+W (438) servo_zero: I2C scan found 1 device(s)
+W (448) servo_zero: CH0-CH7 READY at 50 Hz PWM / 400000 Hz I2C; /OE HIGH; type run to enable; CH8-CH15 FULL_OFF
+I (448) pp: pp rom version: e7ae62f
+I (448) net80211: net80211 rom version: e7ae62f
+I (458) wifi:wifi driver task: 3fcdb93c, prio:23, stack:6656, core=0
+I (468) wifi:wifi firmware version: b9f67df
+I (468) wifi:wifi certification version: v7.0
+I (468) wifi:config NVS flash: enabled
+I (468) wifi:config nano formatting: disabled
+I (468) wifi:Init data frame dynamic rx buffer num: 32
+I (478) wifi:Init static rx mgmt buffer num: 5
+I (478) wifi:Init management short buffer num: 32
+I (488) wifi:Init dynamic tx buffer num: 32
+I (488) wifi:Init static tx FG buffer num: 2
+I (488) wifi:Init static rx buffer size: 1600
+I (498) wifi:Init static rx buffer num: 10
+I (498) wifi:Init dynamic rx buffer num: 32
+I (508) wifi_init: rx ba win: 6
+I (508) wifi_init: accept mbox: 6
+I (508) wifi_init: tcpip mbox: 32
+I (518) wifi_init: udp mbox: 6
+I (518) wifi_init: tcp mbox: 6
+I (518) wifi_init: tcp tx win: 5760
+I (518) wifi_init: tcp rx win: 5760
+I (528) wifi_init: tcp mss: 1440
+I (528) wifi_init: WiFi IRAM OP enabled
+I (528) wifi_init: WiFi RX IRAM OP enabled
+I (538) phy_init: phy_version 712,87e8c20e,Apr 13 2026,18:51:10
+I (578) wifi:mode : softAP (AA:BB:CC:DD:EE:FF)
+I (578) wifi:Total power save buffer number: 16
+I (578) wifi:Init max length of beacon: 752/752
+I (578) wifi:Init max length of beacon: 752/752
+I (588) esp_netif_lwip: DHCP server started on interface WIFI_AP_DEF with IP: 192.168.4.1
+W (588) tcp_diag: TCP_DIAG_AP SSID=牛来快跑-DIAG IP=192.168.4.1 PORT=3333
+W (598) tcp_diag: TCP_DIAG_LISTEN port=3333
+W (598) servo_zero: ASCII calibration ready; type help
+W (2008) servo_zero: UART stop -> /OE HIGH
+W (2118) servo_zero: all-leg rest mode started; wait for rest pose reached before pressing 1..4
+W (4528) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+
+[QUAD_TRIAL] step 1/8: key=1
+W (4658) servo_zero: HIGH RISK quad demo started: key=1 leg=RF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/200/500/200 ms; CH0/1 candidate q->us; send stop
+W (4668) servo_zero: quad demo key=1 accepted: active=RF; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (5748) servo_zero: quad demo complete; soft_limit_legs=0x03; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 2/8: key=2
+W (5868) servo_zero: HIGH RISK quad demo started: key=2 leg=LF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/200/500/200 ms; CH2/3 candidate q->us; send stop
+W (5878) servo_zero: quad demo key=2 accepted: active=LF; other legs use independent stance targets and one atomic CH0-CH7 frame
+D (6708) i2c.master: I2C hardware NACK detected
+D (6708) i2c.master: I2C transaction unexpected nack detected
+W (6708) servo_zero: active hold atomic frame I2C failed on attempt 1/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+W (6968) servo_zero: quad demo complete; soft_limit_legs=0x00; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 3/8: key=3
+W (7008) servo_zero: HIGH RISK quad demo started: key=3 leg=RR; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/200/500/200 ms; CH4/5 candidate q->us; send stop
+W (7018) servo_zero: quad demo key=3 accepted: active=RR; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (8108) servo_zero: quad demo complete; soft_limit_legs=0x08; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 4/8: key=4
+W (8148) servo_zero: HIGH RISK quad demo started: key=4 leg=LR; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/200/500/200 ms; CH6/7 candidate q->us; send stop
+W (8158) servo_zero: quad demo key=4 accepted: active=LR; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (9248) servo_zero: quad demo complete; soft_limit_legs=0x00; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 5/8: key=1
+W (9418) servo_zero: HIGH RISK quad demo started: key=1 leg=RF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/200/500/200 ms; CH0/1 candidate q->us; send stop
+W (9428) servo_zero: quad demo key=1 accepted: active=RF; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (10508) servo_zero: quad demo complete; soft_limit_legs=0x02; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 6/8: key=2
+W (10628) servo_zero: HIGH RISK quad demo started: key=2 leg=LF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/200/500/200 ms; CH2/3 candidate q->us; send stop
+W (10638) servo_zero: quad demo key=2 accepted: active=LF; other legs use independent stance targets and one atomic CH0-CH7 frame
+D (11448) i2c.master: I2C hardware NACK detected
+D (11448) i2c.master: I2C transaction unexpected nack detected
+W (11448) servo_zero: active hold atomic frame I2C failed on attempt 1/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+W (11728) servo_zero: quad demo complete; soft_limit_legs=0x00; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 7/8: key=3
+W (11758) servo_zero: HIGH RISK quad demo started: key=3 leg=RR; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/200/500/200 ms; CH4/5 candidate q->us; send stop
+W (11768) servo_zero: quad demo key=3 accepted: active=RR; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (12848) servo_zero: quad demo complete; soft_limit_legs=0x08; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 8/8: key=4
+W (12918) servo_zero: HIGH RISK quad demo started: key=4 leg=LR; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/200/500/200 ms; CH6/7 candidate q->us; send stop
+W (12928) servo_zero: quad demo key=4 accepted: active=LR; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (14008) servo_zero: quad demo complete; soft_limit_legs=0x01; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+W (14038) servo_zero: UART stop -> /OE HIGH
+W (14048) servo_zero: I2C stats: logical=595 attempts=597 success=595 nack=2 timeout=0 other=0 retries=2 recovered_after_retry=2 terminal_failures=0
+
+[QUAD_TRIAL] completed
+[QUAD_TRIAL] USB serial connection ready
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x8 (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2820,len:0x14f0
+load:0x403c8700,len:0xd24
+load:0x403cb700,len:0x2eec
+entry 0x403c8924
+I (24) boot: ESP-IDF v5.5.5 2nd stage bootloader
+I (25) boot: compile time Sep 13 2026 13:15:34
+I (25) boot: Multicore bootloader
+I (25) boot: chip revision: v0.2
+I (28) boot: efuse block revision: v1.4
+I (31) boot.esp32s3: Boot SPI Speed : 80MHz
+I (35) boot.esp32s3: SPI Mode       : DIO
+I (39) boot.esp32s3: SPI Flash Size : 16MB
+I (43) boot: Enabling RNG early entropy source...
+I (47) boot: Partition Table:
+I (50) boot: ## Label            Usage          Type ST Offset   Length
+I (56) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (63) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (69) boot:  2 factory          factory app      00 00 00010000 00100000
+I (76) boot: End of partition table
+I (79) esp_image: segment 0: paddr=00010020 vaddr=3c0a0020 size=237d4h (145364) map
+I (113) esp_image: segment 1: paddr=000337fc vaddr=3fc9ac00 size=04e8ch ( 20108) load
+I (118) esp_image: segment 2: paddr=00038690 vaddr=40374000 size=07988h ( 31112) load
+I (125) esp_image: segment 3: paddr=00040020 vaddr=42000020 size=96970h (616816) map
+I (238) esp_image: segment 4: paddr=000d6998 vaddr=4037b988 size=0f238h ( 62008) load
+I (252) esp_image: segment 5: paddr=000e5bd8 vaddr=50000000 size=00020h (    32) load
+I (261) boot: Loaded app from partition at offset 0x10000
+I (262) boot: Disabling RNG early entropy source...
+I (272) cpu_start: Multicore app
+I (281) cpu_start: GPIO 44 and 43 are used as console UART I/O pins
+I (281) cpu_start: Pro cpu start user code
+I (282) cpu_start: cpu freq: 160000000 Hz
+I (283) app_init: Application information:
+I (287) app_init: Project name:     niulai_servo_zero_test
+I (292) app_init: App version:      8898101-dirty
+I (297) app_init: Compile time:     Sep 13 2026 13:15:37
+I (302) app_init: ELF file SHA256:  bb80a77a9...
+I (306) app_init: ESP-IDF:          v5.5.5
+I (310) efuse_init: Min chip rev:     v0.0
+I (314) efuse_init: Max chip rev:     v0.99
+I (318) efuse_init: Chip rev:         v0.2
+I (322) heap_init: Initializing. RAM available for dynamic allocation:
+I (328) heap_init: At 3FCC7B18 len 00021BF8 (134 KiB): RAM
+I (333) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM
+I (338) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM
+I (343) heap_init: At 600FE000 len 00001FE8 (7 KiB): RTCRAM
+I (350) spi_flash: detected chip: boya
+I (352) spi_flash: flash io: dio
+I (355) sleep_gpio: Configure to isolate all GPIO pins in sleep state
+I (361) sleep_gpio: Enable automatic switching of GPIO sleep configuration
+I (368) main_task: Started on CPU0
+I (398) main_task: Calling app_main()
+W (398) servo_zero: /OE HIGH: outputs disabled during initialization
+D (418) i2c.common: new bus(0) at 0x3fcea658
+D (418) i2c.common: bus clock source frequency: 40000000hz
+W (428) servo_zero: I2C device ACK at 0x40 (configured PCA9685)
+W (438) servo_zero: I2C scan found 1 device(s)
+W (448) servo_zero: CH0-CH7 READY at 50 Hz PWM / 400000 Hz I2C; /OE HIGH; type run to enable; CH8-CH15 FULL_OFF
+I (448) pp: pp rom version: e7ae62f
+I (448) net80211: net80211 rom version: e7ae62f
+I (458) wifi:wifi driver task: 3fcdb93c, prio:23, stack:6656, core=0
+I (468) wifi:wifi firmware version: b9f67df
+I (468) wifi:wifi certification version: v7.0
+I (468) wifi:config NVS flash: enabled
+I (468) wifi:config nano formatting: disabled
+I (468) wifi:Init data frame dynamic rx buffer num: 32
+I (478) wifi:Init static rx mgmt buffer num: 5
+I (478) wifi:Init management short buffer num: 32
+I (488) wifi:Init dynamic tx buffer num: 32
+I (488) wifi:Init static tx FG buffer num: 2
+I (488) wifi:Init static rx buffer size: 1600
+I (498) wifi:Init static rx buffer num: 10
+I (498) wifi:Init dynamic rx buffer num: 32
+I (508) wifi_init: rx ba win: 6
+I (508) wifi_init: accept mbox: 6
+I (508) wifi_init: tcpip mbox: 32
+I (518) wifi_init: udp mbox: 6
+I (518) wifi_init: tcp mbox: 6
+I (518) wifi_init: tcp tx win: 5760
+I (518) wifi_init: tcp rx win: 5760
+I (528) wifi_init: tcp mss: 1440
+I (528) wifi_init: WiFi IRAM OP enabled
+I (528) wifi_init: WiFi RX IRAM OP enabled
+I (538) phy_init: phy_version 712,87e8c20e,Apr 13 2026,18:51:10
+I (578) wifi:mode : softAP (AA:BB:CC:DD:EE:FF)
+I (588) wifi:Total power save buffer number: 16
+I (588) wifi:Init max length of beacon: 752/752
+I (588) wifi:Init max length of beacon: 752/752
+W (588) tcp_diag: TCP_DIAG_AP SSID=牛来快跑-DIAG IP=192.168.4.1 PORT=3333
+I (588) esp_netif_lwip: DHCP server started on interface WIFI_AP_DEF with IP: 192.168.4.1
+W (608) tcp_diag: TCP_DIAG_LISTEN port=3333
+W (608) servo_zero: ASCII calibration ready; type help
+W (2008) servo_zero: UART stop -> /OE HIGH
+W (2118) servo_zero: all-leg rest mode started; wait for rest pose reached before pressing 1..4
+W (4528) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+
+[QUAD_TRIAL] step 1/4: key=1
+W (4638) servo_zero: HIGH RISK quad demo started: key=1 leg=RF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/160/400/160 ms; CH0/1 candidate q->us; send stop
+W (4648) servo_zero: quad demo key=1 accepted: active=RF; other legs use independent stance targets and one atomic CH0-CH7 frame
+D (5268) i2c.master: I2C hardware NACK detected
+D (5268) i2c.master: I2C transaction unexpected nack detected
+W (5268) servo_zero: active hold atomic frame I2C failed on attempt 1/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+D (5288) i2c.master: I2C hardware NACK detected
+D (5288) i2c.master: I2C transaction unexpected nack detected
+W (5288) servo_zero: active hold atomic frame I2C failed on attempt 1/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+D (5298) i2c.master: I2C hardware NACK detected
+D (5298) i2c.master: I2C transaction unexpected nack detected
+W (5308) servo_zero: active hold atomic frame I2C failed on attempt 2/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+D (5318) i2c.master: I2C hardware NACK detected
+D (5318) i2c.master: I2C transaction unexpected nack detected
+W (5328) servo_zero: active hold atomic frame I2C failed on attempt 3/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+D (5338) i2c.master: I2C hardware NACK detected
+D (5338) i2c.master: I2C transaction unexpected nack detected
+W (5348) servo_zero: active hold atomic frame I2C failed after 4 attempts: ESP_ERR_INVALID_STATE (0x103)
+E (5358) servo_zero: quad demo stopped at 645 ms: invalid pose or I2C failure; /OE HIGH
+W (5388) servo_zero: UART stop -> /OE HIGH
+[QUAD_TRIAL] USB serial connection ready
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x8 (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2820,len:0x14f0
+load:0x403c8700,len:0xd24
+load:0x403cb700,len:0x2eec
+entry 0x403c8924
+I (24) boot: ESP-IDF v5.5.5 2nd stage bootloader
+I (25) boot: compile time Sep 13 2026 13:15:34
+I (25) boot: Multicore bootloader
+I (25) boot: chip revision: v0.2
+I (28) boot: efuse block revision: v1.4
+I (31) boot.esp32s3: Boot SPI Speed : 80MHz
+I (35) boot.esp32s3: SPI Mode       : DIO
+I (39) boot.esp32s3: SPI Flash Size : 16MB
+I (43) boot: Enabling RNG early entropy source...
+I (47) boot: Partition Table:
+I (50) boot: ## Label            Usage          Type ST Offset   Length
+I (56) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (63) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (69) boot:  2 factory          factory app      00 00 00010000 00100000
+I (76) boot: End of partition table
+I (79) esp_image: segment 0: paddr=00010020 vaddr=3c0a0020 size=237d4h (145364) map
+I (113) esp_image: segment 1: paddr=000337fc vaddr=3fc9ac00 size=04e8ch ( 20108) load
+I (118) esp_image: segment 2: paddr=00038690 vaddr=40374000 size=07988h ( 31112) load
+I (125) esp_image: segment 3: paddr=00040020 vaddr=42000020 size=96970h (616816) map
+I (238) esp_image: segment 4: paddr=000d6998 vaddr=4037b988 size=0f238h ( 62008) load
+I (252) esp_image: segment 5: paddr=000e5bd8 vaddr=50000000 size=00020h (    32) load
+I (261) boot: Loaded app from partition at offset 0x10000
+I (262) boot: Disabling RNG early entropy source...
+I (272) cpu_start: Multicore app
+I (281) cpu_start: GPIO 44 and 43 are used as console UART I/O pins
+I (281) cpu_start: Pro cpu start user code
+I (282) cpu_start: cpu freq: 160000000 Hz
+I (283) app_init: Application information:
+I (287) app_init: Project name:     niulai_servo_zero_test
+I (292) app_init: App version:      8898101-dirty
+I (297) app_init: Compile time:     Sep 13 2026 13:15:37
+I (302) app_init: ELF file SHA256:  bb80a77a9...
+I (306) app_init: ESP-IDF:          v5.5.5
+I (310) efuse_init: Min chip rev:     v0.0
+I (314) efuse_init: Max chip rev:     v0.99
+I (318) efuse_init: Chip rev:         v0.2
+I (322) heap_init: Initializing. RAM available for dynamic allocation:
+I (328) heap_init: At 3FCC7B18 len 00021BF8 (134 KiB): RAM
+I (333) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM
+I (338) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM
+I (343) heap_init: At 600FE000 len 00001FE8 (7 KiB): RTCRAM
+I (350) spi_flash: detected chip: boya
+I (352) spi_flash: flash io: dio
+I (355) sleep_gpio: Configure to isolate all GPIO pins in sleep state
+I (361) sleep_gpio: Enable automatic switching of GPIO sleep configuration
+I (368) main_task: Started on CPU0
+I (398) main_task: Calling app_main()
+W (398) servo_zero: /OE HIGH: outputs disabled during initialization
+D (418) i2c.common: new bus(0) at 0x3fcea658
+D (418) i2c.common: bus clock source frequency: 40000000hz
+W (428) servo_zero: I2C device ACK at 0x40 (configured PCA9685)
+W (438) servo_zero: I2C scan found 1 device(s)
+W (448) servo_zero: CH0-CH7 READY at 50 Hz PWM / 400000 Hz I2C; /OE HIGH; type run to enable; CH8-CH15 FULL_OFF
+I (448) pp: pp rom version: e7ae62f
+I (448) net80211: net80211 rom version: e7ae62f
+I (458) wifi:wifi driver task: 3fcdb93c, prio:23, stack:6656, core=0
+I (468) wifi:wifi firmware version: b9f67df
+I (468) wifi:wifi certification version: v7.0
+I (468) wifi:config NVS flash: enabled
+I (468) wifi:config nano formatting: disabled
+I (468) wifi:Init data frame dynamic rx buffer num: 32
+I (478) wifi:Init static rx mgmt buffer num: 5
+I (478) wifi:Init management short buffer num: 32
+I (488) wifi:Init dynamic tx buffer num: 32
+I (488) wifi:Init static tx FG buffer num: 2
+I (488) wifi:Init static rx buffer size: 1600
+I (498) wifi:Init static rx buffer num: 10
+I (498) wifi:Init dynamic rx buffer num: 32
+I (508) wifi_init: rx ba win: 6
+I (508) wifi_init: accept mbox: 6
+I (508) wifi_init: tcpip mbox: 32
+I (518) wifi_init: udp mbox: 6
+I (518) wifi_init: tcp mbox: 6
+I (518) wifi_init: tcp tx win: 5760
+I (518) wifi_init: tcp rx win: 5760
+I (528) wifi_init: tcp mss: 1440
+I (528) wifi_init: WiFi IRAM OP enabled
+I (528) wifi_init: WiFi RX IRAM OP enabled
+I (538) phy_init: phy_version 712,87e8c20e,Apr 13 2026,18:51:10
+I (578) wifi:mode : softAP (AA:BB:CC:DD:EE:FF)
+I (578) wifi:Total power save buffer number: 16
+I (578) wifi:Init max length of beacon: 752/752
+I (588) wifi:Init max length of beacon: 752/752
+I (588) esp_netif_lwip: DHCP server started on interface WIFI_AP_DEF with IP: 192.168.4.1
+W (588) tcp_diag: TCP_DIAG_AP SSID=牛来快跑-DIAG IP=192.168.4.1 PORT=3333
+W (598) tcp_diag: TCP_DIAG_LISTEN port=3333
+W (608) servo_zero: ASCII calibration ready; type help
+W (2008) servo_zero: UART stop -> /OE HIGH
+W (2128) servo_zero: all-leg rest mode started; wait for rest pose reached before pressing 1..4
+W (4548) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+
+[QUAD_TRIAL] step 1/4: key=1
+W (4658) servo_zero: HIGH RISK quad demo started: key=1 leg=RF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/160/400/160 ms; CH0/1 candidate q->us; send stop
+W (4668) servo_zero: quad demo key=1 accepted: active=RF; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (5568) servo_zero: quad demo complete; soft_limit_legs=0x03; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 2/4: key=2
+W (5668) servo_zero: HIGH RISK quad demo started: key=2 leg=LF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/160/400/160 ms; CH2/3 candidate q->us; send stop
+W (5678) servo_zero: quad demo key=2 accepted: active=LF; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (6588) servo_zero: quad demo complete; soft_limit_legs=0x00; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 3/4: key=3
+W (6628) servo_zero: HIGH RISK quad demo started: key=3 leg=RR; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/160/400/160 ms; CH4/5 candidate q->us; send stop
+W (6638) servo_zero: quad demo key=3 accepted: active=RR; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (7528) servo_zero: quad demo complete; soft_limit_legs=0x08; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 4/4: key=4
+W (7568) servo_zero: HIGH RISK quad demo started: key=4 leg=LR; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/160/400/160 ms; CH6/7 candidate q->us; send stop
+W (7578) servo_zero: quad demo key=4 accepted: active=LR; other legs use independent stance targets and one atomic CH0-CH7 frame
+D (8308) i2c.master: I2C hardware NACK detected
+D (8308) i2c.master: I2C transaction unexpected nack detected
+W (8308) servo_zero: active hold atomic frame I2C failed on attempt 1/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+D (8318) i2c.master: I2C hardware NACK detected
+D (8328) i2c.master: I2C transaction unexpected nack detected
+W (8328) servo_zero: active hold atomic frame I2C failed on attempt 2/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+D (8388) i2c.master: I2C hardware NACK detected
+D (8388) i2c.master: I2C transaction unexpected nack detected
+W (8388) servo_zero: active hold atomic frame I2C failed on attempt 1/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+D (8398) i2c.master: I2C hardware NACK detected
+D (8408) i2c.master: I2C transaction unexpected nack detected
+W (8408) servo_zero: active hold atomic frame I2C failed on attempt 2/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+D (8428) i2c.master: I2C hardware NACK detected
+D (8428) i2c.master: I2C transaction unexpected nack detected
+W (8428) servo_zero: active hold atomic frame I2C failed on attempt 1/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+D (8448) i2c.master: I2C hardware NACK detected
+D (8448) i2c.master: I2C transaction unexpected nack detected
+W (8448) servo_zero: active hold atomic frame I2C failed on attempt 2/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+D (8458) i2c.master: I2C hardware NACK detected
+D (8468) i2c.master: I2C transaction unexpected nack detected
+W (8468) servo_zero: active hold atomic frame I2C failed on attempt 3/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+D (8488) i2c.master: I2C hardware NACK detected
+D (8488) i2c.master: I2C transaction unexpected nack detected
+W (8488) servo_zero: active hold atomic frame I2C failed after 4 attempts: ESP_ERR_INVALID_STATE (0x103)
+E (8498) servo_zero: quad demo stopped at 857 ms: invalid pose or I2C failure; /OE HIGH
+W (8528) servo_zero: UART stop -> /OE HIGH
+[QUAD_TRIAL] USB serial connection ready
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x8 (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2820,len:0x14f0
+load:0x403c8700,len:0xd24
+load:0x403cb700,len:0x2eec
+entry 0x403c8924
+I (24) boot: ESP-IDF v5.5.5 2nd stage bootloader
+I (25) boot: compile time Sep 13 2026 13:15:34
+I (25) boot: Multicore bootloader
+I (25) boot: chip revision: v0.2
+I (28) boot: efuse block revision: v1.4
+I (31) boot.esp32s3: Boot SPI Speed : 80MHz
+I (35) boot.esp32s3: SPI Mode       : DIO
+I (39) boot.esp32s3: SPI Flash Size : 16MB
+I (43) boot: Enabling RNG early entropy source...
+I (47) boot: Partition Table:
+I (50) boot: ## Label            Usage          Type ST Offset   Length
+I (56) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (63) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (69) boot:  2 factory          factory app      00 00 00010000 00100000
+I (76) boot: End of partition table
+I (79) esp_image: segment 0: paddr=00010020 vaddr=3c0a0020 size=237d4h (145364) map
+I (113) esp_image: segment 1: paddr=000337fc vaddr=3fc9ac00 size=04e8ch ( 20108) load
+I (118) esp_image: segment 2: paddr=00038690 vaddr=40374000 size=07988h ( 31112) load
+I (125) esp_image: segment 3: paddr=00040020 vaddr=42000020 size=96970h (616816) map
+I (238) esp_image: segment 4: paddr=000d6998 vaddr=4037b988 size=0f238h ( 62008) load
+I (252) esp_image: segment 5: paddr=000e5bd8 vaddr=50000000 size=00020h (    32) load
+I (261) boot: Loaded app from partition at offset 0x10000
+I (262) boot: Disabling RNG early entropy source...
+I (272) cpu_start: Multicore app
+I (281) cpu_start: GPIO 44 and 43 are used as console UART I/O pins
+I (281) cpu_start: Pro cpu start user code
+I (282) cpu_start: cpu freq: 160000000 Hz
+I (283) app_init: Application information:
+I (287) app_init: Project name:     niulai_servo_zero_test
+I (292) app_init: App version:      8898101-dirty
+I (297) app_init: Compile time:     Sep 13 2026 13:15:37
+I (302) app_init: ELF file SHA256:  bb80a77a9...
+I (306) app_init: ESP-IDF:          v5.5.5
+I (310) efuse_init: Min chip rev:     v0.0
+I (314) efuse_init: Max chip rev:     v0.99
+I (318) efuse_init: Chip rev:         v0.2
+I (322) heap_init: Initializing. RAM available for dynamic allocation:
+I (328) heap_init: At 3FCC7B18 len 00021BF8 (134 KiB): RAM
+I (333) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM
+I (338) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM
+I (343) heap_init: At 600FE000 len 00001FE8 (7 KiB): RTCRAM
+I (350) spi_flash: detected chip: boya
+I (352) spi_flash: flash io: dio
+I (355) sleep_gpio: Configure to isolate all GPIO pins in sleep state
+I (361) sleep_gpio: Enable automatic switching of GPIO sleep configuration
+I (368) main_task: Started on CPU0
+I (398) main_task: Calling app_main()
+W (398) servo_zero: /OE HIGH: outputs disabled during initialization
+D (418) i2c.common: new bus(0) at 0x3fcea658
+D (418) i2c.common: bus clock source frequency: 40000000hz
+E (438) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (458) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (478) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (478) i2c.master: I2C transaction timeout detected
+E (478) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (508) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (528) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (528) i2c.master: I2C transaction timeout detected
+E (528) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (558) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (578) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (578) i2c.master: I2C transaction timeout detected
+E (578) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (608) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (628) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (628) i2c.master: I2C transaction timeout detected
+E (628) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (658) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (678) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (688) i2c.master: I2C transaction timeout detected
+E (688) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (708) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (728) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (738) i2c.master: I2C transaction timeout detected
+E (738) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (758) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (778) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (788) i2c.master: I2C transaction timeout detected
+E (788) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (808) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (828) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (838) i2c.master: I2C transaction timeout detected
+E (838) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (868) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (888) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (888) i2c.master: I2C transaction timeout detected
+E (888) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (918) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (938) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (948) i2c.master: I2C transaction timeout detected
+E (948) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (968) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (988) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (998) i2c.master: I2C transaction timeout detected
+E (998) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1018) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1038) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1048) i2c.master: I2C transaction timeout detected
+E (1048) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1078) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1098) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1098) i2c.master: I2C transaction timeout detected
+E (1098) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1128) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1148) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1168) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1188) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1208) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1208) i2c.master: I2C transaction timeout detected
+E (1208) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+W (1228) servo_zero: I2C device ACK at 0x31
+W (1228) servo_zero: I2C device ACK at 0x32
+W (1228) servo_zero: I2C device ACK at 0x33
+W (1228) servo_zero: I2C device ACK at 0x34
+W (1238) servo_zero: I2C device ACK at 0x35
+W (1248) servo_zero: I2C device ACK at 0x37
+W (1268) servo_zero: I2C device ACK at 0x3d
+E (1308) i2c.master: I2C bus is still busy but software timeout detected
+E (1328) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1348) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1368) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1388) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1408) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1428) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1448) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1468) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1488) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1508) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1528) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1548) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1568) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1588) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1608) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1628) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1648) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1668) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1688) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1708) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1728) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1748) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1768) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1788) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1808) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1828) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1848) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1868) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1888) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1908) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1928) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1948) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1968) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (1988) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (2008) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (2028) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (2048) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (2068) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (2088) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (2108) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (2108) i2c.master: I2C transaction timeout detected
+E (2108) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (2138) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (2158) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (2158) i2c.master: I2C transaction timeout detected
+E (2158) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (2188) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (2208) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (2208) i2c.master: I2C transaction timeout detected
+E (2208) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (2238) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (2258) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (2268) i2c.master: I2C transaction timeout detected
+E (2268) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (2288) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (2308) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (2318) i2c.master: I2C transaction timeout detected
+E (2318) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (2338) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (2358) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (2368) i2c.master: I2C transaction timeout detected
+E (2368) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+E (2388) i2c.master: probe device timeout. Please check if xfer_timeout_ms and pull-ups are correctly set up
+W (2388) servo_zero: I2C scan found 7 device(s)
+W (2398) servo_zero: CH0-CH7 READY at 50 Hz PWM / 400000 Hz I2C; /OE HIGH; type run to enable; CH8-CH15 FULL_OFF
+I (2398) pp: pp rom version: e7ae62f
+I (2398) net80211: net80211 rom version: e7ae62f
+I (2418) wifi:wifi driver task: 3fcdb93c, prio:23, stack:6656, core=0
+I (2428) wifi:wifi firmware version: b9f67df
+I (2428) wifi:wifi certification version: v7.0
+I (2428) wifi:config NVS flash: enabled
+I (2428) wifi:config nano formatting: disabled
+I (2428) wifi:Init data frame dynamic rx buffer num: 32
+I (2438) wifi:Init static rx mgmt buffer num: 5
+I (2438) wifi:Init management short buffer num: 32
+I (2438) wifi:Init dynamic tx buffer num: 32
+I (2448) wifi:Init static tx FG buffer num: 2
+I (2448) wifi:Init static rx buffer size: 1600
+I (2458) wifi:Init static rx buffer num: 10
+I (2458) wifi:Init dynamic rx buffer num: 32
+I (2468) wifi_init: rx ba win: 6
+I (2468) wifi_init: accept mbox: 6
+I (2468) wifi_init: tcpip mbox: 32
+I (2468) wifi_init: udp mbox: 6
+I (2478) wifi_init: tcp mbox: 6
+I (2478) wifi_init: tcp tx win: 5760
+I (2478) wifi_init: tcp rx win: 5760
+I (2488) wifi_init: tcp mss: 1440
+I (2488) wifi_init: WiFi IRAM OP enabled
+I (2488) wifi_init: WiFi RX IRAM OP enabled
+I (2498) phy_init: phy_version 712,87e8c20e,Apr 13 2026,18:51:10
+I (2538) wifi:mode : softAP (AA:BB:CC:DD:EE:FF)
+I (2538) wifi:Total power save buffer number: 16
+I (2538) wifi:Init max length of beacon: 752/752
+I (2548) wifi:Init max length of beacon: 752/752
+W (2548) tcp_diag: TCP_DIAG_AP SSID=牛来快跑-DIAG IP=192.168.4.1 PORT=3333
+I (2548) esp_netif_lwip: DHCP server started on interface WIFI_AP_DEF with IP: 192.168.4.1
+W (2558) tcp_diag: TCP_DIAG_LISTEN port=3333
+W (2568) servo_zero: ASCII calibration ready; type help
+W (2568) servo_zero: UART stop -> /OE HIGH
+W (2598) servo_zero: all-leg rest mode started; wait for rest pose reached before pressing 1..4
+D (3038) i2c.master: I2C hardware NACK detected
+D (3038) i2c.master: I2C transaction unexpected nack detected
+W (3038) servo_zero: active frame I2C failed on attempt 1/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+D (3048) i2c.master: I2C hardware NACK detected
+D (3048) i2c.master: I2C transaction unexpected nack detected
+W (3048) servo_zero: active frame I2C failed on attempt 2/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+D (3108) i2c.master: I2C hardware NACK detected
+D (3108) i2c.master: I2C transaction unexpected nack detected
+W (3108) servo_zero: active frame I2C failed on attempt 1/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+D (3118) i2c.master: I2C hardware NACK detected
+D (3118) i2c.master: I2C transaction unexpected nack detected
+W (3118) servo_zero: active frame I2C failed on attempt 2/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+E (3258) i2c.master: I2C software timeout
+W (3258) servo_zero: active frame I2C failed on attempt 1/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+D (3278) i2c.master: I2C hardware NACK detected
+D (3278) i2c.master: I2C transaction unexpected nack detected
+W (3278) servo_zero: active frame I2C failed on attempt 1/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+D (3288) i2c.master: I2C hardware NACK detected
+D (3288) i2c.master: I2C transaction unexpected nack detected
+W (3288) servo_zero: active frame I2C failed on attempt 2/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+W (5008) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+
+[QUAD_TRIAL] step 1/12: key=1
+W (5158) servo_zero: HIGH RISK quad demo started: key=1 leg=RF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH0/1 candidate q->us; send stop
+W (5168) servo_zero: quad demo key=1 accepted: active=RF; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (6468) servo_zero: quad demo complete; soft_limit_legs=0x03; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 2/12: key=2
+W (6598) servo_zero: HIGH RISK quad demo started: key=2 leg=LF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH2/3 candidate q->us; send stop
+W (6608) servo_zero: quad demo key=2 accepted: active=LF; other legs use independent stance targets and one atomic CH0-CH7 frame
+D (7798) i2c.master: I2C hardware NACK detected
+D (7798) i2c.master: I2C transaction unexpected nack detected
+W (7798) servo_zero: active hold atomic frame I2C failed on attempt 1/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+W (7898) servo_zero: quad demo complete; soft_limit_legs=0x00; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 3/12: key=3
+W (7938) servo_zero: HIGH RISK quad demo started: key=3 leg=RR; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH4/5 candidate q->us; send stop
+W (7948) servo_zero: quad demo key=3 accepted: active=RR; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (9238) servo_zero: quad demo complete; soft_limit_legs=0x08; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 4/12: key=4
+W (9278) servo_zero: HIGH RISK quad demo started: key=4 leg=LR; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH6/7 candidate q->us; send stop
+W (9288) servo_zero: quad demo key=4 accepted: active=LR; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (10578) servo_zero: quad demo complete; soft_limit_legs=0x00; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 5/12: key=1
+W (10778) servo_zero: HIGH RISK quad demo started: key=1 leg=RF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH0/1 candidate q->us; send stop
+W (10788) servo_zero: quad demo key=1 accepted: active=RF; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (12088) servo_zero: quad demo complete; soft_limit_legs=0x02; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 6/12: key=2
+W (12218) servo_zero: HIGH RISK quad demo started: key=2 leg=LF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH2/3 candidate q->us; send stop
+W (12228) servo_zero: quad demo key=2 accepted: active=LF; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (13518) servo_zero: quad demo complete; soft_limit_legs=0x00; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 7/12: key=3
+W (13558) servo_zero: HIGH RISK quad demo started: key=3 leg=RR; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH4/5 candidate q->us; send stop
+W (13568) servo_zero: quad demo key=3 accepted: active=RR; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (14858) servo_zero: quad demo complete; soft_limit_legs=0x08; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 8/12: key=4
+W (14938) servo_zero: HIGH RISK quad demo started: key=4 leg=LR; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH6/7 candidate q->us; send stop
+W (14948) servo_zero: quad demo key=4 accepted: active=LR; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (16218) servo_zero: quad demo complete; soft_limit_legs=0x01; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 9/12: key=1
+W (16428) servo_zero: HIGH RISK quad demo started: key=1 leg=RF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH0/1 candidate q->us; send stop
+W (16438) servo_zero: quad demo key=1 accepted: active=RF; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (17728) servo_zero: quad demo complete; soft_limit_legs=0x02; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 10/12: key=2
+W (17858) servo_zero: HIGH RISK quad demo started: key=2 leg=LF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH2/3 candidate q->us; send stop
+W (17868) servo_zero: quad demo key=2 accepted: active=LF; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (19158) servo_zero: quad demo complete; soft_limit_legs=0x04; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 11/12: key=3
+W (19198) servo_zero: HIGH RISK quad demo started: key=3 leg=RR; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH4/5 candidate q->us; send stop
+W (19208) servo_zero: quad demo key=3 accepted: active=RR; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (20498) servo_zero: quad demo complete; soft_limit_legs=0x08; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 12/12: key=4
+W (20608) servo_zero: HIGH RISK quad demo started: key=4 leg=LR; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH6/7 candidate q->us; send stop
+W (20618) servo_zero: quad demo key=4 accepted: active=LR; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (21908) servo_zero: quad demo complete; soft_limit_legs=0x01; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+W (21928) servo_zero: UART stop -> /OE HIGH
+W (21938) servo_zero: I2C stats: logical=952 attempts=960 success=952 nack=8 timeout=0 other=0 retries=8 recovered_after_retry=5 terminal_failures=0
+
+[QUAD_TRIAL] completed
+[QUAD_TRIAL] USB serial connection ready
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x8 (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2820,len:0x14f0
+load:0x403c8700,len:0xd24
+load:0x403cb700,len:0x2eec
+entry 0x403c8924
+I (24) boot: ESP-IDF v5.5.5 2nd stage bootloader
+I (25) boot: compile time Sep 13 2026 13:15:34
+I (25) boot: Multicore bootloader
+I (25) boot: chip revision: v0.2
+I (28) boot: efuse block revision: v1.4
+I (31) boot.esp32s3: Boot SPI Speed : 80MHz
+I (35) boot.esp32s3: SPI Mode       : DIO
+I (39) boot.esp32s3: SPI Flash Size : 16MB
+I (43) boot: Enabling RNG early entropy source...
+I (47) boot: Partition Table:
+I (50) boot: ## Label            Usage          Type ST Offset   Length
+I (56) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (63) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (69) boot:  2 factory          factory app      00 00 00010000 00100000
+I (76) boot: End of partition table
+I (79) esp_image: segment 0: paddr=00010020 vaddr=3c0a0020 size=237d4h (145364) map
+I (113) esp_image: segment 1: paddr=000337fc vaddr=3fc9ac00 size=04e8ch ( 20108) load
+I (118) esp_image: segment 2: paddr=00038690 vaddr=40374000 size=07988h ( 31112) load
+I (125) esp_image: segment 3: paddr=00040020 vaddr=42000020 size=96970h (616816) map
+I (238) esp_image: segment 4: paddr=000d6998 vaddr=4037b988 size=0f238h ( 62008) load
+I (252) esp_image: segment 5: paddr=000e5bd8 vaddr=50000000 size=00020h (    32) load
+I (261) boot: Loaded app from partition at offset 0x10000
+I (262) boot: Disabling RNG early entropy source...
+I (272) cpu_start: Multicore app
+I (281) cpu_start: GPIO 44 and 43 are used as console UART I/O pins
+I (281) cpu_start: Pro cpu start user code
+I (282) cpu_start: cpu freq: 160000000 Hz
+I (283) app_init: Application information:
+I (287) app_init: Project name:     niulai_servo_zero_test
+I (292) app_init: App version:      8898101-dirty
+I (297) app_init: Compile time:     Sep 13 2026 13:15:37
+I (302) app_init: ELF file SHA256:  bb80a77a9...
+I (306) app_init: ESP-IDF:          v5.5.5
+I (310) efuse_init: Min chip rev:     v0.0
+I (314) efuse_init: Max chip rev:     v0.99
+I (318) efuse_init: Chip rev:         v0.2
+I (322) heap_init: Initializing. RAM available for dynamic allocation:
+I (328) heap_init: At 3FCC7B18 len 00021BF8 (134 KiB): RAM
+I (333) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM
+I (338) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM
+I (343) heap_init: At 600FE000 len 00001FE8 (7 KiB): RTCRAM
+I (350) spi_flash: detected chip: boya
+I (352) spi_flash: flash io: dio
+I (355) sleep_gpio: Configure to isolate all GPIO pins in sleep state
+I (361) sleep_gpio: Enable automatic switching of GPIO sleep configuration
+I (368) main_task: Started on CPU0
+I (398) main_task: Calling app_main()
+W (398) servo_zero: /OE HIGH: outputs disabled during initialization
+D (418) i2c.common: new bus(0) at 0x3fcea658
+D (418) i2c.common: bus clock source frequency: 40000000hz
+W (428) servo_zero: I2C device ACK at 0x40 (configured PCA9685)
+W (438) servo_zero: I2C device ACK at 0x70
+W (438) servo_zero: I2C scan found 2 device(s)
+W (448) servo_zero: CH0-CH7 READY at 50 Hz PWM / 400000 Hz I2C; /OE HIGH; type run to enable; CH8-CH15 FULL_OFF
+I (448) pp: pp rom version: e7ae62f
+I (448) net80211: net80211 rom version: e7ae62f
+I (458) wifi:wifi driver task: 3fcdb93c, prio:23, stack:6656, core=0
+I (468) wifi:wifi firmware version: b9f67df
+I (468) wifi:wifi certification version: v7.0
+I (468) wifi:config NVS flash: enabled
+I (468) wifi:config nano formatting: disabled
+I (478) wifi:Init data frame dynamic rx buffer num: 32
+I (478) wifi:Init static rx mgmt buffer num: 5
+I (478) wifi:Init management short buffer num: 32
+I (488) wifi:Init dynamic tx buffer num: 32
+I (488) wifi:Init static tx FG buffer num: 2
+I (498) wifi:Init static rx buffer size: 1600
+I (498) wifi:Init static rx buffer num: 10
+I (498) wifi:Init dynamic rx buffer num: 32
+I (508) wifi_init: rx ba win: 6
+I (508) wifi_init: accept mbox: 6
+I (508) wifi_init: tcpip mbox: 32
+I (518) wifi_init: udp mbox: 6
+I (518) wifi_init: tcp mbox: 6
+I (518) wifi_init: tcp tx win: 5760
+I (528) wifi_init: tcp rx win: 5760
+I (528) wifi_init: tcp mss: 1440
+I (528) wifi_init: WiFi IRAM OP enabled
+I (538) wifi_init: WiFi RX IRAM OP enabled
+I (548) phy_init: phy_version 712,87e8c20e,Apr 13 2026,18:51:10
+I (578) wifi:mode : softAP (AA:BB:CC:DD:EE:FF)
+I (588) wifi:Total power save buffer number: 16
+I (588) wifi:Init max length of beacon: 752/752
+I (588) wifi:Init max length of beacon: 752/752
+W (588) tcp_diag: TCP_DIAG_AP SSID=牛来快跑-DIAG IP=192.168.4.1 PORT=3333
+I (588) esp_netif_lwip: DHCP server started on interface WIFI_AP_DEF with IP: 192.168.4.1
+W (608) tcp_diag: TCP_DIAG_LISTEN port=3333
+W (608) servo_zero: ASCII calibration ready; type help
+W (2008) servo_zero: UART stop -> /OE HIGH
+W (2118) servo_zero: all-leg rest mode started; wait for rest pose reached before pressing 1..4
+D (2548) i2c.master: I2C hardware NACK detected
+D (2548) i2c.master: I2C transaction unexpected nack detected
+W (2548) servo_zero: active frame I2C failed on attempt 1/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+W (4538) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+
+[QUAD_TRIAL] step 1/12: key=1
+W (4688) servo_zero: HIGH RISK quad demo started: key=1 leg=RF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH0/1 candidate q->us; send stop
+W (4698) servo_zero: quad demo key=1 accepted: active=RF; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (5988) servo_zero: quad demo complete; soft_limit_legs=0x03; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 2/12: key=2
+W (6128) servo_zero: HIGH RISK quad demo started: key=2 leg=LF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH2/3 candidate q->us; send stop
+W (6138) servo_zero: quad demo key=2 accepted: active=LF; other legs use independent stance targets and one atomic CH0-CH7 frame
+E (7348) i2c.master: I2C software timeout
+W (7348) servo_zero: active hold atomic frame I2C failed on attempt 1/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+E (7348) servo_zero: quad demo stopped at 1218 ms: invalid pose or I2C failure; /OE HIGH
+W (7378) servo_zero: UART stop -> /OE HIGH
+[QUAD_TRIAL] USB serial connection ready
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x8 (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2820,len:0x14f0
+load:0x403c8700,len:0xd24
+load:0x403cb700,len:0x2eec
+entry 0x403c8924
+I (24) boot: ESP-IDF v5.5.5 2nd stage bootloader
+I (25) boot: compile time Sep 13 2026 13:15:34
+I (25) boot: Multicore bootloader
+I (25) boot: chip revision: v0.2
+I (28) boot: efuse block revision: v1.4
+I (31) boot.esp32s3: Boot SPI Speed : 80MHz
+I (35) boot.esp32s3: SPI Mode       : DIO
+I (39) boot.esp32s3: SPI Flash Size : 16MB
+I (43) boot: Enabling RNG early entropy source...
+I (47) boot: Partition Table:
+I (50) boot: ## Label            Usage          Type ST Offset   Length
+I (56) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (63) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (69) boot:  2 factory          factory app      00 00 00010000 00100000
+I (76) boot: End of partition table
+I (79) esp_image: segment 0: paddr=00010020 vaddr=3c0a0020 size=237d4h (145364) map
+I (113) esp_image: segment 1: paddr=000337fc vaddr=3fc9ac00 size=04e8ch ( 20108) load
+I (118) esp_image: segment 2: paddr=00038690 vaddr=40374000 size=07988h ( 31112) load
+I (125) esp_image: segment 3: paddr=00040020 vaddr=42000020 size=96970h (616816) map
+I (238) esp_image: segment 4: paddr=000d6998 vaddr=4037b988 size=0f238h ( 62008) load
+I (252) esp_image: segment 5: paddr=000e5bd8 vaddr=50000000 size=00020h (    32) load
+I (261) boot: Loaded app from partition at offset 0x10000
+I (262) boot: Disabling RNG early entropy source...
+I (272) cpu_start: Multicore app
+I (281) cpu_start: GPIO 44 and 43 are used as console UART I/O pins
+I (281) cpu_start: Pro cpu start user code
+I (282) cpu_start: cpu freq: 160000000 Hz
+I (283) app_init: Application information:
+I (287) app_init: Project name:     niulai_servo_zero_test
+I (292) app_init: App version:      8898101-dirty
+I (297) app_init: Compile time:     Sep 13 2026 13:15:37
+I (302) app_init: ELF file SHA256:  bb80a77a9...
+I (306) app_init: ESP-IDF:          v5.5.5
+I (310) efuse_init: Min chip rev:     v0.0
+I (314) efuse_init: Max chip rev:     v0.99
+I (318) efuse_init: Chip rev:         v0.2
+I (322) heap_init: Initializing. RAM available for dynamic allocation:
+I (328) heap_init: At 3FCC7B18 len 00021BF8 (134 KiB): RAM
+I (333) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM
+I (338) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM
+I (343) heap_init: At 600FE000 len 00001FE8 (7 KiB): RTCRAM
+I (350) spi_flash: detected chip: boya
+I (352) spi_flash: flash io: dio
+I (355) sleep_gpio: Configure to isolate all GPIO pins in sleep state
+I (361) sleep_gpio: Enable automatic switching of GPIO sleep configuration
+I (368) main_task: Started on CPU0
+I (398) main_task: Calling app_main()
+W (398) servo_zero: /OE HIGH: outputs disabled during initialization
+D (418) i2c.common: new bus(0) at 0x3fcea658
+D (418) i2c.common: bus clock source frequency: 40000000hz
+W (428) servo_zero: I2C device ACK at 0x40 (configured PCA9685)
+W (438) servo_zero: I2C scan found 1 device(s)
+W (448) servo_zero: CH0-CH7 READY at 50 Hz PWM / 400000 Hz I2C; /OE HIGH; type run to enable; CH8-CH15 FULL_OFF
+I (448) pp: pp rom version: e7ae62f
+I (448) net80211: net80211 rom version: e7ae62f
+I (458) wifi:wifi driver task: 3fcdb93c, prio:23, stack:6656, core=0
+I (468) wifi:wifi firmware version: b9f67df
+I (468) wifi:wifi certification version: v7.0
+I (468) wifi:config NVS flash: enabled
+I (468) wifi:config nano formatting: disabled
+I (468) wifi:Init data frame dynamic rx buffer num: 32
+I (478) wifi:Init static rx mgmt buffer num: 5
+I (478) wifi:Init management short buffer num: 32
+I (488) wifi:Init dynamic tx buffer num: 32
+I (488) wifi:Init static tx FG buffer num: 2
+I (488) wifi:Init static rx buffer size: 1600
+I (498) wifi:Init static rx buffer num: 10
+I (498) wifi:Init dynamic rx buffer num: 32
+I (508) wifi_init: rx ba win: 6
+I (508) wifi_init: accept mbox: 6
+I (508) wifi_init: tcpip mbox: 32
+I (518) wifi_init: udp mbox: 6
+I (518) wifi_init: tcp mbox: 6
+I (518) wifi_init: tcp tx win: 5760
+I (518) wifi_init: tcp rx win: 5760
+I (528) wifi_init: tcp mss: 1440
+I (528) wifi_init: WiFi IRAM OP enabled
+I (528) wifi_init: WiFi RX IRAM OP enabled
+I (538) phy_init: phy_version 712,87e8c20e,Apr 13 2026,18:51:10
+I (578) phy_init: Saving new calibration data due to checksum failure or outdated calibration data, mode(0)
+I (598) wifi:mode : softAP (AA:BB:CC:DD:EE:FF)
+I (598) wifi:Total power save buffer number: 16
+I (598) wifi:Init max length of beacon: 752/752
+I (598) wifi:Init max length of beacon: 752/752
+W (598) tcp_diag: TCP_DIAG_AP SSID=牛来快跑-DIAG IP=192.168.4.1 PORT=3333
+I (598) esp_netif_lwip: DHCP server started on interface WIFI_AP_DEF with IP: 192.168.4.1
+W (618) tcp_diag: TCP_DIAG_LISTEN port=3333
+W (618) servo_zero: ASCII calibration ready; type help
+W (2008) servo_zero: UART stop -> /OE HIGH
+W (2108) servo_zero: all-leg rest mode started; wait for rest pose reached before pressing 1..4
+W (4528) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+
+[QUAD_TRIAL] step 1/4: key=1
+W (4678) servo_zero: HIGH RISK quad demo started: key=1 leg=RF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH0/1 candidate q->us; send stop
+W (4688) servo_zero: quad demo key=1 accepted: active=RF; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (5978) servo_zero: quad demo complete; soft_limit_legs=0x03; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 2/4: key=2
+W (6118) servo_zero: HIGH RISK quad demo started: key=2 leg=LF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH2/3 candidate q->us; send stop
+W (6128) servo_zero: quad demo key=2 accepted: active=LF; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (7408) servo_zero: quad demo complete; soft_limit_legs=0x00; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 3/4: key=3
+W (7448) servo_zero: HIGH RISK quad demo started: key=3 leg=RR; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH4/5 candidate q->us; send stop
+W (7458) servo_zero: quad demo key=3 accepted: active=RR; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (8748) servo_zero: quad demo complete; soft_limit_legs=0x08; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 4/4: key=4
+W (8788) servo_zero: HIGH RISK quad demo started: key=4 leg=LR; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH6/7 candidate q->us; send stop
+W (8798) servo_zero: quad demo key=4 accepted: active=LR; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (10088) servo_zero: quad demo complete; soft_limit_legs=0x00; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+W (10118) servo_zero: UART stop -> /OE HIGH
+W (10128) servo_zero: I2C stats: logical=398 attempts=398 success=398 nack=0 timeout=0 other=0 retries=0 recovered_after_retry=0 terminal_failures=0
+
+[QUAD_TRIAL] completed
+[QUAD_TRIAL] USB serial connection ready
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x8 (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2820,len:0x14f0
+load:0x403c8700,len:0xd24
+load:0x403cb700,len:0x2eec
+entry 0x403c8924
+I (24) boot: ESP-IDF v5.5.5 2nd stage bootloader
+I (25) boot: compile time Sep 13 2026 13:15:34
+I (25) boot: Multicore bootloader
+I (25) boot: chip revision: v0.2
+I (28) boot: efuse block revision: v1.4
+I (31) boot.esp32s3: Boot SPI Speed : 80MHz
+I (35) boot.esp32s3: SPI Mode       : DIO
+I (39) boot.esp32s3: SPI Flash Size : 16MB
+I (43) boot: Enabling RNG early entropy source...
+I (47) boot: Partition Table:
+I (50) boot: ## Label            Usage          Type ST Offset   Length
+I (56) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (63) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (69) boot:  2 factory          factory app      00 00 00010000 00100000
+I (76) boot: End of partition table
+I (79) esp_image: segment 0: paddr=00010020 vaddr=3c0a0020 size=237d4h (145364) map
+I (113) esp_image: segment 1: paddr=000337fc vaddr=3fc9ac00 size=04e8ch ( 20108) load
+I (118) esp_image: segment 2: paddr=00038690 vaddr=40374000 size=07988h ( 31112) load
+I (125) esp_image: segment 3: paddr=00040020 vaddr=42000020 size=96970h (616816) map
+I (238) esp_image: segment 4: paddr=000d6998 vaddr=4037b988 size=0f238h ( 62008) load
+I (252) esp_image: segment 5: paddr=000e5bd8 vaddr=50000000 size=00020h (    32) load
+I (261) boot: Loaded app from partition at offset 0x10000
+I (262) boot: Disabling RNG early entropy source...
+I (272) cpu_start: Multicore app
+I (281) cpu_start: GPIO 44 and 43 are used as console UART I/O pins
+I (281) cpu_start: Pro cpu start user code
+I (282) cpu_start: cpu freq: 160000000 Hz
+I (283) app_init: Application information:
+I (287) app_init: Project name:     niulai_servo_zero_test
+I (292) app_init: App version:      8898101-dirty
+I (297) app_init: Compile time:     Sep 13 2026 13:15:37
+I (302) app_init: ELF file SHA256:  bb80a77a9...
+I (306) app_init: ESP-IDF:          v5.5.5
+I (310) efuse_init: Min chip rev:     v0.0
+I (314) efuse_init: Max chip rev:     v0.99
+I (318) efuse_init: Chip rev:         v0.2
+I (322) heap_init: Initializing. RAM available for dynamic allocation:
+I (328) heap_init: At 3FCC7B18 len 00021BF8 (134 KiB): RAM
+I (333) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM
+I (338) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM
+I (343) heap_init: At 600FE000 len 00001FE8 (7 KiB): RTCRAM
+I (350) spi_flash: detected chip: boya
+I (352) spi_flash: flash io: dio
+I (355) sleep_gpio: Configure to isolate all GPIO pins in sleep state
+I (361) sleep_gpio: Enable automatic switching of GPIO sleep configuration
+I (368) main_task: Started on CPU0
+I (398) main_task: Calling app_main()
+W (398) servo_zero: /OE HIGH: outputs disabled during initialization
+D (418) i2c.common: new bus(0) at 0x3fcea658
+D (418) i2c.common: bus clock source frequency: 40000000hz
+W (428) servo_zero: I2C device ACK at 0x40 (configured PCA9685)
+W (438) servo_zero: I2C scan found 1 device(s)
+W (448) servo_zero: CH0-CH7 READY at 50 Hz PWM / 400000 Hz I2C; /OE HIGH; type run to enable; CH8-CH15 FULL_OFF
+I (448) pp: pp rom version: e7ae62f
+I (448) net80211: net80211 rom version: e7ae62f
+I (458) wifi:wifi driver task: 3fcdb93c, prio:23, stack:6656, core=0
+I (468) wifi:wifi firmware version: b9f67df
+I (468) wifi:wifi certification version: v7.0
+I (468) wifi:config NVS flash: enabled
+I (468) wifi:config nano formatting: disabled
+I (468) wifi:Init data frame dynamic rx buffer num: 32
+I (478) wifi:Init static rx mgmt buffer num: 5
+I (478) wifi:Init management short buffer num: 32
+I (488) wifi:Init dynamic tx buffer num: 32
+I (488) wifi:Init static tx FG buffer num: 2
+I (488) wifi:Init static rx buffer size: 1600
+I (498) wifi:Init static rx buffer num: 10
+I (498) wifi:Init dynamic rx buffer num: 32
+I (508) wifi_init: rx ba win: 6
+I (508) wifi_init: accept mbox: 6
+I (508) wifi_init: tcpip mbox: 32
+I (518) wifi_init: udp mbox: 6
+I (518) wifi_init: tcp mbox: 6
+I (518) wifi_init: tcp tx win: 5760
+I (518) wifi_init: tcp rx win: 5760
+I (528) wifi_init: tcp mss: 1440
+I (528) wifi_init: WiFi IRAM OP enabled
+I (528) wifi_init: WiFi RX IRAM OP enabled
+I (538) phy_init: phy_version 712,87e8c20e,Apr 13 2026,18:51:10
+I (588) wifi:mode : softAP (AA:BB:CC:DD:EE:FF)
+I (588) wifi:Total power save buffer number: 16
+I (588) wifi:Init max length of beacon: 752/752
+I (588) wifi:Init max length of beacon: 752/752
+W (598) tcp_diag: TCP_DIAG_AP SSID=牛来快跑-DIAG IP=192.168.4.1 PORT=3333
+I (598) esp_netif_lwip: DHCP server started on interface WIFI_AP_DEF with IP: 192.168.4.1
+W (608) tcp_diag: TCP_DIAG_LISTEN port=3333
+W (608) servo_zero: ASCII calibration ready; type help
+W (2008) servo_zero: UART stop -> /OE HIGH
+W (2138) servo_zero: all-leg rest mode started; wait for rest pose reached before pressing 1..4
+W (4548) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+
+[QUAD_TRIAL] step 1/4: key=1
+W (4708) servo_zero: HIGH RISK quad demo started: key=1 leg=RF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH0/1 candidate q->us; send stop
+W (4708) servo_zero: quad demo key=1 accepted: active=RF; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (5988) servo_zero: quad demo complete; soft_limit_legs=0x03; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 2/4: key=2
+W (6128) servo_zero: HIGH RISK quad demo started: key=2 leg=LF; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH2/3 candidate q->us; send stop
+W (6138) servo_zero: quad demo key=2 accepted: active=LF; other legs use independent stance targets and one atomic CH0-CH7 frame
+D (7108) i2c.master: I2C hardware NACK detected
+D (7108) i2c.master: I2C transaction unexpected nack detected
+W (7108) servo_zero: active hold atomic frame I2C failed on attempt 1/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+W (7428) servo_zero: quad demo complete; soft_limit_legs=0x00; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 3/4: key=3
+W (7468) servo_zero: HIGH RISK quad demo started: key=3 leg=RR; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH4/5 candidate q->us; send stop
+W (7478) servo_zero: quad demo key=3 accepted: active=RR; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (8768) servo_zero: quad demo complete; soft_limit_legs=0x08; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+
+[QUAD_TRIAL] step 4/4: key=4
+W (8808) servo_zero: HIGH RISK quad demo started: key=4 leg=LR; active_step=40.0 mm stance_step=15.0 mm lift_back=6.0 mm lift=20.0 mm; settle/lift/swing/search=180/250/600/250 ms; CH6/7 candidate q->us; send stop
+W (8818) servo_zero: quad demo key=4 accepted: active=LR; other legs use independent stance targets and one atomic CH0-CH7 frame
+W (10108) servo_zero: quad demo complete; soft_limit_legs=0x00; final four-leg target held; /OE LOW; press 1..4 for next step or send stop
+W (10128) servo_zero: UART stop -> /OE HIGH
+W (10138) servo_zero: I2C stats: logical=398 attempts=399 success=398 nack=1 timeout=0 other=0 retries=1 recovered_after_retry=1 terminal_failures=0
+
+[QUAD_TRIAL] completed

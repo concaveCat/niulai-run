@@ -1,0 +1,4 @@
+# Low-volume physical listening test profile (EXP-030 hardware gate).
+# Combine after sdkconfig.defaults in a separate build directory.
+# Keep first physical playback at 10% digital gain; raise stepwise only if clean.
+CONFIG_NIULAI_AUDIO_VOLUME_PERCENT=10

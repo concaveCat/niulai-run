@@ -1,0 +1,27 @@
+EXP-018 raw serial summary
+Date: 2026-09-12
+Hardware: ESP32-S3 rev 0.2; host-native PowerShell COM4; SDA=GPIO11; SCL=GPIO12; OE=GPIO1; PCA9685=0x40
+Servo hardware: 8 servos connected; Servo 6 V ON; MPU6050 disconnected; high-current power wires bundled with Dupont harness
+Motion: pose pseudo 35; 50 trials per speed; each trial waited for bounded completion then sent stop
+Retry policy: 4 attempts maximum; 1 ms retry delay; i2c_master_transmit timeout argument 100 ms
+Counter definitions: logical=one i2c_master_transmit request; attempts=all physical attempts including retries; error counts are per failed attempt
+
+100 kHz boot: PCA9685 0x40 ACK; I2C scan found 1 device(s); READY at 50 Hz PWM / 100000 Hz I2C; /OE HIGH
+100 kHz stats reset: logical=0 attempts=0 success=0 nack=0 timeout=0 other=0 retries=0 recovered_after_retry=0 terminal_failures=0
+100 kHz cumulative after 10 trials: logical=968 attempts=973 success=968 nack=5 timeout=0 other=0 retries=5 recovered_after_retry=5 terminal_failures=0
+100 kHz cumulative after 20 trials: logical=1935 attempts=1945 success=1935 nack=10 timeout=0 other=0 retries=10 recovered_after_retry=9 terminal_failures=0
+100 kHz cumulative after 30 trials: logical=2905 attempts=2917 success=2905 nack=12 timeout=0 other=0 retries=12 recovered_after_retry=11 terminal_failures=0
+100 kHz cumulative after 40 trials: logical=3875 attempts=3888 success=3875 nack=13 timeout=0 other=0 retries=13 recovered_after_retry=12 terminal_failures=0
+100 kHz cumulative after 50 trials: logical=4845 attempts=4859 success=4845 nack=14 timeout=0 other=0 retries=14 recovered_after_retry=13 terminal_failures=0
+100 kHz terminal result: all 50 trials reached rest pose and stopped; no software timeout, other error, or terminal failure; no timeout GPIO snapshot emitted
+
+400 kHz boot: PCA9685 0x40 ACK; I2C scan found 1 device(s); READY at 50 Hz PWM / 400000 Hz I2C; /OE HIGH
+400 kHz stats reset: logical=0 attempts=0 success=0 nack=0 timeout=0 other=0 retries=0 recovered_after_retry=0 terminal_failures=0
+400 kHz cumulative after 10 trials: logical=968 attempts=972 success=968 nack=4 timeout=0 other=0 retries=4 recovered_after_retry=3 terminal_failures=0
+400 kHz cumulative after 20 trials: logical=1937 attempts=1942 success=1937 nack=5 timeout=0 other=0 retries=5 recovered_after_retry=4 terminal_failures=0
+400 kHz cumulative after 30 trials: logical=2907 attempts=2915 success=2907 nack=8 timeout=0 other=0 retries=8 recovered_after_retry=6 terminal_failures=0
+400 kHz cumulative after 40 trials: logical=3877 attempts=3887 success=3877 nack=10 timeout=0 other=0 retries=10 recovered_after_retry=8 terminal_failures=0
+400 kHz cumulative after 50 trials: logical=4847 attempts=4862 success=4847 nack=15 timeout=0 other=0 retries=15 recovered_after_retry=13 terminal_failures=0
+400 kHz terminal result: all 50 trials reached rest pose and stopped; no software timeout, other error, or terminal failure; no timeout GPIO snapshot emitted
+
+Final comparison: 100 kHz 14 NACK / 4859 attempts (0.288%); 400 kHz 15 NACK / 4862 attempts (0.309%). Both ended with /OE HIGH after the last stop.

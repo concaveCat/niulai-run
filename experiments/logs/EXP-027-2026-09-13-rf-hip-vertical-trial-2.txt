@@ -1,0 +1,39 @@
+EXP-027 retry 2: CH0/CH1-only vertical-shank sweep
+Date: 2026-09-13 (Asia/Shanghai)
+Hardware: ESP32-S3 QFN56 rev v0.2, PCA9685 at 0x40, host port COM4
+Software: shared worktree, uncommitted; ESP-IDF v5.5.5; app sha256
+1869681f5d2dc5b397905b6ec98558d83962a1ac41421f4aedc89e3f317af780
+Command: timeout 20s python tools/servo_zero_rf_hip_vertical_trial.py 1600 1400 --port COM4 --observe-seconds 5.5
+
+Safety/boot observations:
+- Startup reported PCA9685 0x40 ACK, 50 Hz PWM, 400 kHz I2C, and /OE HIGH.
+- Runner first sent stop, then list and stats reset.
+- No motion command was sent before the trial command.
+
+Captured action excerpt:
+W (1058) servo_zero: UART stop -> /OE HIGH
+W (1918) servo_zero: CH0 rf_hip  = 1746 us  <selected>
+W (1918) servo_zero: CH1 rf_knee = 1469 us
+W (1918) servo_zero: CH2 lf_hip  = 1427 us
+W (1918) servo_zero: CH3 lf_knee = 1415 us
+W (1918) servo_zero: CH4 rr_hip  = 1619 us
+W (1918) servo_zero: CH5 rr_knee = 1582 us
+W (1918) servo_zero: CH6 lr_hip  = 1449 us
+W (1928) servo_zero: CH7 lr_knee = 1600 us
+W (1938) servo_zero: CH8-CH15 are FULL_OFF (unused)
+W (2788) servo_zero: I2C stats reset
+W (3208) servo_zero: HIGH RISK RF vertical-shank sweep started: CH0 1600->1400 us backward, CH1 1496->1347 us compensation, shank=-90.0 deg, 4000 ms; CH0/CH1 PWM only, CH2-CH15 FULL_OFF; send stop
+W (7228) servo_zero: vertical sweep complete: CH0 1600->1400 us; shank held at -90 deg; /OE HIGH
+W (8798) servo_zero: UART stop -> /OE HIGH
+W (10058) servo_zero: I2C stats: logical=152 attempts=152 success=152 nack=0 timeout=0 other=0 retries=0 recovered_after_retry=0 terminal_failures=0
+
+Runner result:
+TRIAL_START=PASS
+TRIAL_COMPLETE=PASS
+TRIAL_STOP=PASS
+TRIAL_STATS=PASS
+
+Result: software/output-gate trial completed once with no I2C NACK, timeout, retry, or terminal
+failure. The log proves the new target-only register frame and safe UART completion; it does not
+prove that non-target mechanical assemblies stayed physically still, that the shank was actually
+vertical, or that endpoint/limit/current/voltage/temperature margins are acceptable.

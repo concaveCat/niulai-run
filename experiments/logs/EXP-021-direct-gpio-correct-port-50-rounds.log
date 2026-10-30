@@ -1,0 +1,406 @@
+[BENCHMARK] USB serial connection ready
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x8 (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2820,len:0x14f0
+load:0x403c8700,len:0xd24
+load:0x403cb700,len:0x2eec
+entry 0x403c8924
+I (24) boot: ESP-IDF v5.5.5 2nd stage bootloader
+I (25) boot: compile time Sep 12 2026 10:48:40
+I (25) boot: Multicore bootloader
+I (25) boot: chip revision: v0.2
+I (28) boot: efuse block revision: v1.4
+I (31) boot.esp32s3: Boot SPI Speed : 80MHz
+I (35) boot.esp32s3: SPI Mode       : DIO
+I (39) boot.esp32s3: SPI Flash Size : 16MB
+I (43) boot: Enabling RNG early entropy source...
+I (47) boot: Partition Table:
+I (50) boot: ## Label            Usage          Type ST Offset   Length
+I (56) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (63) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (69) boot:  2 factory          factory app      00 00 00010000 00100000
+I (76) boot: End of partition table
+I (79) esp_image: segment 0: paddr=00010020 vaddr=3c0a0020 size=224f4h (140532) map
+I (112) esp_image: segment 1: paddr=0003251c vaddr=3fc9ac00 size=04e8ch ( 20108) load
+I (117) esp_image: segment 2: paddr=000373b0 vaddr=40374000 size=08c68h ( 35944) load
+I (125) esp_image: segment 3: paddr=00040020 vaddr=42000020 size=93510h (603408) map
+I (236) esp_image: segment 4: paddr=000d3538 vaddr=4037cc68 size=0df58h ( 57176) load
+I (249) esp_image: segment 5: paddr=000e1498 vaddr=50000000 size=00020h (    32) load
+I (258) boot: Loaded app from partition at offset 0x10000
+I (258) boot: Disabling RNG early entropy source...
+I (269) cpu_start: Multicore app
+I (277) cpu_start: GPIO 44 and 43 are used as console UART I/O pins
+I (278) cpu_start: Pro cpu start user code
+I (278) cpu_start: cpu freq: 160000000 Hz
+I (280) app_init: Application information:
+I (284) app_init: Project name:     niulai_servo_zero_test
+I (289) app_init: App version:      8898101-dirty
+I (293) app_init: Compile time:     Sep 12 2026 22:19:11
+I (298) app_init: ELF file SHA256:  27917225b...
+I (303) app_init: ESP-IDF:          v5.5.5
+I (307) efuse_init: Min chip rev:     v0.0
+I (310) efuse_init: Max chip rev:     v0.99
+I (314) efuse_init: Chip rev:         v0.2
+I (318) heap_init: Initializing. RAM available for dynamic allocation:
+I (325) heap_init: At 3FCC79B0 len 00021D60 (135 KiB): RAM
+I (330) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM
+I (335) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM
+I (340) heap_init: At 600FE000 len 00001FE8 (7 KiB): RTCRAM
+I (346) spi_flash: detected chip: boya
+I (349) spi_flash: flash io: dio
+I (352) sleep_gpio: Configure to isolate all GPIO pins in sleep state
+I (358) sleep_gpio: Enable automatic switching of GPIO sleep configuration
+I (365) main_task: Started on CPU0
+I (395) main_task: Calling app_main()
+W (395) servo_zero: /OE HIGH: outputs disabled during initialization
+D (415) i2c.common: new bus(0) at 0x3fcea638
+D (415) i2c.common: bus clock source frequency: 40000000hz
+W (425) servo_zero: I2C device ACK at 0x40 (configured PCA9685)
+W (435) servo_zero: I2C scan found 1 device(s)
+W (445) servo_zero: CH0-CH7 READY at 50 Hz PWM / 400000 Hz I2C; /OE HIGH; type run to enable; CH8-CH15 FULL_OFF
+I (445) pp: pp rom version: e7ae62f
+I (445) net80211: net80211 rom version: e7ae62f
+I (455) wifi:wifi driver task: 3fcd6d7c, prio:23, stack:6656, core=0
+I (465) wifi:wifi firmware version: b9f67df
+I (465) wifi:wifi certification version: v7.0
+I (465) wifi:config NVS flash: enabled
+I (465) wifi:config nano formatting: disabled
+I (465) wifi:Init data frame dynamic rx buffer num: 32
+I (475) wifi:Init static rx mgmt buffer num: 5
+I (475) wifi:Init management short buffer num: 32
+I (485) wifi:Init dynamic tx buffer num: 32
+I (485) wifi:Init static tx FG buffer num: 2
+I (485) wifi:Init static rx buffer size: 1600
+I (495) wifi:Init static rx buffer num: 10
+I (495) wifi:Init dynamic rx buffer num: 32
+I (505) wifi_init: rx ba win: 6
+I (505) wifi_init: accept mbox: 6
+I (505) wifi_init: tcpip mbox: 32
+I (515) wifi_init: udp mbox: 6
+I (515) wifi_init: tcp mbox: 6
+I (515) wifi_init: tcp tx win: 5760
+I (515) wifi_init: tcp rx win: 5760
+I (525) wifi_init: tcp mss: 1440
+I (525) wifi_init: WiFi IRAM OP enabled
+I (525) wifi_init: WiFi RX IRAM OP enabled
+I (535) phy_init: phy_version 712,87e8c20e,Apr 13 2026,18:51:10
+I (575) phy_init: Saving new calibration data due to checksum failure or outdated calibration data, mode(0)
+I (595) wifi:mode : softAP (44:1b:f6:fe:23:21)
+I (595) wifi:Total power save buffer number: 16
+I (595) wifi:Init max length of beacon: 752/752
+I (595) wifi:Init max length of beacon: 752/752
+W (595) tcp_diag: TCP_DIAG_AP SSID=牛来快跑-DIAG PASSWORD=牛来快跑-Diag IP=192.168.4.1 PORT=3333
+I (595) esp_netif_lwip: DHCP server started on interface WIFI_AP_DEF with IP: 192.168.4.1
+W (615) tcp_diag: TCP_DIAG_LISTEN port=3333
+W (615) servo_zero: ASCII calibration ready; type help
+W (2005) servo_zero: UART stop -> /OE HIGH
+W (2015) servo_zero: I2C stats reset
+
+[BENCHMARK] round 1/50: pose pseudo 35
+W (2025) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (2025) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (4565) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (4585) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 2/50: pose pseudo 35
+W (4595) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (4595) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (7125) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (7145) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 3/50: pose pseudo 35
+W (7155) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (7155) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (9685) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (9695) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 4/50: pose pseudo 35
+W (9705) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (9705) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (12245) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (12265) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 5/50: pose pseudo 35
+W (12275) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (12275) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (14805) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (14825) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 6/50: pose pseudo 35
+W (14835) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (14835) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (17365) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (17385) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 7/50: pose pseudo 35
+W (17395) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (17395) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (19925) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (19935) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 8/50: pose pseudo 35
+W (19945) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (19945) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (22485) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (22505) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 9/50: pose pseudo 35
+W (22515) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (22515) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (25045) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (25065) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 10/50: pose pseudo 35
+W (25075) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (25075) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (27605) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (27615) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 11/50: pose pseudo 35
+W (27625) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (27625) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (30165) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (30185) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 12/50: pose pseudo 35
+W (30195) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (30195) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (32725) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (32745) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 13/50: pose pseudo 35
+W (32755) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (32755) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (35285) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (35295) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 14/50: pose pseudo 35
+W (35305) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (35305) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (37845) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (37865) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 15/50: pose pseudo 35
+W (37875) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (37875) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (40405) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (40425) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 16/50: pose pseudo 35
+W (40435) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (40435) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (42965) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (42985) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 17/50: pose pseudo 35
+W (42995) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (42995) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (45525) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (45545) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 18/50: pose pseudo 35
+D (45555) i2c.master: I2C hardware NACK detected
+D (45555) i2c.master: I2C transaction unexpected nack detected
+W (45555) servo_zero: active frame I2C failed on attempt 1/4: ESP_ERR_INVALID_STATE (0x103); retrying after 1000 us
+W (45565) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (45575) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (48105) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (48125) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 19/50: pose pseudo 35
+W (48135) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (48135) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (50665) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (50685) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 20/50: pose pseudo 35
+W (50695) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (50695) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (53225) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (53245) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 21/50: pose pseudo 35
+W (53255) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (53255) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (55785) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (55805) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 22/50: pose pseudo 35
+W (55815) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (55815) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (58345) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (58365) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 23/50: pose pseudo 35
+W (58375) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (58375) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (60905) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (60925) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 24/50: pose pseudo 35
+W (60935) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (60935) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (63465) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (63485) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 25/50: pose pseudo 35
+W (63495) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (63495) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (66025) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (66045) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 26/50: pose pseudo 35
+W (66055) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (66055) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (68585) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (68605) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 27/50: pose pseudo 35
+W (68615) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (68615) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (71145) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (71165) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 28/50: pose pseudo 35
+W (71175) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (71175) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (73705) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (73725) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 29/50: pose pseudo 35
+W (73745) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (73745) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (76285) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (76305) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 30/50: pose pseudo 35
+W (76315) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (76315) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (78845) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (78865) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 31/50: pose pseudo 35
+W (78875) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (78875) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (81405) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (81425) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 32/50: pose pseudo 35
+W (81435) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (81435) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (83965) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (83975) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 33/50: pose pseudo 35
+W (83985) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (83985) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (86525) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (86545) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 34/50: pose pseudo 35
+W (86555) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (86555) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (89085) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (89105) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 35/50: pose pseudo 35
+W (89115) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (89115) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (91645) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (91665) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 36/50: pose pseudo 35
+W (91675) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (91675) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (94205) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (94225) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 37/50: pose pseudo 35
+W (94235) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (94235) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (96765) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (96775) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 38/50: pose pseudo 35
+W (96785) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (96785) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (99325) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (99345) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 39/50: pose pseudo 35
+W (99355) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (99355) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (101885) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (101905) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 40/50: pose pseudo 35
+W (101915) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (101915) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (104445) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (104465) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 41/50: pose pseudo 35
+W (104475) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (104475) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (107005) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (107025) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 42/50: pose pseudo 35
+W (107035) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (107035) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (109565) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (109585) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 43/50: pose pseudo 35
+W (109595) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (109595) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (112125) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (112145) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 44/50: pose pseudo 35
+W (112155) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (112155) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (114685) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (114705) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 45/50: pose pseudo 35
+W (114715) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (114715) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (117245) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (117265) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 46/50: pose pseudo 35
+W (117275) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (117275) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (119805) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (119825) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 47/50: pose pseudo 35
+W (119835) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (119835) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (122365) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (122385) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 48/50: pose pseudo 35
+W (122395) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (122395) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (124925) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (124945) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 49/50: pose pseudo 35
+W (124955) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (124955) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (127485) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (127505) servo_zero: UART stop -> /OE HIGH
+
+[BENCHMARK] round 50/50: pose pseudo 35
+W (127515) servo_zero: pseudo-sync pose started: amplitude=35%, hips=1658/1513/1531/1559 knees=1363/1532/1476/1717, 2520 ms
+W (127515) servo_zero: pseudo-sync V2 schedule: settle=400 ms, diagonal masks=0xc3/0x3c, phase=120 ms, minimum-jerk move=2000 ms, all channels per 20 ms frame
+W (130045) servo_zero: rest pose reached; holding target; /OE LOW; use stop to release
+W (130065) servo_zero: UART stop -> /OE HIGH
+W (130075) servo_zero: I2C stats: logical=4833 attempts=4834 success=4833 nack=1 timeout=0 other=0 retries=1 recovered_after_retry=1 terminal_failures=0
+
+[BENCHMARK] completed

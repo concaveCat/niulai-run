@@ -1,0 +1,55 @@
+EXP-028 RF knee-dominant lift with half hip swing
+Date: 2026-09-13
+Hardware: ESP32-S3 QFN56 rev v0.2, CH343 native Windows COM4, PCA9685
+  0x40. Operator had confirmed the mechanical fixation, limits, clearance,
+  current and estop conditions for the physical trial.
+Software: already flashed 50 mm-envelope servo-zero-test image
+  niulai_servo_zero_test.bin, SHA-256
+  61ff21d09563cab8d4d4157e9350070bf94a4d57d0d13044e02d3c435c209ccb.
+  No firmware change or reflash was made for this trial.
+
+Geometry calculation (45 mm thigh, 70 mm shank, forward knee branch):
+  rest foot=(0,-100) mm -> q_h=-127.658 deg, q_k=60.785 deg
+  knee lift uses -491 us at -10.9 us/deg -> approximately +45 deg q_k
+  FK at fixed q_h gives foot=(37.468,-61.705) mm
+  predicted vertical clearance = 38.295 mm
+  hip swing command = 22.5 deg, exactly half of the nominal 45 deg
+  hip swing used by this demo
+
+The fixed-q_h lift point is outside the quad demo's x=+35 mm software
+workspace by about 2.5 mm; this was a single-leg joint-ordered diagnostic,
+not a claim that the quad foot-space workspace should be enlarged.
+
+Host operation (PowerShell, native Python, no-reset COM4 open):
+  stop -> rest direct -> stop -> stats reset
+  demo rf-lift-cosine-drop 22.5
+  wait 2.3 s for the 22.5 deg swing to reach its endpoint
+  release -> stop -> stats
+
+UART evidence:
+  HIGH RISK RF lift/cosine/drop started: CH1 fast lift=45.0 deg (-491 us)
+  in 100 ms, hold=120 ms; CH0 cosine swing=22.5 deg over 1800 ms
+  motionleg release at 4649 ms: hip frozen at swing=22.5 deg
+  motionleg touchdown complete; hip held; /OE LOW; use stop
+  UART stop -> /OE HIGH
+  I2C stats: logical=241 attempts=241 success=241 nack=0 timeout=0 other=0
+    retries=0 recovered_after_retry=0 terminal_failures=0
+
+Result: the firmware accepted and completed the knee-dominant lift/drop with
+half hip swing and no communication failure. This verifies the geometric and
+UART trajectory path; the agent did not independently measure actual foot
+clearance, body motion, stall current, voltage sag, temperature, noise, or
+falling. The x=37.468 mm model point also remains outside the quad demo's
+current +35 mm workspace, so this result should not be promoted to a new
+four-leg gait limit without a separate mechanical observation.
+
+Repeat physical run (same image and command, 2026-09-13):
+  stop -> rest direct -> stop -> stats reset
+  demo rf-lift-cosine-drop 22.5 -> wait 2.3 s -> release -> stop -> stats
+  The command again reported CH1 lift=45.0 deg and CH0 swing=22.5 deg;
+  motionleg touchdown complete and final UART stop -> /OE HIGH.
+  One first-attempt PCA9685 NACK was recovered by the firmware retry:
+  logical=214 attempts=215 success=214 nack=1 timeout=0 other=0
+  retries=1 recovered_after_retry=1 terminal_failures=0
+  No terminal rejection or timeout occurred. Physical clearance and falling
+  remain Operator observations, not UART-derived facts.

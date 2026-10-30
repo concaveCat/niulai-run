@@ -1,0 +1,66 @@
+# EXP-026 physical UART trial — 2026-09-13
+
+## Scope
+
+Authorized HIGH RISK extension of the isolated right-front CH0/CH1
+lift/cosine-swing/cutoff/drop demo from nominal 45° to nominal 60°.
+
+## Preconditions and image
+
+- Operator had confirmed mechanical fixture, motion limits, 6 V current
+  limiting, personnel clearance, and an immediately available emergency stop.
+- Native Windows serial port: `COM4`, 115200 baud.
+- Firmware: `niulai_servo_zero_test`, ESP-IDF v5.5.5, ESP32-S3 QFN56 rev v0.2.
+- Application image size: `0xd3440`; all three flash images reported
+  `Hash of data verified`.
+- Boot log: PCA9685 `0x40` ACK, 50 Hz PWM / 400 kHz I²C, `/OE HIGH`.
+
+## Guard attempt before the successful trial
+
+The first helper run used `--prepare-support` before the helper was corrected
+to restore the support frame after `stop`. The firmware reported the support
+pose reached, then `stop` restored the software targets to the persisted
+upright frame. The 60° preflight rejected the demo with:
+
+```text
+demo rf-lift-cosine-drop rejected; outputs must be stopped and idle or plan is unreachable
+I2C stats: logical=0 attempts=0 success=0 nack=0 timeout=0 other=0 retries=0 recovered_after_retry=0 terminal_failures=0
+```
+
+No 60° motion was enabled in this attempt.
+
+## Successful command
+
+```text
+python tools/servo_zero_rf_lift_cosine_drop_trial.py --port COM4 --swing-degrees 60 --cutoff-after-start-ms 1100 --prepare-support --drop-observe-seconds 0.8
+```
+
+The helper entered `pose pseudo 100`, waited for the support target, sent
+`stop`, restored the support frame
+`1494,1165,1672,1748,1368,1279,1764,1934 us`, reset I²C stats, started the
+60° demo, sent `release` after the requested cutoff, then sent `stop` and
+queried stats in the same serial session.
+
+## UART result
+
+```text
+frame -> 1494/1165/1672/1748/1368/1279/1764/1934 us
+HIGH RISK RF lift/cosine/drop started: CH1 fast lift=45.0 deg (-491 us) in 100 ms, hold=120 ms; CH0 cosine swing=60.0 deg over 1800 ms; send release to cut and drop knee
+motionleg release at 1179 ms: hip frozen at swing=60.0 deg; accumulated knee recovery active
+motionleg touchdown complete; hip held; /OE LOW; use stop
+UART stop -> /OE HIGH
+I2C stats: logical=68 attempts=68 success=68 nack=0 timeout=0 other=0 retries=0 recovered_after_retry=0 terminal_failures=0
+```
+
+No reset, terminal I²C failure, retry, or parser failure occurred in the
+successful trial. The release-to-complete log interval was about 140 ms,
+consistent with the 120 ms touchdown and 20 ms task cadence.
+
+## Observation boundary
+
+No video, current probe, voltage-drop measurement, temperature measurement, or
+independent mechanical observation was captured by the agent. The UART result
+proves the support-frame precondition, path preflight, control sequence, and
+safe output shutdown only. The Operator must record actual clearance, direction,
+contact point, limit margin, impact/noise, current, and temperature before
+accepting the expanded range.

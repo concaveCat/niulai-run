@@ -1,0 +1,68 @@
+menu "牛来快跑 isolated CH0 servo-zero test"
+
+    config SERVO_ZERO_SDA_GPIO
+        int "PCA9685 SDA GPIO"
+        range 0 48
+        default 11
+
+    config SERVO_ZERO_SCL_GPIO
+        int "PCA9685 SCL GPIO"
+        range 0 48
+        default 12
+
+    config SERVO_ZERO_OE_GPIO
+        int "PCA9685 /OE GPIO (active low)"
+        range 0 48
+        default 1
+
+    config SERVO_ZERO_PCA9685_ADDRESS
+        hex "PCA9685 7-bit I2C address"
+        range 0x08 0x77
+        default 0x40
+
+    config SERVO_ZERO_PWM_FREQUENCY_HZ
+        int "Servo PWM frequency (Hz)"
+        range 40 60
+        default 50
+
+    config SERVO_ZERO_I2C_SPEED_HZ
+        int "PCA9685 I2C clock speed (Hz)"
+        range 1000 1000000
+        default 400000
+
+    config SERVO_ZERO_PULSE_US
+        int "CH0 zero-candidate pulse width (us)"
+        range 500 2500
+        default 1500
+        help
+            This is a generic RC-servo midpoint candidate. It is not a
+            measured MG90S or joint calibration value.
+
+    config SERVO_ZERO_REFRESH_MS
+        int "CH0 rewrite interval (ms)"
+        range 20 5000
+        default 20
+
+    config SERVO_ZERO_TCP_DIAG_ENABLED
+        bool "Enable Wi-Fi TCP diagnostic console"
+        default y
+        help
+            Start a local SoftAP and a newline-delimited TCP console so a
+            host can collect ESP_LOG output without USB. This is a local,
+            unauthenticated bench diagnostic path, not a production control
+            interface.
+
+    config SERVO_ZERO_TCP_DIAG_WIFI_SSID
+        string "TCP diagnostic SoftAP SSID"
+        default "牛来快跑-DIAG"
+
+    config SERVO_ZERO_TCP_DIAG_WIFI_PASSWORD
+        string "TCP diagnostic SoftAP password"
+        default "牛来快跑-Diag"
+
+    config SERVO_ZERO_TCP_DIAG_PORT
+        int "TCP diagnostic port"
+        range 1 65535
+        default 3333
+
+endmenu

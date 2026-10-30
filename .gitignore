@@ -1,0 +1,26 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.coverage
+.venv/
+dist/
+build/
+.niulai-git/
+*.apk
+*.aab
+.DS_Store
+Thumbs.db
+
+# Android local/generated state
+.gradle/
+.idea/
+local.properties
+*.iml
+captures/
+
+# ESP-IDF local/generated state
+sdkconfig
+sdkconfig.old
+firmware-esp32/build-*/
+firmware-esp32/tools/servo-zero-test/build-*/

@@ -1,0 +1,62 @@
+EXP-038 raw evidence — 2026-09-16
+Workspace: firmware-esp32
+Branch: fw/esp32-layered-runtime (uncommitted working tree)
+Hardware: ESP32-S3 rev v0.2, USB-Enhanced-SERIAL CH343 (COM4)
+Build: firmware-esp32-actuation-clean.BHpDJC
+IDF: ESP-IDF v5.5.5, esptool.py v4.12.0, external SDKCONFIG
+
+Software checks before first flash:
+  sh firmware-esp32/tests/host/run_host_tests.sh -> ALL HOST TESTS PASSED
+  sh tools/run_offline_checks.sh -> ALL OFFLINE CHECKS PASSED
+  git diff --check -> PASS
+
+First ACTUATION_ENABLED image:
+  app SHA-256 583957790706a56b903b41605f685e4eaf38763c5547aa5bc1a4a3b61f7b3074
+  flash target COM4, chip ESP32-S3, all three regions Hash of data verified
+  startup:
+    牛来快跑 firmware-esp32 stage=ACTUATION_ENABLED active_leg=ALL
+    E (...) pca9685: pose pulse configuration outside safe range
+    SAFETY_GATE pca9685_init_failed staying_on_null_actuator
+    I (...) runtime_imu: MPU6500 telemetry ready address=0x68
+
+Root cause:
+  formal carrier order is FR=CH0/1, FL=CH2/3, RR=CH4/5, RL=CH6/7;
+  compatibility pose_map still treated ACTIVE_LEG_FL as CH0. The configured
+  1200 us lift target therefore violated CH0's reviewed 1400 us minimum.
+
+Fix:
+  pose_map now uses semantic index 0=FL,1=FR,2=RL,3=RR and carrier bases
+  {2,0,6,4}; the compatibility command mask uses semantic leg index rather
+  than channel-pair index. No hard pulse envelope or gate threshold was widened.
+  Added host regression asserting FL -> CH2/CH3 and lift 1200/1700 us.
+
+Rebuild:
+  ninja -C firmware-esp32-actuation-clean.BHpDJC all -> PASS
+  CONFIG_NIULAI_MODE_ACTUATION_ENABLED=y
+  CONFIG_NIULAI_ACTIVE_LEG_FL=y
+  app SHA-256 037af1337fd658a7118d83542097e523b942e2048621c874b186fa8f85cc2325
+  app size 0xbb030, smallest app partition 0x100000, 0x44fd0 free (27%)
+
+Second flash:
+  esptool --chip esp32s3 -p COM4 -b 460800 --before default_reset
+  --after hard_reset write_flash --flash_mode dio --flash_freq 80m
+  --flash_size 16MB 0x0 bootloader/bootloader.bin 0x10000 niulai.bin
+  0x8000 partition_table/partition-table.bin
+  result: bootloader, application and partition table each Hash of data verified
+
+Filtered startup evidence after second flash:
+  牛来快跑 firmware-esp32 stage=ACTUATION_ENABLED active_leg=ALL
+  BLE_GATT_REGISTER chr=...1001 props=WRITE|WRITE_ENC
+  BLE_GATT_REGISTER chr=...1003 props=WRITE|WRITE_ENC
+  I (...) runtime_imu: MPU6500 telemetry ready address=0x68
+  UART commands: reset | status | transitions
+  No pca9685 initialization error, stack overflow, or reboot line observed in
+  the 8-second filtered listener.
+
+Read-only UART query:
+  status
+  QW_STATUS stage=ACTUATION_ENABLED fsm=SUPPORT acceptance=0/100 armed=0 failsafe=0
+
+No phone pairing, HOME command, BLE control packet, or actuator motion command
+was sent. Physical pose, direction, limits, current, temperature and E-stop
+response remain unverified.

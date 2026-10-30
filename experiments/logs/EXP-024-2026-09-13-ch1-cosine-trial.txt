@@ -1,0 +1,64 @@
+EXP-024 CH1 cosine-sweep trial record
+Date: 2026-09-13 (Asia/Shanghai)
+Operator: Project maintainer, safety conditions explicitly confirmed before the
+physical run.
+
+Firmware and transport
+-----------------------
+- Project: isolated firmware-esp32/tools/servo-zero-test
+- Target: ESP32-S3 over native Windows COM4
+- Build: ESP-IDF v5.5.5, final image niulai_servo_zero_test.bin, 0xd1eb0 bytes
+- Command runner: tools/servo_zero_ch1_cosine_trial.py --port COM4
+- Trial observation: 10 s; stop and stats were sent in the same serial session.
+- Scope: CH1 only; other active channels held their action-start software targets;
+  CH8..CH15 were FULL_OFF.
+
+Precondition and stop evidence
+------------------------------
+- Boot identified niulai_servo_zero_test.
+- PCA9685 0x40 ACK was reported.
+- Initial output state was /OE HIGH.
+- The trial reported: CH1 cosine sweep started
+- The same session reported: UART stop -> /OE HIGH
+
+Captured UART result
+--------------------
+The final same-session statistics line was:
+
+I2C stats: logical=493 attempts=495 success=493 nack=2 timeout=0 other=0 retries=2 recovered_after_retry=2 terminal_failures=0
+
+During the 10 s observation, two first-attempt PCA9685 NACKs were retried and
+recovered. No timeout, terminal I2C failure, or reset occurred in this run.
+
+Earlier failed attempt in this experiment
+------------------------------------------
+The first flashed image used a 3072-byte CH1 task stack. Starting the same
+command produced an ESP-IDF task-stack-overflow report and rebooted the board;
+that attempt is not counted as a continuity result. The task stack was increased
+to 4096 bytes, the image was rebuilt and reflashed, and the valid run above was
+then completed without stack overflow.
+
+Evidence boundary
+-----------------
+The host math test and firmware implementation establish the commanded
+trajectory: current CH1 -> 1000 us -> 2000 us -> 1000 us ...; 20 ms updates,
+2000 ms per half-wave, maximum adjacent target change 17 us. UART/I2C output
+does not measure the servo shaft. Visual direction, mechanical endpoint,
+continuity under load, current/voltage, noise, and temperature therefore remain
+Operator observations to be added after the physical inspection.
+
+Repeat demonstration #2
+------------------------
+- Same Operator-confirmed safety conditions; no reflashing was needed.
+- Native COM4 runner: tools/servo_zero_ch1_cosine_trial.py --port COM4
+  --observe-seconds 10
+- Boot again identified niulai_servo_zero_test, PCA9685 0x40 ACK, 50 Hz PWM,
+  400000 Hz I2C, and initial /OE HIGH.
+- UART start line: HIGH RISK CH1 cosine sweep started: 1000..2000 us,
+  2000 ms per half swing, 20 ms internal cadence; send stop
+- UART stop line: UART stop -> /OE HIGH
+- UART stats line:
+  I2C stats: logical=488 attempts=488 success=488 nack=0 timeout=0 other=0 retries=0 recovered_after_retry=0 terminal_failures=0
+- No reset, stack-overflow report, I2C error, or terminal failure was observed.
+- No shaft-angle, current/voltage, noise, or temperature instrument data was
+  captured; mechanical observations remain Operator input.

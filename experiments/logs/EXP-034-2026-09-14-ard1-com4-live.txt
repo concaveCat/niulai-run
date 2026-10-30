@@ -1,0 +1,58 @@
+EXP-034 ARD-1 live COM4 validation — 2026-09-14
+
+Scope: first controlled physical validation of the flashed isolated quad demo.
+This is not a gait acceptance result.
+
+Hardware and safety gate
+- Target: ESP32-S3 rev v0.2, MAC ending `fe:23:20`, native Windows `COM4`.
+- Servo controller: PCA9685 at `0x40`, 400 kHz I2C; boot scan also reported
+  MPU6500-compatible device ACK at `0x68`.
+- Operator confirmed mechanical fixation, motion limits, 6 V supply/current
+  boundary, personnel clearance, and immediate stop/power-cut procedure before
+  motion.
+- Firmware image: commit `a2ce962`, ESP-IDF v5.5.5, profile
+  `30,9,40,360,300,120,50`.
+- The test began with `stop`, then `rest direct`; it ended with `stop`, leaving
+  `/OE HIGH`. No NVS write was performed.
+
+Commands and repetitions
+- One RF single-leg run had already completed before this log: `press 1`,
+  hold through the configured lift+swing interval, `release 1`.
+- One LF+RR low-amplitude run had already completed: profile
+  `30,9,30,360,300,120,25`.
+- One LF+RR default-profile run had already completed: `demo quad press 6`,
+  `demo quad release 6`.
+- Main continuous diagonal run, one cycle:
+  `demo quad press 6 30,9,40,360,300,120,50`
+  `demo quad release 6`
+  `demo quad press 9 30,9,40,360,300,120,50`
+  `demo quad release 9`
+
+Observed UART result
+- `rest direct` reported `direct rest ready`.
+- Mask `0x06` (LF+RR) was accepted, both legs reached the software boundary
+  `x=50.0 mm`, released, and reported `quad demo complete` with
+  `soft_limit_legs=0x06`.
+- Mask `0x09` (RF+LR) was accepted, both legs reached `x=50.0 mm`, released,
+  and reported `quad demo complete` with `soft_limit_legs=0x09`.
+- No `quad demo rejected`, no terminal `quad demo stopped`, and no automatic
+  `/OE` shutdown occurred during the two-step sequence.
+- During simultaneous motion the UART log contained transient
+  `I2C software timeout`/hardware-NACK diagnostics. The motion continued and
+  completed; this is retained as a bus robustness finding, not hidden as a
+  clean run.
+- After the final stop, `stats` reported:
+  `logical=338 attempts=345 success=338 nack=7 timeout=0 other=0 retries=7 recovered_after_retry=5 terminal_failures=0`.
+
+Physical observation
+- No visual/video observation was captured by the agent. The serial record
+  proves command acceptance, trajectory completion, and safe stop only; it
+  does not prove correct leg direction, no foot slip, no fall, clearance, or
+  electrical/thermal margin.
+
+Next action
+- Operator must record whether the body remained supported, whether each
+  diagonal moved in the intended direction, and whether any slip, collision,
+  stall, sound, heat, or supply dip occurred. Investigate why the diagnostic
+  software-timeout line is not reflected in the final `timeout=0` counter before
+  increasing amplitude or repeating many cycles.

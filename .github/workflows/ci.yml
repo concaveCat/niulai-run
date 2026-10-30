@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  python-and-docs:
+    name: Python, docs and paper checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install host dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Firmware reference tests
+        run: python -m unittest discover -s firmware/tests -p 'test_*.py' -v
+      - name: Tool tests
+        run: python -m unittest discover -s tools/tests -p 'test_*.py' -v
+      - name: Feedback proxy tests
+        run: python -m unittest discover -s services/feedback_proxy/tests -p 'test_*.py' -v
+      - name: Carrier paper checks
+        run: |
+          python hardware/electronics/calculations/verify_modular_carrier_interface.py
+          python hardware/electronics/calculations/verify_modular_carrier_power_protection.py
+      - name: Documentation audits
+        run: |
+          python tools/check_markdown_links.py
+          python tools/check_experiment_index.py
+          python tools/check_decision_index.py
+
+  esp32-host:
+    name: ESP32 pure-C host suite
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and run host suite
+        run: ./firmware-esp32/tests/host/run_host_tests.sh
+      - name: Isolated servo-zero math tests
+        run: |
+          cd firmware-esp32/tools/servo-zero-test
+          cc -std=c11 -Wall -Wextra -Werror \
+            main/servo_zero_us_profile.c tests/test_servo_zero_us_profile.c \
+            -o /tmp/niulai-servo-zero-us-profile-test
+          /tmp/niulai-servo-zero-us-profile-test
+          cc -std=c11 -Wall -Wextra -Werror -pedantic -I main \
+            main/servo_zero_leg_math.c main/servo_zero_quad_demo.c \
+            tests/test_servo_zero_quad_demo.c -lm \
+            -o /tmp/niulai-servo-zero-quad-demo-test
+          /tmp/niulai-servo-zero-quad-demo-test
+
+  android-unit-tests:
+    name: Android unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: android-actions/setup-android@v3
+      # compileSdk 36 is only a build-time configuration. The APK itself
+      # runs on Android 8.0+ (minSdk 26); no SDK is required on the phone.
+      - name: Install compile SDK
+        run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Run unit tests
+        working-directory: android-controller
+        run: ./gradlew testDebugUnitTest --no-daemon

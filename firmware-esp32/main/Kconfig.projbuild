@@ -1,0 +1,391 @@
+menu "牛来快跑"
+
+    choice NIULAI_MODE
+        prompt "Safety gating stage"
+        default NIULAI_MODE_BLE_ONLY
+        help
+            Actuation safety stage. sdkconfig.defaults always ships
+            BLE_ONLY; raising the stage is a deliberate per-bench decision.
+
+            BLE_ONLY: /OE is always high, the PCA9685 is never initialized,
+            commands go to the null actuator (log only).
+            BLE_VERIFIED: PCA9685 is initialized to safe values and kept in
+            SLEEP; /OE is never lowered.
+            ACTUATION_ENABLED: servo motion is possible, but only while the
+            runtime acceptance gate is open (consecutive fresh BLE packets,
+            no failsafe, FSM not in FAULT).
+
+        config NIULAI_MODE_BLE_ONLY
+            bool "BLE_ONLY"
+        config NIULAI_MODE_BLE_VERIFIED
+            bool "BLE_VERIFIED"
+        config NIULAI_MODE_ACTUATION_ENABLED
+            bool "ACTUATION_ENABLED"
+    endchoice
+
+    choice NIULAI_ACTIVE_LEG
+        prompt "Active leg (static prototype wiring constant)"
+        default NIULAI_ACTIVE_LEG_FL
+        help
+            Static wiring constant for the single-leg prototype. This is NOT
+            automatic leg selection and NOT a gait decision.
+
+        config NIULAI_ACTIVE_LEG_FL
+            bool "FL (front left)"
+        config NIULAI_ACTIVE_LEG_FR
+            bool "FR (front right)"
+        config NIULAI_ACTIVE_LEG_RL
+            bool "RL (rear left)"
+        config NIULAI_ACTIVE_LEG_RR
+            bool "RR (rear right)"
+    endchoice
+
+    config NIULAI_FOOT_CONTACT_TEST
+        bool "KW10 contact debounce test (isolated)"
+        default n
+        help
+            Initialize only the configured KW10 inputs and print electrical
+            GPIO levels, per-leg-polarity raw contact, and debounced masks.
+            All four installed C-NC inputs are active-high.
+            This mode skips BLE, FSM, PCA9685, and actuators.
+
+    config NIULAI_GPIO39_CLI
+        bool "GPIO39 button CLI (isolated)"
+        default n
+        help
+            Poll GPIO39 with an internal pull-up and print only 1 for an open
+            C-NC button and 0 for a closed button. This mode skips BLE, FSM,
+            PCA9685, and actuators.
+
+    config NIULAI_WATCHDOG_TIMEOUT_MS
+        int "BLE watchdog timeout (ms)"
+        range 100 60000
+        default 500
+        help
+            Milliseconds since the last valid control packet before the
+            failsafe zeroes the input mask and sets FAILSAFE_ACTIVE.
+
+    config NIULAI_CONTROL_TICK_HZ
+        int "Control loop tick rate (Hz)"
+        range 10 1000
+        default 100
+        help
+            Rate of the control task: foot contact sampling, FSM tick,
+            command dispatch.
+
+    config NIULAI_CONTACT_DEBOUNCE_TICKS
+        int "Foot contact debounce ticks (consecutive agreeing samples)"
+        range 1 100
+        default 2
+        help
+            A contact level change only counts after this many consecutive
+            control-tick samples agree (2 ticks at 100 Hz = 20 ms).
+
+    config NIULAI_ACTUATION_ACCEPTANCE_WINDOW_S
+        int "Actuation acceptance window (s)"
+        range 1 3600
+        default 1
+        help
+            Seconds of consecutive watchdog ticks (100 ms each) with a fresh
+            BLE packet within the watchdog interval before the runtime
+            actuation gate may open.
+
+    config NIULAI_STATE_TIMEOUT_MS
+        int "FSM state timeout (ms, 0 disables)"
+        range 0 600000
+        default 0
+        help
+            Per-state timeout for the leg FSM; 0 disables it (Python None
+            analogue).
+
+    config NIULAI_FSM_LIFT_DURATION_MS
+        int "FSM lift duration (ms)"
+        range 1 10000
+        default 200
+        help
+            lift_duration_s = value / 1000.
+
+    config NIULAI_FSM_SWING_SPEED
+        int "FSM swing speed (milli-progress per second)"
+        range 0 1000000
+        default 1000
+        help
+            swing_speed = value / 1000 (default 1000 == 1.0).
+
+    config NIULAI_FSM_SEARCH_SPEED
+        int "FSM search speed (milli-progress per second)"
+        range 0 1000000
+        default 500
+        help
+            search_speed = value / 1000 (default 500 == 0.5).
+
+    config NIULAI_FSM_MAX_SWING
+        int "FSM max swing progress (milli-progress)"
+        range 0 1000000
+        default 1000
+        help
+            max_swing = value / 1000 (default 1000 == 1.0).
+
+    comment "Formal ARD-1 motion strategy (software-only until separately accepted)"
+
+    config NIULAI_ARD1_LIFT_DURATION_MS
+        int "ARD-1 lift duration (ms)"
+        range 1 10000
+        default 300
+
+    config NIULAI_ARD1_SWING_DURATION_MS
+        int "ARD-1 swing duration (ms)"
+        range 1 10000
+        default 360
+
+    config NIULAI_ARD1_SEARCH_DURATION_MS
+        int "ARD-1 timed search duration (ms)"
+        range 1 10000
+        default 120
+
+    config NIULAI_ARD1_STEP_LENGTH_MM
+        int "ARD-1 nominal step length (mm)"
+        range 1 50
+        default 30
+
+    config NIULAI_ARD1_LIFT_Z_MM
+        int "ARD-1 lift foot Z (mm)"
+        range -110 -1
+        default -60
+
+    config NIULAI_ARD1_TOUCHDOWN_Z_MM
+        int "ARD-1 touchdown foot Z (mm)"
+        range -110 -1
+        default -100
+
+    config NIULAI_I2S_BCLK_GPIO
+        int "MAX98357A/MS4030 BCLK/SCK GPIO"
+        range 0 48
+        default 9
+
+    config NIULAI_I2S_WS_GPIO
+        int "MAX98357A/MS4030 WS GPIO"
+        range 0 48
+        default 10
+
+    config NIULAI_I2S_TX_GPIO
+        int "MAX98357A DIN GPIO"
+        range 0 48
+        default 4
+
+    config NIULAI_I2S_RX_GPIO
+        int "MS4030 SD GPIO"
+        range 0 48
+        default 14
+
+    config NIULAI_I2S_LOOPBACK_TEST
+        bool "I2S GPIO4 to GPIO14 loopback test"
+        default n
+        help
+            Run an isolated full-duplex I2S electrical loopback test. The
+            transmitter uses the MAX98357A DIN GPIO and the receiver uses the
+            MS4030 SD GPIO. This skips BLE, FSM, PCA9685 and actuators.
+
+    config NIULAI_MPU6500_PROBE_TEST
+        bool "MPU6500 I2C reachability test"
+        default n
+        help
+            Run a read-only MPU6500 I2C address and WHO_AM_I probe. This skips
+            microphone, I2S, BLE, FSM, PCA9685 and actuators.
+
+    config NIULAI_DISPLAY_TEST
+        bool "ST7789 color-bar display test"
+        default n
+        help
+            When enabled, app_main runs the ST7789 color-bar test instead of
+            starting BLE, the control loop, and the actuator path. The test
+            uses the Gerber_PCB1_2026-09-02 ST7789 wiring and keeps /OE high.
+
+    config NIULAI_DISPLAY_HUD_TEST
+        bool "ST7789 gameplay HUD preview"
+        default n
+        help
+            When enabled, app_main renders the accepted HUD v1 preview instead
+            of starting BLE, the control loop, audio, or the actuator path.
+            The preview keeps /OE high and cycles representative UI states.
+
+    config NIULAI_DISPLAY_HUD_LANDSCAPE
+        bool "ST7789 horizontal HUD layout"
+        default n
+        depends on NIULAI_DISPLAY_HUD_TEST
+        help
+            When enabled, the HUD preview uses the same elements, text and
+            colors in a 320x170 horizontal layout. The four leg cards are
+            arranged in one row from FL to RR. This is a display-only option
+            and remains isolated from BLE, FSM and actuators.
+
+    config NIULAI_DISPLAY_HUD_LANDSCAPE_X_OFFSET
+        int "Horizontal HUD X offset"
+        range 0 4095
+        default 0
+        depends on NIULAI_DISPLAY_HUD_LANDSCAPE
+
+    config NIULAI_DISPLAY_HUD_LANDSCAPE_Y_OFFSET
+        int "Horizontal HUD Y offset"
+        range 0 4095
+        default 35
+        depends on NIULAI_DISPLAY_HUD_LANDSCAPE
+
+    config NIULAI_DISPLAY_HUD_LANDSCAPE_MADCTL
+        hex "Horizontal HUD MADCTL value"
+        range 0x00 0xff
+        default 0x60
+        depends on NIULAI_DISPLAY_HUD_LANDSCAPE
+
+    config NIULAI_AUDIO_TEST
+        bool "MAX98357A melody test"
+        default n
+        help
+            When enabled, app_main runs an isolated I2S TX public-domain melody test instead
+            of starting BLE, the control loop, and the actuator path. The
+            test uses the Gerber MAX98357A wiring and does not enable MS4030.
+
+    config NIULAI_I2S_SINE_TEST
+        bool "MAX98357A 1 kHz I2S sine diagnostic (isolated)"
+        default n
+        help
+            When enabled, app_main runs only a continuous 1 kHz, 32-bit
+            stereo I2S TX sine wave using the configured BCLK/WS/DIN pins.
+            This mode skips the microphone, MP3 decoder, BLE, FSM, PCA9685
+            and actuators. It is intended for oscilloscope and low-volume
+            MAX98357A bring-up.
+
+    config NIULAI_I2S_SINE_AMPLITUDE_PERCENT
+        int "I2S sine diagnostic digital amplitude (%)"
+        range 1 100
+        default 5
+        depends on NIULAI_I2S_SINE_TEST
+        help
+            Digital amplitude of the diagnostic sine wave. This is not a
+            MAX98357A hardware gain setting; keep it low for the first bench
+            check and increase only after the signal path is confirmed.
+
+    config NIULAI_AUDIO_VOLUME_PERCENT
+        int "Embedded MP3 playback volume (%)"
+        range 0 100
+        default 50
+        help
+            Digital gain applied before 16-bit decoded PCM is written as
+            32-bit I2S samples. This does not replace the MAX98357A hardware
+            gain or speaker volume setting.
+
+    config NIULAI_VOICE_KEYWORD_TEST
+        bool "MS4030 local 牛来 keyword test"
+        default n
+        help
+            When enabled, app_main starts only the MS4030 I2S RX path and the
+            enrolled-template keyword matcher. It skips BLE, FSM, PCA9685 and
+            actuators, and keeps /OE HIGH. Say "牛来" after `voice enroll`
+            to enroll a template, then repeat it to observe a NIULAI event.
+            This is not a general speech-to-text engine; the template backend
+            remains replaceable by an ESP-SR custom WakeNet model.
+
+    config NIULAI_VOICE_VAD_RMS_THRESHOLD
+        int "Voice VAD RMS threshold"
+        range 1 32767
+        default 500
+        help
+            Input PCM RMS threshold for the simple local voice activity gate.
+            This is a bench candidate and must be tuned from actual MS4030
+            samples; it is not a microphone sensitivity specification.
+
+    config NIULAI_VOICE_DISTANCE_THRESHOLD
+        int "Voice template distance threshold"
+        range 0 255
+        default 40
+        help
+            Maximum normalized feature distance accepted for the enrolled
+            牛来 template. The conservative default rejects the observed
+            no-speech candidate at distance 50; positive/negative utterance
+            measurements are still required for product acceptance.
+
+    config NIULAI_VOICE_COOLDOWN_FRAMES
+        int "Voice keyword cooldown frames"
+        range 0 1000
+        default 50
+        help
+            Number of 10 ms feature frames during which a repeated match is
+            suppressed. The default is a 500 ms candidate.
+
+    config NIULAI_VOICE_I2S_SLOT
+        int "MS4030 I2S slot"
+        range 0 1
+        default 0
+        help
+            Stereo slot selected from the 32-bit I2S RX frame. The default 0
+            corresponds to the current L/R-low left-channel candidate.
+
+    config NIULAI_VOICE_I2S_SHIFT
+        int "MS4030 raw-to-PCM right shift"
+        range 0 24
+        default 16
+        help
+            Candidate right shift used to convert a signed 32-bit I2S slot to
+            signed 16-bit PCM. Verify alignment on the physical microphone
+            before changing this value or interpreting recognition results.
+
+    config NIULAI_DISPLAY_SCLK_GPIO
+        int "ST7789 SCLK GPIO"
+        range 0 48
+        default 8
+
+    config NIULAI_DISPLAY_MOSI_GPIO
+        int "ST7789 MOSI GPIO"
+        range 0 48
+        default 17
+
+    config NIULAI_DISPLAY_CS_GPIO
+        int "ST7789 CS GPIO"
+        range 0 48
+        default 6
+
+    config NIULAI_DISPLAY_DC_GPIO
+        int "ST7789 D/C GPIO"
+        range 0 48
+        default 7
+
+    config NIULAI_DISPLAY_RESET_GPIO
+        int "ST7789 RESET GPIO"
+        range 0 48
+        default 16
+
+    config NIULAI_DISPLAY_BACKLIGHT_GPIO
+        int "ST7789 backlight GPIO"
+        range 0 48
+        default 5
+
+    config NIULAI_DISPLAY_WIDTH
+        int "ST7789 panel width"
+        range 1 4096
+        default 170
+
+    config NIULAI_DISPLAY_HEIGHT
+        int "ST7789 panel height"
+        range 1 4096
+        default 320
+
+    config NIULAI_DISPLAY_X_OFFSET
+        int "ST7789 X offset"
+        range 0 4095
+        default 35
+
+    config NIULAI_DISPLAY_Y_OFFSET
+        int "ST7789 Y offset"
+        range 0 4095
+        default 0
+
+    config NIULAI_DISPLAY_MADCTL
+        hex "ST7789 MADCTL value"
+        range 0x00 0xff
+        default 0x00
+
+    config NIULAI_DISPLAY_BACKLIGHT_ACTIVE_HIGH
+        bool "ST7789 backlight active high"
+        default y
+
+endmenu

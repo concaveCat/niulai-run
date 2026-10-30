@@ -1,0 +1,33 @@
+# EXP-037 — four-channel KW10 contact electrical test
+
+Date: 2026-09-16
+Workspace: firmware-esp32
+Build: firmware-esp32-foot-contact-build
+Image SHA-256: 9430251e51279dcf46b811b6644bacc80e5a5db0433b109a7c792d0ba2c73224
+Hardware: ESP32-S3, USB-Enhanced-SERIAL CH343 (COM4)
+Physical condition: all four legs suspended; no actuator command was sent.
+
+Configuration and mapping:
+
+- FL=GPIO40, FR=GPIO39, RL=GPIO42, RR=GPIO41
+- bit 0=FL, bit 1=FR, bit 2=RL, bit 3=RR
+- debounce=2 ticks at 100 Hz (20 ms candidate)
+- firmware diagnostic interpretation: active-low (`raw_contact = low`)
+
+Flash: bootloader, application and partition table each reported `Hash of data verified`.
+
+UART samples at 115200 baud:
+
+    KW10_TEST pins FL=40 FR=39 RL=42 RR=41 gpio39=FR gpio40=FL gpio41=RR gpio42=RL tick_hz=100 debounce_ticks=2 active_low=1
+    KW10_SAMPLE n=1 t_ms=75 gpio=0x01 raw_contact=0x0E debounced=0x00
+    KW10_SAMPLE n=2 t_ms=81 gpio=0x01 raw_contact=0x0E debounced=0x0E
+    KW10_SAMPLE n=700 t_ms=7039 gpio=0x01 raw_contact=0x0E debounced=0x0E
+
+Result: with the legs suspended, FL reads HIGH while FR/RL/RR read LOW. After debounce,
+the firmware reports C on FR/RL/RR, exactly matching the observed three C. This confirms
+the three C are produced by stable GPIO levels, not by ST7789 rendering. Because the
+installed input is documented as KW10 C-NC, LOW is electrically consistent with the
+normally-closed state; whether that state means foot contact or no contact still requires
+one controlled manual switch-actuation check. The source `sdkconfig` was restored with
+`CONFIG_NIULAI_FOOT_CONTACT_TEST` disabled after the diagnostic; the board remains on
+the isolated read-only diagnostic image until a normal image is flashed.

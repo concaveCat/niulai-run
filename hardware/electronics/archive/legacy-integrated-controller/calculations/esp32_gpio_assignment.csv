@@ -1,0 +1,37 @@
+gpio,function,class,connector_access,assembly,boot_or_electrical_constraint
+0,BOOT_N,RECOVERY,TP_AND_BUTTON,POPULATED,10k pull-up; BOOT button to GND; sampled at reset
+1,EXP_GPIO1,FREE,HEADER,POPULATED,ADC1_CH0; unconditional expansion GPIO
+2,EXP_GPIO2,FREE,HEADER,POPULATED,ADC1_CH1; unconditional expansion GPIO
+3,TCA_RESET_N,ONBOARD,NONE,POPULATED,strap pin; 10k pull-down holds TCA9539 reset until firmware arms it; do not change JTAG strap eFuses
+4,VBAT_ADC,ONBOARD,TEST_POINT,POPULATED,ADC1_CH3; divider and RC filter required
+5,SERVO_CURRENT_ADC,ONBOARD,TEST_POINT,POPULATED,ADC1_CH4; current-sense amplifier output
+6,HALL1_ADC,ONBOARD,TEST_POINT,POPULATED,ADC1_CH5; Hall 1 always assembled
+7,HALL2_SHARED,HALL_SHARED,HEADER,POPULATED,ADC1_CH6; DNP 0-ohm link to DNP Hall 2
+8,HALL3_SHARED,HALL_SHARED,HEADER,POPULATED,ADC1_CH7; DNP 0-ohm link to DNP Hall 3
+9,HALL4_SHARED,HALL_SHARED,HEADER,POPULATED,ADC1_CH8; DNP 0-ohm link to DNP Hall 4
+10,EXP_GPIO10,FREE,HEADER,POPULATED,ADC1_CH9; unconditional expansion GPIO
+11,I2C_SDA,ONBOARD,I2C_HEADER,POPULATED,shared 3.3V short-line I2C bus
+12,I2C_SCL,ONBOARD,I2C_HEADER,POPULATED,shared 3.3V short-line I2C bus
+13,EXP_GPIO13,FREE,HEADER,POPULATED,external IR receiver candidate
+14,TCA_INT_N,ONBOARD,I2C_HEADER,POPULATED,active-low open-drain interrupt with pull-up
+15,EXP_GPIO15,FREE,HEADER,POPULATED,unconditional expansion GPIO
+16,I2S_BCLK,ONBOARD,NONE,POPULATED,MAX98357A bit clock
+17,I2S_LRCLK,ONBOARD,NONE,POPULATED,MAX98357A word-select clock
+18,I2S_DOUT,ONBOARD,NONE,POPULATED,ESP32 output to MAX98357A DIN
+19,USB_DATA_DN,ONBOARD,USB_DATA,POPULATED,native USB D-; controlled-impedance pair with GPIO20
+20,USB_DATA_DP,ONBOARD,USB_DATA,POPULATED,native USB D+; controlled-impedance pair with GPIO19
+21,PDM_DATA,ONBOARD,NONE,POPULATED,microphone output to ESP32 input
+35,OCTAL_PSRAM_DQ6,RESERVED_INTERNAL,NONE,INTERNAL,N16R8 Octal PSRAM; unavailable to board
+36,OCTAL_PSRAM_DQ7,RESERVED_INTERNAL,NONE,INTERNAL,N16R8 Octal PSRAM; unavailable to board
+37,OCTAL_PSRAM_DQS,RESERVED_INTERNAL,NONE,INTERNAL,N16R8 Octal PSRAM; unavailable to board
+38,EXP_GPIO38,FREE,HEADER,POPULATED,unconditional expansion GPIO
+39,EXP_GPIO39,FREE,HEADER,POPULATED,ST7789 SCLK default assignment; JTAG-capable pin
+40,EXP_GPIO40,FREE,HEADER,POPULATED,ST7789 MOSI default assignment; JTAG-capable pin
+41,WS2812_DIN,ONBOARD,NONE,POPULATED,four-LED daisy-chain input; JTAG-capable pin
+42,EXP_GPIO42,FREE,HEADER,POPULATED,ST7789 CS default assignment; JTAG-capable pin
+43,UART0_TX_RECOVERY,RECOVERY,TEST_POINT,POPULATED,recovery pad only; not a control connector
+44,UART0_RX_RECOVERY,RECOVERY,TEST_POINT,POPULATED,recovery pad only; not a control connector
+45,EXP_GPIO45,FREE_STRAP,HEADER,POPULATED,10k pull-down; external circuit must not drive high during reset; ST7789 DC default assignment
+46,PDM_CLK,ONBOARD,NONE,POPULATED,strap pin with internal weak pull-down plus external 10k pull-down; microphone CLK is input; enable clock only after strap hold time
+47,EXP_GPIO47,FREE,HEADER,POPULATED,ST7789 RST default assignment
+48,EXP_GPIO48,FREE,HEADER,POPULATED,unconditional expansion GPIO

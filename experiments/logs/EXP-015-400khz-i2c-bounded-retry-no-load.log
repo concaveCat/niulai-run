@@ -1,0 +1,9 @@
+Boot: I2C device ACK at 0x40 (configured PCA9685)
+Boot: I2C device ACK at 0x68
+Boot: I2C scan found 2 device(s)
+Boot: CH0-CH7 READY at 50 Hz PWM / 400000 Hz I2C; /OE HIGH
+
+400KHZ FULL FRAME: 5/5 passed; every trial reached rest pose and ended with UART stop -> /OE HIGH
+400KHZ SPLIT FRAME: 5/5 passed; every trial reached rest pose and ended with UART stop -> /OE HIGH
+Observed failure lines: none (no I2C failed, retrying, or NACK)
+Servo 6 V: disconnected for all trials

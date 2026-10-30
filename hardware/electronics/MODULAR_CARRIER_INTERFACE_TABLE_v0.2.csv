@@ -1,0 +1,77 @@
+Module,Pin,Signal,Direction,Voltage Domain,ESP32 GPIO,Connector,Pull,Status,Notes
+J_PWR,POS,INPUT_6V_UNFUSED,POWER_IN,6V,,J_PWR,,BLOCKED_MPN,Board-side XT30 male frozen; exact PCB form MPN polarity and footprint pending; new-design path >=10 A
+J_PWR,NEG,GND,POWER_RETURN,GND,,J_PWR,,BLOCKED_MPN,Board-side male mates with energized source-side female; mark polarity on silkscreen
+F_MAIN,IN,INPUT_6V_UNFUSED,POWER_IN,6V,,F_MAIN,,FROZEN,Immediately after J_PWR; ATO/ATC 10 A >=32 VDC; not a precise current limiter
+F_MAIN,OUT,EXT_6V_IN,POWER_OUT,6V,,F_MAIN,,FROZEN,Protected rail feeding SERVO_6V and LM2596 input
+POWER_DIST,SERVO_BRANCH,SERVO_6V,POWER_OUT,6V,,PCB_COPPER,,FROZEN,Branch from EXT_6V_IN; new-design path >=10 A to PCA V+ injection
+LM2596S,IN+,EXT_6V_IN,POWER_IN,6V,,J_LM2596,,OPERATOR_CONFIRMED,Product introduction states VIN 3.2-40V and VIN must exceed VOUT by at least 1.5V; 6.0V-3.3V=2.7V satisfies the stated headroom
+LM2596S,IN-,GND,POWER_RETURN,GND,,J_LM2596,,BLOCKED_PHYSICAL,Common ground
+LM2596S,OUT+,3V3,POWER_OUT,3V3,,J_LM2596,,BLOCKED_PHYSICAL,Adjust and verify 3.3 V before module installation
+LM2596S,OUT-,GND,POWER_RETURN,GND,,J_LM2596,,BLOCKED_PHYSICAL,Common ground
+ESP32,3V3_Lx2,ESP_3V3,POWER_IN,3V3,,J_ESP32,,CANDIDATE,Seller image identifies dual-USB ESP32-S3-WROOM-1 N16R8-style 2x22 board; feed through removable jumper; verify actual board
+ESP32,GND_x3,GND,POWER_RETURN,GND,,J_ESP32,,CANDIDATE,Three ground header positions visible in seller pinout
+ESP32,TBD_GPIO8,I2C_SDA,BIDIRECTIONAL,3V3,GPIO8,J_ESP32,DNP_I2C_PULLUP,CANDIDATE,Shared PCA bus; inspect module pull-ups first
+ESP32,TBD_GPIO9,I2C_SCL,OUTPUT,3V3,GPIO9,J_ESP32,DNP_I2C_PULLUP,CANDIDATE,Shared PCA bus
+ESP32,TBD_GPIO4,PCA_OE,OUTPUT,3V3,GPIO4,J_ESP32,10k_to_3V3,CANDIDATE,High or high-Z disables PWM
+PCA9685,VCC,3V3,POWER_IN,3V3,,J_PCA,,BLOCKED_PHYSICAL,Exact module pin and onboard regulator/pull-ups pending
+PCA9685,GND,GND,POWER_RETURN,GND,,J_PCA,,BLOCKED_PHYSICAL,Logic and servo ground common
+PCA9685,V+,SERVO_6V,POWER_IN,6V,,J_PCA,,ASSUMED_UNVERIFIED,Operator assumes purchased module current capacity is sufficient; prototype PVR remains
+C_BULK1,POS,SERVO_6V,POWER_IN,6V,,C_BULK1,,FROZEN,Optional DNP-first; 1000-2200uF 16V 105C radial low-impedance; <=12.5mm diameter 5mm pitch
+C_BULK1,NEG,GND,POWER_RETURN,GND,,C_BULK1,,FROZEN,Place near actual servo-power injection node
+C_BULK2,POS,SERVO_6V,POWER_IN,6V,,C_BULK2,,FROZEN,Optional default DNP; same compatibility as C_BULK1
+C_BULK2,NEG,GND,POWER_RETURN,GND,,C_BULK2,,FROZEN,Populate only if measured transient evidence requires it
+PCA9685,SDA,I2C_SDA,BIDIRECTIONAL,3V3,GPIO8,J_PCA,DNP_I2C_PULLUP,CANDIDATE,Exact header pin pending
+PCA9685,SCL,I2C_SCL,INPUT,3V3,GPIO9,J_PCA,DNP_I2C_PULLUP,CANDIDATE,Exact header pin pending
+PCA9685,/OE,PCA_OE,INPUT,3V3,GPIO4,J_PCA,10k_to_3V3,CANDIDATE,Default disabled
+PCA9685,CH0,SERVO_PWM1,OUTPUT,3V3,,SERVO_1,,ASSUMED_UNVERIFIED,Option A module header carries V+ GND and PWM
+PCA9685,CH1,SERVO_PWM2,OUTPUT,3V3,,SERVO_2,,ASSUMED_UNVERIFIED,Option A module header carries V+ GND and PWM
+PCA9685,CH2,SERVO_PWM3,OUTPUT,3V3,,SERVO_3,,ASSUMED_UNVERIFIED,Option A module header carries V+ GND and PWM
+PCA9685,CH3,SERVO_PWM4,OUTPUT,3V3,,SERVO_4,,ASSUMED_UNVERIFIED,Option A module header carries V+ GND and PWM
+PCA9685,CH4,SERVO_PWM5,OUTPUT,3V3,,SERVO_5,,ASSUMED_UNVERIFIED,Option A module header carries V+ GND and PWM
+PCA9685,CH5,SERVO_PWM6,OUTPUT,3V3,,SERVO_6,,ASSUMED_UNVERIFIED,Option A module header carries V+ GND and PWM
+PCA9685,CH6,SERVO_PWM7,OUTPUT,3V3,,SERVO_7,,ASSUMED_UNVERIFIED,Option A module header carries V+ GND and PWM
+PCA9685,CH7,SERVO_PWM8,OUTPUT,3V3,,SERVO_8,,ASSUMED_UNVERIFIED,Option A module header carries V+ GND and PWM
+MPU6500,VCC,3V3,POWER_IN,3V3,,J_GPIO_BREAKOUT,,BLOCKED_INTERFACE,Dupont flying wire; verify actual module supply before wiring; no dedicated Carrier footprint
+MPU6500,GND,GND,POWER_RETURN,GND,,J_GPIO_BREAKOUT,,CANDIDATE,Dupont flying wire to common ground breakout
+MPU6500,SCLK,SPI_SCLK,INPUT,3V3,GPIO12,J_GPIO_BREAKOUT,,CANDIDATE,Flying-wire candidate; SPI preferred
+MPU6500,MOSI,SPI_MOSI,INPUT,3V3,GPIO11,J_GPIO_BREAKOUT,,CANDIDATE,Flying-wire candidate; may share display bus
+MPU6500,MISO,SPI_MISO,OUTPUT,3V3,GPIO13,J_GPIO_BREAKOUT,,CANDIDATE,Flying-wire candidate
+MPU6500,CS,IMU_CS,INPUT,3V3,GPIO18,J_GPIO_BREAKOUT,10k_to_3V3,CANDIDATE,Flying-wire candidate; default deselected
+MPU6500,INT,IMU_INT,OUTPUT,3V3,GPIO21,J_GPIO_BREAKOUT,,CANDIDATE,Flying-wire candidate; optional interrupt
+ST7789,GND,GND,POWER_RETURN,GND,,J_GPIO_BREAKOUT,,CANDIDATE,Dupont flying wire; no dedicated Carrier footprint
+ST7789,VCC,DISPLAY_VCC,POWER_IN,TBD,,J_GPIO_BREAKOUT,,BLOCKED_INTERFACE,Verify actual module supply before wiring
+ST7789,SCL,SPI_SCLK,INPUT,3V3,GPIO12,J_GPIO_BREAKOUT,,CANDIDATE,Flying-wire candidate; label likely means SPI clock
+ST7789,SDA,SPI_MOSI,INPUT,3V3,GPIO11,J_GPIO_BREAKOUT,,CANDIDATE,Flying-wire candidate; label likely means SPI data
+ST7789,CS,DISPLAY_CS,INPUT,3V3,GPIO10,J_GPIO_BREAKOUT,10k_to_3V3,CANDIDATE,Flying-wire candidate; default deselected
+ST7789,DC,DISPLAY_DC,INPUT,3V3,GPIO14,J_GPIO_BREAKOUT,100k_to_GND,CANDIDATE,Flying-wire candidate
+ST7789,RES,DISPLAY_RESET,INPUT,3V3,GPIO16,J_GPIO_BREAKOUT,10k_to_3V3,CANDIDATE,Flying-wire candidate
+ST7789,BLK,DISPLAY_BL,INPUT,TBD,GPIO17,J_GPIO_BREAKOUT,100k_to_GND,BLOCKED_INTERFACE,Verify module backlight voltage polarity and onboard transistor before wiring
+GPIO_BREAKOUT,ALL_UNUSED,ESP32_UNUSED_GPIO,GPIO_BREAKOUT,3V3,TBD,J_GPIO_BREAKOUT,,BLOCKED_BOARD,Expose every GPIO unused after final allocation; exact rows and pin map require exact ESP32 board
+GPIO_BREAKOUT,3V3,3V3,POWER_OUT,3V3,,J_GPIO_BREAKOUT,,FROZEN,Provide clearly marked power positions for flying-wire modules
+GPIO_BREAKOUT,GND,GND,POWER_RETURN,GND,,J_GPIO_BREAKOUT,,FROZEN,Provide adjacent or clearly accessible ground positions
+MAX98357A,VCC,3V3,POWER_IN,3V3,,J_AUDIO,,CANDIDATE,Photo instruction allows 3.3V or 5V; use 3V3
+MAX98357A,GND,GND,POWER_RETURN,GND,,J_AUDIO,,BLOCKED_PHYSICAL,Common ground
+MAX98357A,BCLK,I2S_BCLK,INPUT,3V3,GPIO39,J_AUDIO,,CANDIDATE,Exact module pin pending
+MAX98357A,LRC,I2S_WS,INPUT,3V3,GPIO40,J_AUDIO,,CANDIDATE,May be labeled WS or LRCLK
+MAX98357A,DIN,I2S_DOUT,INPUT,3V3,GPIO41,J_AUDIO,,CANDIDATE,ESP32 output
+MAX98357A,PIN3,NC,PASSIVE,TBD,,J_AUDIO,,CANDIDATE,Photo instruction explicitly says leave open
+MAX98357A,PIN4,NC,PASSIVE,TBD,,J_AUDIO,,CANDIDATE,Photo instruction explicitly says leave open
+MAX98357A,SPK+,SPK_PLUS,OUTPUT,BTL,,J_SPEAKER,,BLOCKED_PHYSICAL,Neither speaker lead is ground
+MAX98357A,SPK-,SPK_MINUS,OUTPUT,BTL,,J_SPEAKER,,BLOCKED_PHYSICAL,Neither speaker lead is ground
+MS4030,VDD,3V3,POWER_IN,3V3,,J_MIC,,CANDIDATE,Round six-pad I2S microphone photo; verify actual board before power
+MS4030,GND,GND,POWER_RETURN,GND,,J_MIC,,CANDIDATE,Common ground
+MS4030,SCK,I2S_BCLK,INPUT,3V3,GPIO39,J_MIC,,CANDIDATE,Share clock with MAX98357A
+MS4030,WS,I2S_WS,INPUT,3V3,GPIO40,J_MIC,,CANDIDATE,Share word-select with MAX98357A
+MS4030,SD,I2S_MIC_DIN,OUTPUT,3V3,GPIO47,J_MIC,,CANDIDATE,Microphone serial data to ESP32 input
+MS4030,L/R,MIC_LR,INPUT,3V3,,J_MIC,0R_to_GND,CANDIDATE,Default left channel; optional strap may select 3V3/right
+FOOT_FL,SW,FOOT_FL,INPUT,3V3,GPIO5,J_FOOT_FL,10k_to_3V3;100nF_DNP,CANDIDATE,Pressed closes to GND
+FOOT_FR,SW,FOOT_FR,INPUT,3V3,GPIO6,J_FOOT_FR,10k_to_3V3;100nF_DNP,CANDIDATE,Pressed closes to GND
+FOOT_RL,SW,FOOT_RL,INPUT,3V3,GPIO7,J_FOOT_RL,10k_to_3V3;100nF_DNP,CANDIDATE,Pressed closes to GND
+FOOT_RR,SW,FOOT_RR,INPUT,3V3,GPIO15,J_FOOT_RR,10k_to_3V3;100nF_DNP,CANDIDATE,Pressed closes to GND
+TESTPOINT,TP_GND,GND,TEST,GND,,TP_GND,,FROZEN,Accessible ground reference
+TESTPOINT,TP_EXT6,EXT_6V_IN,TEST,6V,,TP_EXT6,,FROZEN,After F_MAIN before load branches
+TESTPOINT,TP_SERVO6,SERVO_6V,TEST,6V,,TP_SERVO6,,FROZEN,Servo branch after F_MAIN
+TESTPOINT,TP_3V3,3V3,TEST,3V3,,TP_3V3,,FROZEN,LM2596 output
+TESTPOINT,TP_SDA,I2C_SDA,TEST,3V3,GPIO8,TP_SDA,,FROZEN,Probe pad only
+TESTPOINT,TP_SCL,I2C_SCL,TEST,3V3,GPIO9,TP_SCL,,FROZEN,Probe pad only
+TESTPOINT,TP_OE,PCA_OE,TEST,3V3,GPIO4,TP_OE,10k_to_3V3,FROZEN,Must read high during reset

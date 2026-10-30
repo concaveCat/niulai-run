@@ -1,0 +1,3446 @@
+(kicad_symbol_lib
+	(version 20241209)
+	(generator "niulai_generator")
+		(symbol "J1_XT30_MALE_BOARD_INPUT"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "J"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "XT30_MALE_BOARD_INPUT"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "FOOTPRINT_TBD_XT30_MALE"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Board side male; energized source cables female"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "J1_XT30_MALE_BOARD_INPUT_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "J1_XT30_MALE_BOARD_INPUT_1_1"
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "+6V" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "GND" (effects (font (size 1.0 1.0))))
+					(number "GND" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "F1_ATO_ATC_10A_32V_MIN"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "F"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "ATO_ATC_10A_32V_MIN"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "FOOTPRINT_TBD_ATO_ATC_HOLDER_15A"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Not a precision current limiter"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "F1_ATO_ATC_10A_32V_MIN_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "F1_ATO_ATC_10A_32V_MIN_1_1"
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "IN" (effects (font (size 1.0 1.0))))
+					(number "IN" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "OUT" (effects (font (size 1.0 1.0))))
+					(number "OUT" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "NT1_PCB_COPPER_SERVO_BRANCH_10A"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board yes)
+		(property "Reference" "N"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "PCB_COPPER_SERVO_BRANCH_10A"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "FOOTPRINT_TBD_10A_NET_TIE"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Logical domain boundary; continuous wide copper"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "NT1_PCB_COPPER_SERVO_BRANCH_10A_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "NT1_PCB_COPPER_SERVO_BRANCH_10A_1_1"
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "MAIN" (effects (font (size 1.0 1.0))))
+					(number "MAIN" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "SERVO" (effects (font (size 1.0 1.0))))
+					(number "SERVO" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "U5_LM2596S_MODULE_V151"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "U"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "LM2596S_MODULE_V151"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "FOOTPRINT_TBD_LM2596S_43x21"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Photo-visible order; VIN 3.2-40V and VIN >= VOUT+1.5V"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "U5_LM2596S_MODULE_V151_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "U5_LM2596S_MODULE_V151_1_1"
+				(pin passive line
+					(at -15.240 1.270 0)
+					(length 5.08)
+					(name "IN+" (effects (font (size 1.0 1.0))))
+					(number "IN+" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -1.270 0)
+					(length 5.08)
+					(name "IN-" (effects (font (size 1.0 1.0))))
+					(number "IN-" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "OUT+" (effects (font (size 1.0 1.0))))
+					(number "OUT+" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "OUT-" (effects (font (size 1.0 1.0))))
+					(number "OUT-" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "C1_1000-2200uF_16V_105C_OPTIONAL"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "C"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "1000-2200uF_16V_105C_OPTIONAL"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Capacitor_THT:C_Radial_D12.5mm_H20.0mm_P5.00mm"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "C_BULK1"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "C1_1000-2200uF_16V_105C_OPTIONAL_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "C1_1000-2200uF_16V_105C_OPTIONAL_1_1"
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "+" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "-" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "C2_1000-2200uF_16V_105C_OPTIONAL"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "C"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "1000-2200uF_16V_105C_OPTIONAL"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Capacitor_THT:C_Radial_D12.5mm_H20.0mm_P5.00mm"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "C_BULK2"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "C2_1000-2200uF_16V_105C_OPTIONAL_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "C2_1000-2200uF_16V_105C_OPTIONAL_1_1"
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "+" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "-" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "C3_10uF_16V_X7R"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "C"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "10uF_16V_X7R"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Carrier local rail decoupling"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "C3_10uF_16V_X7R_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "C3_10uF_16V_X7R_1_1"
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "1" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "2" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "C4_100nF_16V_X7R"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "C"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "100nF_16V_X7R"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Carrier local high-frequency decoupling"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "C4_100nF_16V_X7R_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "C4_100nF_16V_X7R_1_1"
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "1" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "2" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "JP1_ESP_EXTERNAL_3V3_LINK_REMOVE_FOR_USB_ONLY_TEST"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "J"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "ESP_EXTERNAL_3V3_LINK_REMOVE_FOR_USB_ONLY_TEST"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Avoid unreviewed USB/external-rail paralleling"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "JP1_ESP_EXTERNAL_3V3_LINK_REMOVE_FOR_USB_ONLY_TEST_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "JP1_ESP_EXTERNAL_3V3_LINK_REMOVE_FOR_USB_ONLY_TEST_1_1"
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "SYS" (effects (font (size 1.0 1.0))))
+					(number "SYS" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "ESP" (effects (font (size 1.0 1.0))))
+					(number "ESP" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "U1_ESP32_S3_N16R8_DEVBOARD_2x22"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "U"
+			(at 0.000 -33.020 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "ESP32_S3_N16R8_DEVBOARD_2x22"
+			(at 0.000 33.020 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "FOOTPRINT_TBD_ESP32_S3_2x22_SOCKET"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "One complete module; L/R numbering follows seller image antenna-to-USB"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "U1_ESP32_S3_N16R8_DEVBOARD_2x22_0_1"
+				(rectangle
+					(start -10.0 -29.210)
+					(end 10.0 29.210)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "U1_ESP32_S3_N16R8_DEVBOARD_2x22_1_1"
+				(pin passive line
+					(at -15.240 26.670 0)
+					(length 5.08)
+					(name "L01 3V3_A" (effects (font (size 1.0 1.0))))
+					(number "L01" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 24.130 0)
+					(length 5.08)
+					(name "L02 3V3_B" (effects (font (size 1.0 1.0))))
+					(number "L02" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 21.590 0)
+					(length 5.08)
+					(name "L03 RST NC" (effects (font (size 1.0 1.0))))
+					(number "L03" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 19.050 0)
+					(length 5.08)
+					(name "L04 GPIO4" (effects (font (size 1.0 1.0))))
+					(number "L04" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 16.510 0)
+					(length 5.08)
+					(name "L05 GPIO5" (effects (font (size 1.0 1.0))))
+					(number "L05" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 13.970 0)
+					(length 5.08)
+					(name "L06 GPIO6" (effects (font (size 1.0 1.0))))
+					(number "L06" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 11.430 0)
+					(length 5.08)
+					(name "L07 GPIO7" (effects (font (size 1.0 1.0))))
+					(number "L07" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 8.890 0)
+					(length 5.08)
+					(name "L08 GPIO15" (effects (font (size 1.0 1.0))))
+					(number "L08" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 6.350 0)
+					(length 5.08)
+					(name "L09 GPIO16" (effects (font (size 1.0 1.0))))
+					(number "L09" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 3.810 0)
+					(length 5.08)
+					(name "L10 GPIO17" (effects (font (size 1.0 1.0))))
+					(number "L10" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 1.270 0)
+					(length 5.08)
+					(name "L11 GPIO18" (effects (font (size 1.0 1.0))))
+					(number "L11" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -1.270 0)
+					(length 5.08)
+					(name "L12 GPIO8" (effects (font (size 1.0 1.0))))
+					(number "L12" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -3.810 0)
+					(length 5.08)
+					(name "L13 GPIO3_STRAP" (effects (font (size 1.0 1.0))))
+					(number "L13" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -6.350 0)
+					(length 5.08)
+					(name "L14 GPIO46_STRAP" (effects (font (size 1.0 1.0))))
+					(number "L14" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -8.890 0)
+					(length 5.08)
+					(name "L15 GPIO9" (effects (font (size 1.0 1.0))))
+					(number "L15" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -11.430 0)
+					(length 5.08)
+					(name "L16 GPIO10" (effects (font (size 1.0 1.0))))
+					(number "L16" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -13.970 0)
+					(length 5.08)
+					(name "L17 GPIO11" (effects (font (size 1.0 1.0))))
+					(number "L17" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -16.510 0)
+					(length 5.08)
+					(name "L18 GPIO12" (effects (font (size 1.0 1.0))))
+					(number "L18" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -19.050 0)
+					(length 5.08)
+					(name "L19 GPIO13" (effects (font (size 1.0 1.0))))
+					(number "L19" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -21.590 0)
+					(length 5.08)
+					(name "L20 GPIO14" (effects (font (size 1.0 1.0))))
+					(number "L20" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -24.130 0)
+					(length 5.08)
+					(name "L21 5V USB_ONLY NC" (effects (font (size 1.0 1.0))))
+					(number "L21" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -26.670 0)
+					(length 5.08)
+					(name "L22 GND" (effects (font (size 1.0 1.0))))
+					(number "L22" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 26.670 180)
+					(length 5.08)
+					(name "R01 GND_A" (effects (font (size 1.0 1.0))))
+					(number "R01" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 24.130 180)
+					(length 5.08)
+					(name "R02 GPIO43_TX" (effects (font (size 1.0 1.0))))
+					(number "R02" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 21.590 180)
+					(length 5.08)
+					(name "R03 GPIO44_RX" (effects (font (size 1.0 1.0))))
+					(number "R03" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 19.050 180)
+					(length 5.08)
+					(name "R04 GPIO1" (effects (font (size 1.0 1.0))))
+					(number "R04" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 16.510 180)
+					(length 5.08)
+					(name "R05 GPIO2" (effects (font (size 1.0 1.0))))
+					(number "R05" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 13.970 180)
+					(length 5.08)
+					(name "R06 GPIO42" (effects (font (size 1.0 1.0))))
+					(number "R06" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 11.430 180)
+					(length 5.08)
+					(name "R07 GPIO41" (effects (font (size 1.0 1.0))))
+					(number "R07" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 8.890 180)
+					(length 5.08)
+					(name "R08 GPIO40" (effects (font (size 1.0 1.0))))
+					(number "R08" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 6.350 180)
+					(length 5.08)
+					(name "R09 GPIO39" (effects (font (size 1.0 1.0))))
+					(number "R09" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 3.810 180)
+					(length 5.08)
+					(name "R10 GPIO38" (effects (font (size 1.0 1.0))))
+					(number "R10" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "R11 GPIO37 PSRAM_RESERVED NC" (effects (font (size 1.0 1.0))))
+					(number "R11" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "R12 GPIO36 PSRAM_RESERVED NC" (effects (font (size 1.0 1.0))))
+					(number "R12" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -3.810 180)
+					(length 5.08)
+					(name "R13 GPIO35 PSRAM_RESERVED NC" (effects (font (size 1.0 1.0))))
+					(number "R13" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -6.350 180)
+					(length 5.08)
+					(name "R14 GPIO0_BOOT" (effects (font (size 1.0 1.0))))
+					(number "R14" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -8.890 180)
+					(length 5.08)
+					(name "R15 GPIO45_STRAP" (effects (font (size 1.0 1.0))))
+					(number "R15" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -11.430 180)
+					(length 5.08)
+					(name "R16 GPIO48" (effects (font (size 1.0 1.0))))
+					(number "R16" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -13.970 180)
+					(length 5.08)
+					(name "R17 GPIO47" (effects (font (size 1.0 1.0))))
+					(number "R17" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -16.510 180)
+					(length 5.08)
+					(name "R18 GPIO21" (effects (font (size 1.0 1.0))))
+					(number "R18" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -19.050 180)
+					(length 5.08)
+					(name "R19 GPIO20 USB_D+ RESERVED NC" (effects (font (size 1.0 1.0))))
+					(number "R19" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -21.590 180)
+					(length 5.08)
+					(name "R20 GPIO19 USB_D- RESERVED NC" (effects (font (size 1.0 1.0))))
+					(number "R20" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -24.130 180)
+					(length 5.08)
+					(name "R21 GND_B" (effects (font (size 1.0 1.0))))
+					(number "R21" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -26.670 180)
+					(length 5.08)
+					(name "R22 GND_C" (effects (font (size 1.0 1.0))))
+					(number "R22" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "J3_GPIO_DUPONT_BREAKOUT"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "J"
+			(at 0.000 -33.020 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "GPIO_DUPONT_BREAKOUT"
+			(at 0.000 33.020 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "FOOTPRINT_TBD_GPIO_HEADER"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "MPU6500/ST7789 plus all final unused GPIO; exact header form TBD"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "J3_GPIO_DUPONT_BREAKOUT_0_1"
+				(rectangle
+					(start -10.0 -29.210)
+					(end 10.0 29.210)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "J3_GPIO_DUPONT_BREAKOUT_1_1"
+				(pin passive line
+					(at 15.240 26.670 180)
+					(length 5.08)
+					(name "01 3V3" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 24.130 180)
+					(length 5.08)
+					(name "02 GND" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 21.590 180)
+					(length 5.08)
+					(name "03 GPIO16 DISPLAY_RESET" (effects (font (size 1.0 1.0))))
+					(number "3" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 19.050 180)
+					(length 5.08)
+					(name "04 GPIO17 DISPLAY_BL" (effects (font (size 1.0 1.0))))
+					(number "4" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 16.510 180)
+					(length 5.08)
+					(name "05 GPIO18 IMU_CS" (effects (font (size 1.0 1.0))))
+					(number "5" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 13.970 180)
+					(length 5.08)
+					(name "06 GPIO10 DISPLAY_CS" (effects (font (size 1.0 1.0))))
+					(number "6" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 11.430 180)
+					(length 5.08)
+					(name "07 GPIO11 SPI_MOSI" (effects (font (size 1.0 1.0))))
+					(number "7" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 8.890 180)
+					(length 5.08)
+					(name "08 GPIO12 SPI_SCLK" (effects (font (size 1.0 1.0))))
+					(number "8" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 6.350 180)
+					(length 5.08)
+					(name "09 GPIO13 SPI_MISO" (effects (font (size 1.0 1.0))))
+					(number "9" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 3.810 180)
+					(length 5.08)
+					(name "10 GPIO14 DISPLAY_DC" (effects (font (size 1.0 1.0))))
+					(number "10" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "11 GPIO21 IMU_INT" (effects (font (size 1.0 1.0))))
+					(number "11" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "12 GPIO1 AUX" (effects (font (size 1.0 1.0))))
+					(number "12" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -3.810 180)
+					(length 5.08)
+					(name "13 GPIO2 AUX" (effects (font (size 1.0 1.0))))
+					(number "13" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -6.350 180)
+					(length 5.08)
+					(name "14 GPIO42 AUX" (effects (font (size 1.0 1.0))))
+					(number "14" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -8.890 180)
+					(length 5.08)
+					(name "15 GPIO43 UART_TX" (effects (font (size 1.0 1.0))))
+					(number "15" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -11.430 180)
+					(length 5.08)
+					(name "16 GPIO44 UART_RX" (effects (font (size 1.0 1.0))))
+					(number "16" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -13.970 180)
+					(length 5.08)
+					(name "17 GPIO38 BOARD_AUX" (effects (font (size 1.0 1.0))))
+					(number "17" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -16.510 180)
+					(length 5.08)
+					(name "18 GPIO48 BOARD_AUX" (effects (font (size 1.0 1.0))))
+					(number "18" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -19.050 180)
+					(length 5.08)
+					(name "19 GPIO0 BOOT_STRAP" (effects (font (size 1.0 1.0))))
+					(number "19" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -21.590 180)
+					(length 5.08)
+					(name "20 GPIO3 STRAP" (effects (font (size 1.0 1.0))))
+					(number "20" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -24.130 180)
+					(length 5.08)
+					(name "21 GPIO45 STRAP" (effects (font (size 1.0 1.0))))
+					(number "21" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -26.670 180)
+					(length 5.08)
+					(name "22 GPIO46 STRAP" (effects (font (size 1.0 1.0))))
+					(number "22" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "U2_PCA9685_16CH_MODULE_OPTION_A"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "U"
+			(at 0.000 -38.100 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "PCA9685_16CH_MODULE_OPTION_A"
+			(at 0.000 38.100 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "FOOTPRINT_TBD_PCA9685_MODULE"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Green terminal: outputs down/terminal up => left V+, right GND"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "U2_PCA9685_16CH_MODULE_OPTION_A_0_1"
+				(rectangle
+					(start -10.0 -34.290)
+					(end 10.0 34.290)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "U2_PCA9685_16CH_MODULE_OPTION_A_1_1"
+				(pin passive line
+					(at -15.240 6.350 0)
+					(length 5.08)
+					(name "H01 GND" (effects (font (size 1.0 1.0))))
+					(number "H01" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 3.810 0)
+					(length 5.08)
+					(name "H02 OE" (effects (font (size 1.0 1.0))))
+					(number "H02" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 1.270 0)
+					(length 5.08)
+					(name "H03 SCL" (effects (font (size 1.0 1.0))))
+					(number "H03" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -1.270 0)
+					(length 5.08)
+					(name "H04 SDA" (effects (font (size 1.0 1.0))))
+					(number "H04" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -3.810 0)
+					(length 5.08)
+					(name "H05 VCC" (effects (font (size 1.0 1.0))))
+					(number "H05" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -6.350 0)
+					(length 5.08)
+					(name "H06 V+" (effects (font (size 1.0 1.0))))
+					(number "H06" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 31.750 180)
+					(length 5.08)
+					(name "PWR+ V+ VERIFY" (effects (font (size 1.0 1.0))))
+					(number "PWR+" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 29.210 180)
+					(length 5.08)
+					(name "PWR- GND VERIFY" (effects (font (size 1.0 1.0))))
+					(number "PWR-" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 26.670 180)
+					(length 5.08)
+					(name "CH0-S PWM" (effects (font (size 1.0 1.0))))
+					(number "CH0-S" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 24.130 180)
+					(length 5.08)
+					(name "CH0-+ V+" (effects (font (size 1.0 1.0))))
+					(number "CH0-+" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 21.590 180)
+					(length 5.08)
+					(name "CH0-- GND" (effects (font (size 1.0 1.0))))
+					(number "CH0--" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 19.050 180)
+					(length 5.08)
+					(name "CH1-S PWM" (effects (font (size 1.0 1.0))))
+					(number "CH1-S" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 16.510 180)
+					(length 5.08)
+					(name "CH1-+ V+" (effects (font (size 1.0 1.0))))
+					(number "CH1-+" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 13.970 180)
+					(length 5.08)
+					(name "CH1-- GND" (effects (font (size 1.0 1.0))))
+					(number "CH1--" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 11.430 180)
+					(length 5.08)
+					(name "CH2-S PWM" (effects (font (size 1.0 1.0))))
+					(number "CH2-S" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 8.890 180)
+					(length 5.08)
+					(name "CH2-+ V+" (effects (font (size 1.0 1.0))))
+					(number "CH2-+" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 6.350 180)
+					(length 5.08)
+					(name "CH2-- GND" (effects (font (size 1.0 1.0))))
+					(number "CH2--" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 3.810 180)
+					(length 5.08)
+					(name "CH3-S PWM" (effects (font (size 1.0 1.0))))
+					(number "CH3-S" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "CH3-+ V+" (effects (font (size 1.0 1.0))))
+					(number "CH3-+" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "CH3-- GND" (effects (font (size 1.0 1.0))))
+					(number "CH3--" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -3.810 180)
+					(length 5.08)
+					(name "CH4-S PWM" (effects (font (size 1.0 1.0))))
+					(number "CH4-S" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -6.350 180)
+					(length 5.08)
+					(name "CH4-+ V+" (effects (font (size 1.0 1.0))))
+					(number "CH4-+" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -8.890 180)
+					(length 5.08)
+					(name "CH4-- GND" (effects (font (size 1.0 1.0))))
+					(number "CH4--" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -11.430 180)
+					(length 5.08)
+					(name "CH5-S PWM" (effects (font (size 1.0 1.0))))
+					(number "CH5-S" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -13.970 180)
+					(length 5.08)
+					(name "CH5-+ V+" (effects (font (size 1.0 1.0))))
+					(number "CH5-+" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -16.510 180)
+					(length 5.08)
+					(name "CH5-- GND" (effects (font (size 1.0 1.0))))
+					(number "CH5--" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -19.050 180)
+					(length 5.08)
+					(name "CH6-S PWM" (effects (font (size 1.0 1.0))))
+					(number "CH6-S" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -21.590 180)
+					(length 5.08)
+					(name "CH6-+ V+" (effects (font (size 1.0 1.0))))
+					(number "CH6-+" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -24.130 180)
+					(length 5.08)
+					(name "CH6-- GND" (effects (font (size 1.0 1.0))))
+					(number "CH6--" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -26.670 180)
+					(length 5.08)
+					(name "CH7-S PWM" (effects (font (size 1.0 1.0))))
+					(number "CH7-S" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -29.210 180)
+					(length 5.08)
+					(name "CH7-+ V+" (effects (font (size 1.0 1.0))))
+					(number "CH7-+" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -31.750 180)
+					(length 5.08)
+					(name "CH7-- GND" (effects (font (size 1.0 1.0))))
+					(number "CH7--" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "R1_10k_1%_OE_SAFE_DEFAULT"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "R"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "10k_1%_OE_SAFE_DEFAULT"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "OE high disables PWM during reset"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "R1_10k_1%_OE_SAFE_DEFAULT_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "R1_10k_1%_OE_SAFE_DEFAULT_1_1"
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "1" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "2" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "R2_4.7k_I2C_PULLUP_DNP"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "R"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "4.7k_I2C_PULLUP_DNP"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Populate only if module pull-up audit requires"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "R2_4.7k_I2C_PULLUP_DNP_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "R2_4.7k_I2C_PULLUP_DNP_1_1"
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "1" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "2" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "R3_4.7k_I2C_PULLUP_DNP"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "R"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "4.7k_I2C_PULLUP_DNP"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Populate only if module pull-up audit requires"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "R3_4.7k_I2C_PULLUP_DNP_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "R3_4.7k_I2C_PULLUP_DNP_1_1"
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "1" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "2" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "U3_MAX98357A_PURPLE_MODULE"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "U"
+			(at 0.000 -13.970 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "MAX98357A_PURPLE_MODULE"
+			(at 0.000 13.970 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "FOOTPRINT_TBD_MAX98357A_MODULE"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Complete 7-pin plus PH2.0 speaker module"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "U3_MAX98357A_PURPLE_MODULE_0_1"
+				(rectangle
+					(start -10.0 -10.160)
+					(end 10.0 10.160)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "U3_MAX98357A_PURPLE_MODULE_1_1"
+				(pin passive line
+					(at -15.240 7.620 0)
+					(length 5.08)
+					(name "1 VCC" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 5.080 0)
+					(length 5.08)
+					(name "2 GND" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 2.540 0)
+					(length 5.08)
+					(name "3 NC" (effects (font (size 1.0 1.0))))
+					(number "3" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 0.000 0)
+					(length 5.08)
+					(name "4 NC" (effects (font (size 1.0 1.0))))
+					(number "4" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -2.540 0)
+					(length 5.08)
+					(name "5 DIN" (effects (font (size 1.0 1.0))))
+					(number "5" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -5.080 0)
+					(length 5.08)
+					(name "6 BCLK" (effects (font (size 1.0 1.0))))
+					(number "6" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -7.620 0)
+					(length 5.08)
+					(name "7 LRC" (effects (font (size 1.0 1.0))))
+					(number "7" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "SPK+" (effects (font (size 1.0 1.0))))
+					(number "SPK+" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "SPK-" (effects (font (size 1.0 1.0))))
+					(number "SPK-" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "U4_MS4030_I2S_MIC_MODULE"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "U"
+			(at 0.000 -12.700 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "MS4030_I2S_MIC_MODULE"
+			(at 0.000 12.700 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "FOOTPRINT_TBD_MS4030_FLYWIRE"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Photo pad order top SD/VDD/GND; bottom L-R/WS/SCK"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "U4_MS4030_I2S_MIC_MODULE_0_1"
+				(rectangle
+					(start -10.0 -8.890)
+					(end 10.0 8.890)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "U4_MS4030_I2S_MIC_MODULE_1_1"
+				(pin passive line
+					(at 15.240 6.350 180)
+					(length 5.08)
+					(name "T1 SD" (effects (font (size 1.0 1.0))))
+					(number "T1" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 3.810 180)
+					(length 5.08)
+					(name "T2 VDD" (effects (font (size 1.0 1.0))))
+					(number "T2" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "T3 GND" (effects (font (size 1.0 1.0))))
+					(number "T3" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "B1 L/R" (effects (font (size 1.0 1.0))))
+					(number "B1" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -3.810 180)
+					(length 5.08)
+					(name "B2 WS" (effects (font (size 1.0 1.0))))
+					(number "B2" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -6.350 180)
+					(length 5.08)
+					(name "B3 SCK" (effects (font (size 1.0 1.0))))
+					(number "B3" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "R4_0R_MIC_LEFT_CHANNEL"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "R"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "0R_MIC_LEFT_CHANNEL"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Move strap to 3V3 only for right-channel configuration"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "R4_0R_MIC_LEFT_CHANNEL_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "R4_0R_MIC_LEFT_CHANNEL_1_1"
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "1" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "2" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "SP1_EXTERNAL_SPEAKER_4R_3W"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board yes)
+		(property "Reference" "S"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "EXTERNAL_SPEAKER_4R_3W"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Off-board speaker via module PH2.0; neither lead is GND"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "SP1_EXTERNAL_SPEAKER_4R_3W_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "SP1_EXTERNAL_SPEAKER_4R_3W_1_1"
+				(pin passive line
+					(at -15.240 1.270 0)
+					(length 5.08)
+					(name "SPK+" (effects (font (size 1.0 1.0))))
+					(number "SPK+" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -1.270 0)
+					(length 5.08)
+					(name "SPK-" (effects (font (size 1.0 1.0))))
+					(number "SPK-" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "M1_EXTERNAL_SERVO_1"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board yes)
+		(property "Reference" "M"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "EXTERNAL_SERVO_1"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Off-board servo plugs into PCA9685 channel header"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "M1_EXTERNAL_SERVO_1_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "M1_EXTERNAL_SERVO_1_1_1"
+				(pin passive line
+					(at -15.240 2.540 0)
+					(length 5.08)
+					(name "S PWM" (effects (font (size 1.0 1.0))))
+					(number "S" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 0.000 0)
+					(length 5.08)
+					(name "+ 6V" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -2.540 0)
+					(length 5.08)
+					(name "- GND" (effects (font (size 1.0 1.0))))
+					(number "3" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "M2_EXTERNAL_SERVO_2"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board yes)
+		(property "Reference" "M"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "EXTERNAL_SERVO_2"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Off-board servo plugs into PCA9685 channel header"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "M2_EXTERNAL_SERVO_2_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "M2_EXTERNAL_SERVO_2_1_1"
+				(pin passive line
+					(at -15.240 2.540 0)
+					(length 5.08)
+					(name "S PWM" (effects (font (size 1.0 1.0))))
+					(number "S" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 0.000 0)
+					(length 5.08)
+					(name "+ 6V" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -2.540 0)
+					(length 5.08)
+					(name "- GND" (effects (font (size 1.0 1.0))))
+					(number "3" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "M3_EXTERNAL_SERVO_3"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board yes)
+		(property "Reference" "M"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "EXTERNAL_SERVO_3"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Off-board servo plugs into PCA9685 channel header"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "M3_EXTERNAL_SERVO_3_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "M3_EXTERNAL_SERVO_3_1_1"
+				(pin passive line
+					(at -15.240 2.540 0)
+					(length 5.08)
+					(name "S PWM" (effects (font (size 1.0 1.0))))
+					(number "S" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 0.000 0)
+					(length 5.08)
+					(name "+ 6V" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -2.540 0)
+					(length 5.08)
+					(name "- GND" (effects (font (size 1.0 1.0))))
+					(number "3" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "M4_EXTERNAL_SERVO_4"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board yes)
+		(property "Reference" "M"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "EXTERNAL_SERVO_4"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Off-board servo plugs into PCA9685 channel header"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "M4_EXTERNAL_SERVO_4_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "M4_EXTERNAL_SERVO_4_1_1"
+				(pin passive line
+					(at -15.240 2.540 0)
+					(length 5.08)
+					(name "S PWM" (effects (font (size 1.0 1.0))))
+					(number "S" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 0.000 0)
+					(length 5.08)
+					(name "+ 6V" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -2.540 0)
+					(length 5.08)
+					(name "- GND" (effects (font (size 1.0 1.0))))
+					(number "3" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "M5_EXTERNAL_SERVO_5"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board yes)
+		(property "Reference" "M"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "EXTERNAL_SERVO_5"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Off-board servo plugs into PCA9685 channel header"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "M5_EXTERNAL_SERVO_5_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "M5_EXTERNAL_SERVO_5_1_1"
+				(pin passive line
+					(at -15.240 2.540 0)
+					(length 5.08)
+					(name "S PWM" (effects (font (size 1.0 1.0))))
+					(number "S" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 0.000 0)
+					(length 5.08)
+					(name "+ 6V" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -2.540 0)
+					(length 5.08)
+					(name "- GND" (effects (font (size 1.0 1.0))))
+					(number "3" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "M6_EXTERNAL_SERVO_6"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board yes)
+		(property "Reference" "M"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "EXTERNAL_SERVO_6"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Off-board servo plugs into PCA9685 channel header"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "M6_EXTERNAL_SERVO_6_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "M6_EXTERNAL_SERVO_6_1_1"
+				(pin passive line
+					(at -15.240 2.540 0)
+					(length 5.08)
+					(name "S PWM" (effects (font (size 1.0 1.0))))
+					(number "S" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 0.000 0)
+					(length 5.08)
+					(name "+ 6V" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -2.540 0)
+					(length 5.08)
+					(name "- GND" (effects (font (size 1.0 1.0))))
+					(number "3" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "M7_EXTERNAL_SERVO_7"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board yes)
+		(property "Reference" "M"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "EXTERNAL_SERVO_7"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Off-board servo plugs into PCA9685 channel header"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "M7_EXTERNAL_SERVO_7_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "M7_EXTERNAL_SERVO_7_1_1"
+				(pin passive line
+					(at -15.240 2.540 0)
+					(length 5.08)
+					(name "S PWM" (effects (font (size 1.0 1.0))))
+					(number "S" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 0.000 0)
+					(length 5.08)
+					(name "+ 6V" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -2.540 0)
+					(length 5.08)
+					(name "- GND" (effects (font (size 1.0 1.0))))
+					(number "3" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "M8_EXTERNAL_SERVO_8"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board yes)
+		(property "Reference" "M"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "EXTERNAL_SERVO_8"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Off-board servo plugs into PCA9685 channel header"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "M8_EXTERNAL_SERVO_8_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "M8_EXTERNAL_SERVO_8_1_1"
+				(pin passive line
+					(at -15.240 2.540 0)
+					(length 5.08)
+					(name "S PWM" (effects (font (size 1.0 1.0))))
+					(number "S" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 0.000 0)
+					(length 5.08)
+					(name "+ 6V" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at -15.240 -2.540 0)
+					(length 5.08)
+					(name "- GND" (effects (font (size 1.0 1.0))))
+					(number "3" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "J10_FOOT_FL_REMOTE_SWITCH"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "J"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "FOOT_FL_REMOTE_SWITCH"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "FOOTPRINT_TBD_2PIN"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Remote switch closes signal to GND"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "J10_FOOT_FL_REMOTE_SWITCH_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "J10_FOOT_FL_REMOTE_SWITCH_1_1"
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "SIGNAL" (effects (font (size 1.0 1.0))))
+					(number "SIGNAL" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "GND" (effects (font (size 1.0 1.0))))
+					(number "GND" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "R5_10k_1%"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "R"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "10k_1%"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Active-low pull-up"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "R5_10k_1%_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "R5_10k_1%_1_1"
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "1" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "2" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "C5_100nF_FILTER_DNP"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "C"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "100nF_FILTER_DNP"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Optional hardware debounce"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "C5_100nF_FILTER_DNP_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "C5_100nF_FILTER_DNP_1_1"
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "1" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "2" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "J11_FOOT_FR_REMOTE_SWITCH"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "J"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "FOOT_FR_REMOTE_SWITCH"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "FOOTPRINT_TBD_2PIN"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Remote switch closes signal to GND"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "J11_FOOT_FR_REMOTE_SWITCH_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "J11_FOOT_FR_REMOTE_SWITCH_1_1"
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "SIGNAL" (effects (font (size 1.0 1.0))))
+					(number "SIGNAL" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "GND" (effects (font (size 1.0 1.0))))
+					(number "GND" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "R6_10k_1%"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "R"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "10k_1%"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Active-low pull-up"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "R6_10k_1%_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "R6_10k_1%_1_1"
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "1" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "2" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "C6_100nF_FILTER_DNP"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "C"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "100nF_FILTER_DNP"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Optional hardware debounce"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "C6_100nF_FILTER_DNP_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "C6_100nF_FILTER_DNP_1_1"
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "1" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "2" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "J12_FOOT_RL_REMOTE_SWITCH"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "J"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "FOOT_RL_REMOTE_SWITCH"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "FOOTPRINT_TBD_2PIN"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Remote switch closes signal to GND"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "J12_FOOT_RL_REMOTE_SWITCH_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "J12_FOOT_RL_REMOTE_SWITCH_1_1"
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "SIGNAL" (effects (font (size 1.0 1.0))))
+					(number "SIGNAL" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "GND" (effects (font (size 1.0 1.0))))
+					(number "GND" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "R7_10k_1%"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "R"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "10k_1%"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Active-low pull-up"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "R7_10k_1%_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "R7_10k_1%_1_1"
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "1" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "2" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "C7_100nF_FILTER_DNP"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "C"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "100nF_FILTER_DNP"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Optional hardware debounce"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "C7_100nF_FILTER_DNP_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "C7_100nF_FILTER_DNP_1_1"
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "1" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "2" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "J13_FOOT_RR_REMOTE_SWITCH"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "J"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "FOOT_RR_REMOTE_SWITCH"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "FOOTPRINT_TBD_2PIN"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Remote switch closes signal to GND"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "J13_FOOT_RR_REMOTE_SWITCH_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "J13_FOOT_RR_REMOTE_SWITCH_1_1"
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "SIGNAL" (effects (font (size 1.0 1.0))))
+					(number "SIGNAL" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "GND" (effects (font (size 1.0 1.0))))
+					(number "GND" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "R8_10k_1%"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "R"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "10k_1%"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Active-low pull-up"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "R8_10k_1%_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "R8_10k_1%_1_1"
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "1" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "2" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "C8_100nF_FILTER_DNP"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "C"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "100nF_FILTER_DNP"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Optional hardware debounce"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "C8_100nF_FILTER_DNP_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "C8_100nF_FILTER_DNP_1_1"
+				(pin passive line
+					(at 15.240 1.270 180)
+					(length 5.08)
+					(name "1" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+				(pin passive line
+					(at 15.240 -1.270 180)
+					(length 5.08)
+					(name "2" (effects (font (size 1.0 1.0))))
+					(number "2" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "TP1_TEST_GND"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "TP"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "TEST_GND"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Plated_Hole_D2.0mm"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Accessible after module installation"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "TP1_TEST_GND_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "TP1_TEST_GND_1_1"
+				(pin passive line
+					(at 15.240 0.000 180)
+					(length 5.08)
+					(name "1" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "TP2_TEST_EXT_6V_IN"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "TP"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "TEST_EXT_6V_IN"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Plated_Hole_D2.0mm"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Accessible after module installation"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "TP2_TEST_EXT_6V_IN_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "TP2_TEST_EXT_6V_IN_1_1"
+				(pin passive line
+					(at 15.240 0.000 180)
+					(length 5.08)
+					(name "1" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "TP3_TEST_SERVO_6V"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "TP"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "TEST_SERVO_6V"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Plated_Hole_D2.0mm"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Accessible after module installation"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "TP3_TEST_SERVO_6V_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "TP3_TEST_SERVO_6V_1_1"
+				(pin passive line
+					(at 15.240 0.000 180)
+					(length 5.08)
+					(name "1" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "TP4_TEST_3V3"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "TP"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "TEST_3V3"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Plated_Hole_D2.0mm"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Accessible after module installation"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "TP4_TEST_3V3_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "TP4_TEST_3V3_1_1"
+				(pin passive line
+					(at 15.240 0.000 180)
+					(length 5.08)
+					(name "1" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "TP5_TEST_I2C_SDA"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "TP"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "TEST_I2C_SDA"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Plated_Hole_D2.0mm"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Accessible after module installation"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "TP5_TEST_I2C_SDA_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "TP5_TEST_I2C_SDA_1_1"
+				(pin passive line
+					(at 15.240 0.000 180)
+					(length 5.08)
+					(name "1" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "TP6_TEST_I2C_SCL"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "TP"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "TEST_I2C_SCL"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Plated_Hole_D2.0mm"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Accessible after module installation"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "TP6_TEST_I2C_SCL_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "TP6_TEST_I2C_SCL_1_1"
+				(pin passive line
+					(at 15.240 0.000 180)
+					(length 5.08)
+					(name "1" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+		(symbol "TP7_TEST_PCA_OE"
+			(pin_names (offset 1.27))
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+		(property "Reference" "TP"
+			(at 0.000 -8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Value" "TEST_PCA_OE"
+			(at 0.000 8.890 0)
+			(effects
+				(font (size 1.27 1.27))
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Plated_Hole_D2.0mm"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+		(property "Description" "Accessible after module installation"
+			(at 0.000 0.000 0)
+			(effects
+				(font (size 1.27 1.27))
+				(hide yes)
+			)
+		)
+			(symbol "TP7_TEST_PCA_OE_0_1"
+				(rectangle
+					(start -10.0 -5.080)
+					(end 10.0 5.080)
+					(stroke (width 0.254) (type default))
+					(fill (type background))
+				)
+			)
+			(symbol "TP7_TEST_PCA_OE_1_1"
+				(pin passive line
+					(at 15.240 0.000 180)
+					(length 5.08)
+					(name "1" (effects (font (size 1.0 1.0))))
+					(number "1" (effects (font (size 1.0 1.0))))
+				)
+			)
+		)
+)

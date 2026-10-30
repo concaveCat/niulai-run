@@ -1,0 +1,47 @@
+EXP-028 40 mm high-clearance four-step physical trial
+Date: 2026-09-13
+Hardware: ESP32-S3 QFN56 rev v0.2, CH343 native Windows COM4, PCA9685
+  0x40. Operator confirmed the mechanical fixation, limits, current,
+  clearance, personnel-clearance and estop conditions before the trial.
+Software: shared dirty worktree on fw/kw10-perfect-touchdown; 50 mm envelope
+  servo-zero-test image niulai_servo_zero_test.bin, size 0xd7270
+  (881264 bytes), ESP-IDF v5.5.5; SHA-256
+  61ff21d09563cab8d4d4157e9350070bf94a4d57d0d13044e02d3c435c209ccb.
+  The image was flashed at 0x0/0x10000/0x8000 from flasher_args.json and
+  hard-reset before this run.
+
+Host command (PowerShell, native Python):
+  python.exe quad_ascii_walk.py --port COM4 --baud 115200 --boot-wait 0.2 \
+    --profile 30,9,40,120,360,120 --sequence 1234
+
+Startup gate:
+  I2C device ACK at 0x40 (configured PCA9685)
+  CH0-CH7 READY at 50 Hz PWM / 400000 Hz I2C; /OE HIGH
+  direct rest hold reached; skipped upright transition; /OE LOW
+
+Motion UART evidence:
+  1/RF mask=0x01: press accepted; quad demo complete;
+    soft_limit_legs=0x00; release accepted
+  2/LF mask=0x02: press accepted; quad demo complete;
+    soft_limit_legs=0x00; release accepted
+  3/RR mask=0x04: press accepted; quad demo complete;
+    soft_limit_legs=0x00; release accepted
+  4/LR mask=0x08: press accepted; quad demo complete;
+    soft_limit_legs=0x00; release accepted
+  Each start log reported active_step=30.0 mm, stance_step=9.0 mm,
+  lift_back=6.0 mm, lift=40.0 mm and
+  settle/lift/swing/search=180/120/360/120 ms.
+
+The motion UART stream contained no NACK, software timeout, terminal
+rejection, or software fall signal. The no-reset stats query after the run
+reported:
+  logical=195 attempts=195 success=195 nack=0 timeout=0 other=0
+  retries=0 recovered_after_retry=0 terminal_failures=0
+The runner and a follow-up no-reset stop both reported UART stop -> /OE HIGH.
+
+Acceptance boundary: this is one successful UART/firmware four-step run. The
+agent did not independently observe body translation, foot slip, mechanical
+clearance, stall current, voltage sag, temperature, noise, or falling; those
+physical observations remain Operator evidence. This run used four sequential
+single-leg actions, not a simultaneous diagonal pair, and does not validate a
+50 mm motion target.

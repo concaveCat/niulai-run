@@ -1,0 +1,64 @@
+EXP-028 physical flash/test log — 2026-09-13
+
+Scope and authorization
+-----------------------
+The Operator requested flashing and a PowerShell test after the software
+audit. The previously recorded HIGH RISK mechanical conditions were used:
+mechanical fixation, motion limits, 6 V/current boundary, personnel
+clearance, and immediate emergency stop. This log records software/UART
+evidence; no visual claim about body translation, slip, stall, or falling is
+made because no camera/observer measurement was captured here.
+
+Source and image
+----------------
+- Repository: repo root
+- Branch: fw/kw10-perfect-touchdown
+- Source revision: 674d9a5-dirty (working tree intentionally contains
+  pre-existing unrelated changes)
+- Target: ESP32-S3, native Windows COM4
+- Image: niulai_servo_zero_test.bin
+- SHA-256: a0f219c4250e513f65faaceb7d8811d6a7a45ac91b99d0f0f648c0dbcc432abd
+- Live profile: 30,9,40,360,360,120,25
+- Rest pulse snapshot: 1494,1165,1672,1748,1368,1279,1764,1934 us
+
+Flash command
+-------------
+Executed from the WSL workspace through Windows PowerShell 5.1 using native
+Python 3.14/esptool 4.12.0:
+
+  $py=(Get-Command python.exe).Source
+  $b="firmware-esp32	ools\servo-zero-testuild-servo-zero"
+  & $py -m esptool --chip esp32s3 --port COM4 --baud 460800 --before default_reset --after hard_reset write_flash --flash_mode dio --flash_size 16MB --flash_freq 80m 0x0 "$b\bootloader\bootloader.bin" 0x10000 "$b\niulai_servo_zero_test.bin" 0x8000 "$b\partition_table\partition-table.bin"
+
+Result: PASS. ESP32-S3 identified; bootloader, application, and partition
+table each returned “Hash of data verified”; hard reset completed.
+
+PowerShell single-leg smoke test
+--------------------------------
+  $py=(Get-Command python.exe).Source
+  $script="tools\quad_ascii_walk.py"
+  & $py $script --port COM4 --baud 115200 --boot-wait 1.5 --sequence 1
+
+Result: PASS. `rest direct`, RF press/release, `lift=40.0 mm`, complete marker,
+and final `UART stop -> /OE HIGH` were observed. No NACK, timeout, or terminal
+rejection appeared.
+
+PowerShell four-step smoke test
+-------------------------------
+  & $py $script --port COM4 --baud 115200 --boot-wait 1.5 --sequence 1234
+
+Result: PASS at the UART/firmware level. RF, LF, RR, and LR each reported
+accepted press, accepted release, and `quad demo complete`; the run ended with
+`UART stop -> /OE HIGH`. No NACK, timeout, or terminal rejection appeared.
+The final LR completion reported `soft_limit_legs=0x03`, meaning RF/LF support
+workspace/software limits had been reached during accumulated support retreat;
+the firmware saturated those legs and continued rather than stopping.
+
+Observed limitations
+--------------------
+- The sequence helper holds each digit for 500 ms. For real-time play use the
+  interactive command below; key-down and key-up are forwarded separately.
+- The two runs prove the native PowerShell-to-COM4 path and UART state machine,
+  not stable mechanical walking. Body translation, foot slip, stall current,
+  temperature, and falling require Operator observation and measurement.
+- The board is left with `/OE HIGH` after the helper's final stop.

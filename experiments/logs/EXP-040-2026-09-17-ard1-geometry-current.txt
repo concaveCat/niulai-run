@@ -1,0 +1,91 @@
+EXP-040 selected log
+Date: 2026-09-17 Asia/Shanghai
+Workspace: firmware-esp32
+Branch: fw/esp32-layered-runtime
+Source: firmware-esp32/firmware-esp32
+
+STATIC GEOMETRY CHECK
+computer knee branch: FORWARD, FORWARD, FORWARD, FORWARD
+ESP32 strategy after repair: FORWARD, FORWARD, FORWARD, FORWARD
+ESP32 adapter rest IK after repair: FORWARD for all public legs
+public -> carrier: FL=CH2/3 FR=CH0/1 RL=CH6/7 RR=CH4/5
+core order: RF=CH0/1 LF=CH2/3 RR=CH4/5 LR=CH6/7
+core sources: servo_zero_quad_demo.c IDENTICAL; servo_zero_leg_math.c IDENTICAL
+core/tool headers: servo_zero_quad_demo.h IDENTICAL
+host regression: rear knee_rad > 0 for RL/RR; passed
+independent Luna read-only parity review: PASS; no additional mismatch
+Luna boundary: custom computer-side NVS pulse values would be a different
+dynamic baseline; standard ARD-1 rest values are equal
+
+OFFLINE CHECKS
+git diff --check: PASS
+sh firmware-esp32/tests/host/run_host_tests.sh: PASS
+sh tools/run_offline_checks.sh: PASS
+
+BUILD
+ESP-IDF: v5.5.5
+target: esp32s3
+build: firmware-esp32/build-ard1-geometry-current
+config: lift=300 ms swing=360 ms search=120 ms
+niulai.bin SHA-256: cdbc7077f9f2a70885fa8a88a030e0db104dec64d2d97e8572ebb45e81bda179
+flasher_args: 0x0=bootloader/bootloader.bin; 0x8000=partition_table/partition-table.bin; 0x10000=niulai.bin
+flash settings: dio, 16MB, 80m, chip=esp32s3, before=default_reset, after=hard_reset
+build result: PASS; app size 0xbd280; partition free 0x42d80 (26%)
+
+WINDOWS PORT PREFLIGHT
+Windows native PowerShell: COM4 / CH343 present
+esptool.py v4.12.0 chip_id: PASS; ESP32-S3 rev v0.2; MAC=AA:BB:CC:DD:EE:FF
+
+FLASH / HARDWARE
+Command context: native Windows PowerShell, COM4, esptool 4.12.0
+0x0 bootloader/bootloader.bin: Hash of data verified
+0x8000 partition_table/partition-table.bin: Hash of data verified
+0x10000 niulai.bin: Hash of data verified
+after: hard_reset
+
+STARTUP / READ-ONLY STATUS
+ESP-IDF: v5.5.5
+牛来快跑 firmware-esp32 stage=ACTUATION_ENABLED active_leg=ALL
+runtime_imu: MPU6500 telemetry ready address=0x68
+UART prompt: reset | status | transitions
+post-test status: QW_STATUS stage=ACTUATION_ENABLED fsm=SUPPORT acceptance=0/100 armed=0 failsafe=0
+OE: boot-first source invariant sets HIGH before hardware init; no literal OE=HIGH line is emitted by this runtime image
+
+BLE / BOUNDED MOTION TEST
+old Windows bond removed: UNPAIR_STATUS=0
+repaired session: encrypted_bonded=1; BLE_NOTIFICATIONS=subscribed
+rounds: 3
+single masks: 0x01, 0x02, 0x04, 0x08; each 8 action + 8 neutral packets
+dual masks: 0x09, 0x06, 0x03, 0x0C; each 8 action + 8 neutral packets
+all cycles: CYCLE_END=1, CYCLE_END=2, CYCLE_END=3
+FSM path observed: LIFT -> SWING -> SEARCH -> SUPPORT
+control minimum high-water: 4012 B
+observed errors: none for reboot, stack overflow, GAP disconnect, PCA9685 init, I2C write
+expected safe finish: WATCHDOG failsafe=1; SAFETY_GATE blocked; FSM_RESET state=SUPPORT
+HOME command: not sent
+other motion commands: not sent
+
+FOLLOW-UP SOFTWARE REVALIDATION (2026-09-17)
+shared servo_zero_quad_demo.c SHA-256: dbf81d158dec45b6a72e14f64507d9461a8e6fdccef2bd13ed817292722c36bd
+shared servo_zero_leg_math.c SHA-256: 96b73ba38ce4befa28fdfea5f30c5c29c3b64a119c5c91e574cd744fd8689908
+shared core byte comparison: PASS
+quad_ascii_walk default profile: 30,9,40,300,360,120,50
+ESP32 build profile: step=30 mm lift=40 mm hip_scale=50% lift/swing/search=300/360/120 ms
+host ARD1 test: PASS
+host quad geometry test: PASS
+host servo math test: PASS
+host suite: PASS / ALL HOST TESTS PASSED
+Python tools tests: 41 passed
+USB/sysfs preflight in current agent: no /dev/ttyACM*, no /dev/ttyUSB*, no /sys/class/tty entries, no USB sysfs devices
+Windows interop in current agent: powershell.exe/pwsh/wsl.exe unavailable
+follow-up physical COM4 test: EXECUTED in native Windows PowerShell host context
+follow-up preflight: USB-Enhanced-SERIAL CH343 (COM4) PnP status OK; Windows Python 3.14; esptool.py v4.12.0
+follow-up flash: same flasher_args.json map, all three Hash of data verified, exit_code=0
+follow-up startup: ESP-IDF v5.5.5; stage=ACTUATION_ENABLED; runtime_imu telemetry ready address=0x68; armed=0
+follow-up BLE bond: old Windows bond removed UNPAIR_STATUS=0; new session encrypted_bonded=1; notifications subscribed
+follow-up bounded motion: 3 cycles; singles 0x01/0x02/0x04/0x08; duals 0x09/0x06/0x03/0x0C; each 8 action + 8 neutral packets
+follow-up FSM/actuator: LIFT -> SWING -> SEARCH -> SUPPORT; all masks reached after_actuator_applied; control minimum free=3980 B
+follow-up safe finish: WATCHDOG failsafe=1; SAFETY_GATE blocked; FSM_RESET; read-only status armed=0 failsafe=0; HOME not sent
+follow-up errors: no reboot, stack overflow, GAP disconnect, PCA9685 init/action-frame error; MPU6500 telemetry had write_read len=15 ESP_ERR_TIMEOUT entries
+follow-up tool fix: ble_diag_motion_test.py now configures DTR/RTS false before opening COM4 to avoid test-listener resets
+follow-up conclusion: BLE/control/PCA9685 write path stable in bounded test; physical rear-knee angle and exact mechanical amplitude remain OPEN pending operator/video/measurement evidence

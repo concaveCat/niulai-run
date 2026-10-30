@@ -1,0 +1,13 @@
+# Explicit bench profile: enables the PCA9685 actuator path.
+#
+# HIGH RISK. Use only with the robot mechanically restrained, the 10 A fuse
+# installed, a current-limited 6 V servo supply, personnel clear of the legs,
+# and an immediately accessible power disconnect. The runtime acceptance gate,
+# encrypted bonded BLE requirement, 500 ms watchdog and /OE safe-stop path
+# remain active in this profile.
+#
+# Build with a separate directory:
+#   idf.py -B build-bench \
+#     -D SDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.bench.defaults" \
+#     set-target esp32s3 build
+CONFIG_NIULAI_MODE_ACTUATION_ENABLED=y
