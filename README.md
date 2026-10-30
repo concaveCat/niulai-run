@@ -5,7 +5,7 @@
 <p align="center">
   <img src="docs/images/robot-render.jpg" alt="牛来快跑 四足机器人渲染图" width="100%">
   <br>
-  <sub>牛来快跑概念渲染图（非实物照片）</sub>
+  <sub>牛来快跑概念渲染图</sub>
 </p>
 
 <p align="center">
