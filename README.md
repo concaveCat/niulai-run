@@ -350,25 +350,6 @@ host 测试不是硬体验收的替代品。仓库把“软件验证通过”和
 
 ---
 
-## 参与贡献
-
-欢迎 issue、实验复现和 PR。开始之前请阅读 [`CONTRIBUTING.md`](CONTRIBUTING.md)，尤其是：
-
-- 行为变更必须同时更新测试和文档；
-- 不要把“未验证”写成“已完成”；
-- 涉及运动范围、力矩、速度、保护阈值、电源或急停的改动必须标记为高风险，并先做 mock/host 验证，再由有条件的台架执行；
-- 不要提交 API Key、个人路径、构建产物或未授权素材。
-
-如果你只想先跑起来，最快的路径是：
-
-```bash
-python3 -m pip install -r requirements-dev.txt
-sh tools/run_offline_checks.sh
-cd android-controller && ./gradlew testDebugUnitTest
-```
-
----
-
 ## 许可证与致谢
 
 本项目原创代码采用 **MIT License**，详见 [`LICENSE`](LICENSE)。

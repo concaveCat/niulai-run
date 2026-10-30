@@ -113,4 +113,4 @@ python3 hardware/electronics/drafts/verify_empirical_bounds.py
 - 不改动任何源文件；本目录 `drafts/` 为独立工作区。
 - 所有经验值均为 ASSUMPTION，非 manufacturer guaranteed、非实测；不得以"agent 已检查"或"基本能跑"替代后续验证。
 - 本副本不授权 schematic capture、ERC、netlist、PCB layout、采购、下单或实体测试。
-- 合入权威记录前必须经维护者审阅，并按 CONTRIBUTING.md 区分事实/假设/决定。
+- 合入权威记录前必须经维护者审阅，并明确区分事实、假设和决定。
