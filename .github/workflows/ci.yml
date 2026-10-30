@@ -64,7 +64,7 @@ jobs:
         with:
           distribution: temurin
           java-version: "17"
-      - uses: android-actions/setup-android@v3
+      - uses: android-actions/setup-android@v4
       # compileSdk 36 is only a build-time configuration. The APK itself
       # runs on Android 8.0+ (minSdk 26); no SDK is required on the phone.
       - name: Install compile SDK
